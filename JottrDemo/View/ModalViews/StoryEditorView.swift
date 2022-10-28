@@ -20,6 +20,7 @@ struct StoryEditorView: View {
     @FocusState private var isInputActive: Bool
 
     @State private var storyEditorPlaceholder: String = "Perhap's we can begin with once upon a time..."
+    @State private var isSearchViewPresented: Bool = false
     @State private var isShareViewPresented: Bool = false
     @State private var isShowingPromptEditorScreen: Bool = false
     @State private var isShowingEditorToolbar: Bool = false
@@ -27,20 +28,9 @@ struct StoryEditorView: View {
 //    @State private var isNewStoryEditorScreen = false
 //    @State var text = NSMutableAttributedString(string: "")
     
-    @ViewBuilder private var loadingOverlay: some View {
-        if txtComplVM.loading {
-            Color(white: 0, opacity: 0.05)
-            GIFView().frame(width: 295, height: 155)
-        }
-    }
-    
     var body: some View {
-        TextEditorView(title: $txtComplVM.title, text: $txtComplVM.sessionStory, placeholder: storyEditorPlaceholder)
+        InputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
             .focused($isInputActive)
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-            .padding([.leading, .top, .trailing,])
-            .overlay(loadingOverlay)
-            .magnifyingGlass(show: $isShareViewPresented) // I wonder if I can hide this when isInputActive is false
             .sheet(isPresented: $isShowingPromptEditorScreen, onDismiss: {
                 promptContent()
             }, content: {
@@ -50,7 +40,7 @@ struct StoryEditorView: View {
             .sheet(isPresented: $isShareViewPresented, onDismiss: {
                 debugPrint("Dismiss")
             }, content: {
-                ActivityViewController(itemsToShare: ["The Story"]) //[URL(string: "https://www.swifttom.com")!]
+                ActivityViewController(itemsToShare: [txtComplVM.sessionStory]) //[URL(string: "https://www.swifttom.com")!]
             })
             .alert(isPresented: $txtComplVM.failed, content: errorSubmitting)
             .navigationBarTitleDisplayMode(.inline)
@@ -100,7 +90,7 @@ struct StoryEditorView: View {
                 
                 Menu {
                     Button(action: showPromptEditor, label: { Label("Export", systemImage: "arrow.up.doc") })
-                    Button(action: showShareView, label: { Label("Share", systemImage: "square.and.arrow.up") })
+                    Button(action: presentShareView, label: { Label("Share", systemImage: "square.and.arrow.up") })
                 } label: {
                      Image(systemName: "ellipsis.circle")
                 }
@@ -125,7 +115,6 @@ struct StoryEditorView: View {
                 await txtComplVM.generateStory()
             }
         } else {
-            txtComplVM.title = ""
             txtComplVM.promptLoader = ""
             txtComplVM.setTheme = .custom
         }
@@ -157,7 +146,7 @@ struct StoryEditorView: View {
         isShowingPromptEditorScreen.toggle()
     }
     
-    private func showShareView() {
+    private func presentShareView() {
         isShareViewPresented.toggle()
     }
     
@@ -168,10 +157,7 @@ struct StoryEditorView: View {
     
     private func saveResetAndDismissEditor() {
         save()
-        
-        txtComplVM.title = ""
         txtComplVM.sessionStory = ""
-        
         dismissStoryEditor()
     }
     
@@ -181,7 +167,6 @@ struct StoryEditorView: View {
         newStory.id = UUID()
         newStory.creationDate = Date()
         newStory.genre = txtComplVM.setGenre.id
-        newStory.title = txtComplVM.title
         newStory.sessionPrompt = txtComplVM.promptLoader
         newStory.complStory = txtComplVM.sessionStory
 

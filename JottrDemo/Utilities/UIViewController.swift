@@ -19,7 +19,13 @@ import UIKit
 // SwiftUI wrapper for UITextView
 struct TextView: UIViewRepresentable {
     // property that stores the text string we are working with
-    @Binding var text: NSMutableAttributedString
+//    @Binding var text: NSMutableAttributedString
+    @Binding var text: String
+    let placeholder: String = """
+    Write The Title Here
+    
+    Perhap's we can begin with once upon a time...
+    """
     
     // method that will return our text view
     func makeUIView(context: Context) -> UITextView {
@@ -28,7 +34,20 @@ struct TextView: UIViewRepresentable {
     
     // method that will be called whenever the data for the text view has changed
     func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.attributedText = text
+//        uiView.attributedText = text
+        let currentText = uiView.text
+        
+        if let unWrappedText = currentText {
+            if unWrappedText.isEmpty {
+                uiView.font = .preferredFont(forTextStyle: .body) //.systemFont(ofSize: 17)
+                uiView.text = placeholder
+                uiView.textColor = UIColor.lightGray
+                uiView.textRange(from: uiView.beginningOfDocument, to: uiView.beginningOfDocument)
+            } else if uiView.textColor == UIColor.lightGray && !unWrappedText.isEmpty {
+                uiView.text = nil
+                uiView.textColor = UIColor.black
+            }
+        }
     }
 }
 
@@ -50,6 +69,63 @@ struct ActivityViewController: UIViewControllerRepresentable {
     
     // to keep the Controller up to date with any changes
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {}
+}
+
+// handles sending emails from the app-solution from https://stackoverflow.com/questions/56784722/swiftui-send-email
+struct MailView: UIViewControllerRepresentable {
+    @Binding var isShowing: Bool
+    @Binding var result: Result<MFMailComposeResult, Error>?
+    @Binding var showEmailResult: Bool
+
+    class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
+        @Binding var isShowing: Bool
+        @Binding var result: Result<MFMailComposeResult, Error>?
+        @Binding var showEmailResult: Bool
+
+        init(isShowing: Binding<Bool>, result: Binding<Result<MFMailComposeResult, Error>?>, showEmailResult: Binding<Bool>) {
+            _isShowing = isShowing
+            _result = result
+            _showEmailResult = showEmailResult
+        }
+
+        func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+            defer {
+                // display an alert view in AccountView
+                showEmailResult = true
+            }
+            defer {
+                // dismiss the mail view
+                isShowing = false
+            }
+            guard error == nil else {
+                self.result = .failure(error!)
+                return
+            }
+            self.result = .success(result)
+            
+            if result == .sent {
+                // plays a system sound as an alert
+                AudioServicesPlayAlertSound(SystemSoundID(1001))
+            }
+        }
+    }
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
+        let mailViewController = MFMailComposeViewController()
+        // this is where you do any of your accustomed configuration
+        mailViewController.setToRecipients(["hello@kennethgutierrez.com"])
+        mailViewController.setSubject("Jottr: Support Request")
+        mailViewController.setMessageBody("<p>Jottr Version 1.0.1</p>", isHTML: true)
+        mailViewController.mailComposeDelegate = context.coordinator
+        
+        return mailViewController
+    }
+
+    func updateUIViewController(_ uiViewController: MFMailComposeViewController, context: UIViewControllerRepresentableContext<MailView>) { }
+    
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(isShowing: $isShowing, result: $result, showEmailResult: $showEmailResult)
+    }
 }
 
 // adding gif: https://blog.logrocket.com/adding-gifs-ios-app-flanimatedimage-swiftui/#swift-package-manager

@@ -8,12 +8,16 @@
 import Auth0
 import Foundation
 import JWTDecode
+import MessageUI
 import SwiftUI
 
 extension AccountView {
     @MainActor class AccountViewVM: ObservableObject {
         @Published var isAuthenticated: Bool = false
-        @Published var userProfile = UserProfile.empty
+        @Published var userProfile: UserProfile = UserProfile.empty
+        @Published var emailResult: Result<MFMailComposeResult, Error>? = nil
+        @Published var isShowingMailView: Bool = false
+        @Published var isShowingSendEmailAlert: Bool = false
         
         func login() {
             Auth0
@@ -44,6 +48,41 @@ extension AccountView {
               }
             }
         }
+        
+        func sendEmail() {
+            if MFMailComposeViewController.canSendMail() {
+                isShowingMailView.toggle()
+            } else {
+                isShowingSendEmailAlert.toggle()
+            }
+        }
+        
+        func sendEmailAlert() -> Alert {
+            var alertMessage: Alert!
+            if !MFMailComposeViewController.canSendMail() {
+                alertMessage = Alert(title: Text(""), message: Text("Unable to send emails from this device."))
+            }
+            
+            if emailResult != nil {
+                alertMessage = Alert(title: Text(""), message: Text(String(describing: emailResult)), dismissButton: .default(Text("OK")))
+            }
+            
+            return alertMessage
+        }
+    }
+    
+    // A view that expects to find a AccountViewVM object in the environment, and shows its value.
+    struct AlertError: Identifiable {
+        var id: ObjectIdentifier
+        var results: AccountView.AccountViewVM {
+            return sendEmailResult
+        }
+        @EnvironmentObject var sendEmailResult: AccountViewVM
+//        let resultMessage: String
+        
+//        init() {
+//            resultMessage = String(describing: sendEmailAlert.emailResult)
+//        }
     }
 }
 

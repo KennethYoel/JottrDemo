@@ -7,6 +7,7 @@
 
 import Combine
 import CoreData
+import Foundation
 import SwiftUI
 
 struct PromptEditorView: View {
@@ -61,7 +62,7 @@ struct PromptEditorView: View {
                     TextField(themePlaceholder, text: $txtComplVM.customTheme) // use onChange to update the placeholder
                         .focused($isInputActive)
                         .foregroundColor(.primary)
-                        .font(.custom("Futura", size: 15)) // use either Futura, Caslon, or Johnston-the London underground typeface
+                        .font(.system(.body, design: .serif)) // use either Futura, Caslon, or Johnston-the London underground typeface
                         .onReceive(Just(txtComplVM.customTheme)) { _ in limitText(textLimit) }
                     
                     ThemePickerView(themeChoices: $txtComplVM.setTheme)
@@ -69,7 +70,7 @@ struct PromptEditorView: View {
                 } header: {
                     HStack {
                         Text("_Theme_")
-                            .font(.custom("Futura", size: 17))
+                            .font(.system(.subheadline, design: .serif))
                         
                         // popover with instructional information
                         Button {
@@ -89,10 +90,9 @@ struct PromptEditorView: View {
                 .listRowSeparator(.hidden)
                 
                 Section {
-                    TextEditorView(title: $txtComplVM.title, text: $txtComplVM.promptLoader, placeholder: premisePlaceholder)
+                    TextEditorView(text: $txtComplVM.promptLoader, placeholder: premisePlaceholder)
                         .focused($isInputActive)
                         .foregroundColor(.primary)
-                        .font(.custom("Futura", size: 15))
                         .onReceive(Just(txtComplVM.sessionStory)) { _ in limitText(textLimit) }
 //                        .onChange(of: txtComplVM.sessionStory) { _ in detector.send() }
 //                        .onReceive(publisher) { save() }
@@ -102,7 +102,7 @@ struct PromptEditorView: View {
                 } header: {
                     HStack {
                         Text("_Premise_")
-                            .font(.custom("Futura", size: 17))
+                            .font(.system(.subheadline, design: .serif))
 
                         // popover with instructional information
                         Button {
@@ -125,11 +125,15 @@ struct PromptEditorView: View {
                         Spacer()
                         
                         Text("Add Prompt")
-                            .font(.title)
+                            .font(.system(.subheadline, design: .serif))
                         
                         Spacer()
                         
-                        Button(action: addPrompt, label: { Image(systemName: "plus.square.on.square").font(.title) })
+                        Button(action: addPrompt, label: {
+                            Image(systemName: "plus.square.on.square")
+                                .font(.system(.subheadline))
+                            
+                        })
                             .padding()
                             .buttonStyle(CustomButton())
                         
@@ -138,6 +142,7 @@ struct PromptEditorView: View {
                 }
             }
             .navigationTitle("Prompt Editor")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 topPrincipleToolbar
                 keyboardToolbar
@@ -146,10 +151,14 @@ struct PromptEditorView: View {
     }
     
     var topPrincipleToolbar: some ToolbarContent {
-        ToolbarItem(placement: .principal) {
-            Image(systemName: "chevron.compact.down")
-                .font(.title)
-                .padding(.top)
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button("Done", action: {
+                dismissPromptEdit()
+            })
+                .buttonStyle(.plain)
+//            Image(systemName: "chevron.compact.down")
+//                .font(.title)
+//                .padding(.top)
         }
     }
     

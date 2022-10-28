@@ -5,25 +5,19 @@
 //  Created by Kenneth Gutierrez on 10/7/22.
 //
 
+import Foundation
 import SwiftUI
-
-
 
 struct StoryListView: View {
     // MARK: Properties
     
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     // holds our Core Data managed object context (so we can delete or save stuff)
+    
+    @StateObject private var viewModel = StoryListViewVM()
+    
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) var stories: FetchedResults<Story>
-    
-    @State private var isShareViewPresented: Bool = false
-    @State private var isShowingLoginScreen: Bool = false
-    @State private var isShowingStoryEditorScreen: Bool = false
-    @State private var isShowingFeedbackScreen: Bool = false
-    @State private var isShowingSettingsScreen: Bool = false
-    @State private var isShowingSearchScreen: Bool = false
-    @State private var isActive: Bool = false
     
     var isShowingRecentList: Bool = false
     
@@ -39,24 +33,24 @@ struct StoryListView: View {
                  struct.
                  */
                 // for each story in the array, create a listing row
-                ForEach(listOfStories, content:  StoryListRow.init).onDelete(perform: deleteStory) // swipe to delete
+                ForEach(listOfStories, content:  StoryListRowView.init).onDelete(perform: deleteStory) // swipe to delete
             }
-            .sheet(isPresented: $isShareViewPresented, onDismiss: { // the sheet is shown when isShareViewPresented is true
+            .sheet(isPresented: $viewModel.isShareViewPresented, onDismiss: {
                 debugPrint("Dismiss")
             }, content: {
                 ActivityViewController(itemsToShare: ["The Story"]) //[URL(string: "https://www.swifttom.com")!]
             })
         } // Complete Works -> Opera Omnia
-        .fullScreenCover(isPresented: $isShowingStoryEditorScreen, content: {
+        .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, content: {
             NavigationView {
                 StoryEditorView()
             }
         })
-        .sheet(isPresented: $isShowingLoginScreen) { LoginView() }
-        .sheet(isPresented: $isShowingSearchScreen) { SearchView() }
+        .sheet(isPresented: $viewModel.isShowingLoginScreen) { LoginView() }
+        .sheet(isPresented: $viewModel.isShowingSearchScreen) { SearchView() }
         .navigationTitle(pageTitle())
-        .toolbar { storyListToolbar }
-        .magnifyingGlass(show: $isShowingSearchScreen)
+        .toolbar { storyListTopToolbar }
+        .overlay(MagnifyingGlass(showSearchScreen: $viewModel.isShowingSearchScreen), alignment: .bottomTrailing)
     }
     
     var listOfStories: [Story] {
@@ -80,23 +74,23 @@ struct StoryListView: View {
         }
     }
     
-    var storyListToolbar: some ToolbarContent {
+    var storyListTopToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
             Button {
-                isShowingStoryEditorScreen.toggle()
+                viewModel.isShowingStoryEditorScreen.toggle()
             } label: {
                 Label("New Story", systemImage: "square.and.pencil")
             }
             
             Menu {
                 Button {
-                    isShowingLoginScreen.toggle()
+                    viewModel.isShowingLoginScreen.toggle()
                 } label: {
                     Label("Login", systemImage: "lanyardcard")
                 }
                 
                 Button {
-                    isShowingFeedbackScreen.toggle()
+                    viewModel.isShowingFeedbackScreen.toggle()
                 } label: {
                     Label("Feedback", systemImage: "pencil.and.outline")
                 }
@@ -111,18 +105,6 @@ struct StoryListView: View {
                  Image(systemName: "gearshape.2")
             }
         }
-    }
-    
-    private func pageTitle() -> String {
-        var title: String!
-        if !isShowingRecentList {
-            title = "Collection"
-        } else {
-            let pastDateResults = (Date.now - 604800).formatted(date: .abbreviated, time: .omitted)
-            title = "From " + pastDateResults
-        }
-        
-        return title
     }
     
     private func deleteStory(at offsets: IndexSet) {

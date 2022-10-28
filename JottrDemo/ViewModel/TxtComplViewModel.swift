@@ -9,16 +9,15 @@ import Foundation
 import SwiftUI
 
 @MainActor class TxtComplViewModel: ObservableObject {
-    @Published var title: String = ""
     @Published var promptLoader: String = ""
-    @Published var sessionStory: String = "" //[SessionStory] = [SessionStory]()
+    // use ... private(set) var ... to ensure only the class itself can write to this value, reading can be done by anyone
+    @Published var sessionStory: String = ""
     @Published var setTheme: CommonTheme = .custom
     @Published var customTheme: String = ""
     @Published var setGenre: CommonGenre = .fantasy
     @Published var loading: Bool = false
     @Published var failed: Bool = false
     @Published var errorMessage: String = ""
-//    @Published private(set) var state = State.idle
     
 //    var primary: SessionStory {
 //        get {

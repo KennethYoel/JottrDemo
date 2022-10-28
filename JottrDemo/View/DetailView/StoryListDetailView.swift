@@ -11,9 +11,11 @@ import SwiftUI
 struct StoryListDetailView: View {
     // MARK: Properties
     
+    // data stored in the Core Data
     let story: Story
-    // create an object that manages the data(the logic) of ListDetailView layout
-    @StateObject var viewModel = ViewModel()
+    
+    @StateObject var viewModel = StoryListDetailVM()
+    
     // holds our openai text completion model
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     // holds our Core Data managed object context (so we can delete stuff)
@@ -23,32 +25,26 @@ struct StoryListDetailView: View {
     // holds our undoManager
     @Environment(\.undoManager) var undoManager
     // holds boolean value on whether the txt input field is active
-    @FocusState private var isInputActive: Bool
-   
-    @State private var isShowingStoryEditorScreen: Bool = false
-    @State private var isShowingPromptEditorScreen: Bool = false
-    @State private var isShowingEditorToolbar: Bool = false
-    @State private var isShareViewPresented: Bool = false
-    // control whether we’re showing the delete confirmation alert or not
-    @State private var showingDeleteAlert = false
+    @FocusState var isInputActive: Bool
+    // create an object that manages the data(the logic) of ListDetailView layout
     
+    @State private var isSearchViewPresented: Bool = false
+
     var body: some View {
-        TextEditorView(title: $txtComplVM.title, text: $txtComplVM.sessionStory, placeholder: "")
+        InputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
             .onAppear {
-                self.txtComplVM.title = story.wrappedTitle
                 self.txtComplVM.sessionStory = story.wrappedComplStory
             }
             .focused($isInputActive)
-            .padding([.leading, .top, .trailing,])
-            .fullScreenCover(isPresented: $isShowingStoryEditorScreen, content: {
+            .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, content: {
                 NavigationView {
                     StoryEditorView()
                 }
             })
-            .sheet(isPresented: $isShareViewPresented, onDismiss: { // this is shown when isShareViewPresented is true
+            .sheet(isPresented: $viewModel.isShareViewPresented, onDismiss: { // this is shown when isShareViewPresented is true
                 debugPrint("Dismiss")
             }, content: {
-                ActivityViewController(itemsToShare: ["The Story"]) //[URL(string: "https://www.swifttom.com")!]
+                ActivityViewController(itemsToShare: [storyToShare()]) //[URL(string: "https://www.swifttom.com")!]
             })
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -56,6 +52,7 @@ struct StoryListDetailView: View {
                 storyListDetailToolbar
                 // newStoryEditorScreen: $isNewStoryEditorScreen.onChange(save),
             }
+            .disabled(txtComplVM.loading) // when loading users can't interact with this view.
     }
     
     var keyboardToolbar: some ToolbarContent {
@@ -90,56 +87,5 @@ struct StoryListDetailView: View {
                 }
             }
         }
-    }
-    
-    // MARK: Helper Methods
-    
-    private func hideKeyboardAndSave() {
-        isInputActive = false
-        updateContext()
-    }
-    
-    private func sendToStoryCreator() {
-        Task {
-            await txtComplVM.generateStory()
-        }
-        updateContext()
-    }
-    
-    private func launchNewPage() {
-        updateContext()
-        txtComplVM.title = ""
-        txtComplVM.sessionStory = ""
-        dismissDetailView()
-        isShowingStoryEditorScreen.toggle()
-    }
-    
-    private func exportToFile() {
-        
-    }
-    
-    private func presentShareView() {
-        isShareViewPresented.toggle()
-    }
-    
-    private func updateContext() {
-        //update the saved story
-        moc.performAndWait {
-            story.title = self.txtComplVM.title
-            story.complStory = self.txtComplVM.sessionStory
-            
-            PersistenceController.shared.saveContext()
-        }
-    }
-    
-    private func deleteBook() {
-        // delete from in memory storage
-        moc.delete(story)
-        
-        // write the changes out to persistent storage
-        PersistenceController.shared.saveContext()
-        
-        // hide current view
-        dismissDetailView()
     }
 }

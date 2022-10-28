@@ -5,19 +5,18 @@
 //  Created by Kenneth Gutierrez on 10/13/22.
 //
 
+import Foundation
 import SwiftUI
 
-struct StoryListRow: View {
+struct StoryListRowView: View {
     let story: Story
-    // anything with content closure we rip out that chunk of code and create a seperate view as we did here.
+    
+    // anything with content closure we rip out that chunk of code, if possible, and create a seperate view as we did here.
     var body: some View {
         NavigationLink {
-            StoryListDetailView(story: story)
+            ContentView(loadingState: .storyListDetail(story))
         } label: {
             VStack(alignment: .leading) {
-                Text(story.wrappedTitle)
-                    .font(.system(.headline, design: .serif))
-                
                 Text(story.wrappedComplStory)
                     .foregroundColor(.secondary)
                     .font(.system(.subheadline, design: .serif))

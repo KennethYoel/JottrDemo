@@ -5,6 +5,7 @@
 //  Created by Kenneth Gutierrez on 10/13/22.
 //
 
+import Foundation
 import SwiftUI
 
 struct KeyboardToolbar: ToolbarContent {

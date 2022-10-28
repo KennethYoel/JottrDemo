@@ -8,16 +8,68 @@
 import Foundation
 
 extension StoryListDetailView {
-    @MainActor class ViewModel: ObservableObject {
-        // holds our Core Data managed object context (so we can delete stuff)
-//        @Published var title = ""
-//        @Published var sessionStory = ""
+    @MainActor class StoryListDetailVM: ObservableObject {
+        @Published var isShowingStoryEditorScreen: Bool = false
+        @Published var isShowingPromptEditorScreen: Bool = false
+        @Published var isShowingEditorToolbar: Bool = false
+        @Published var isShareViewPresented: Bool = false
+        // control whether we’re showing the delete confirmation alert or not
+        @Published var showingDeleteAlert = false
     }
     
     // MARK: Helper Methods
     
-//    func hideKeyboardAndSave() {
-//        isInputActive = false
-//        txtComplVM.updateContext(story: story, sessionStory: viewModel.sessionStory)
-//    }
+    func hideKeyboardAndSave() {
+        isInputActive = false
+        updateContext()
+    }
+    
+    func sendToStoryCreator() {
+        Task {
+            await txtComplVM.generateStory()
+        }
+        updateContext()
+    }
+    
+    func launchNewPage() {
+        updateContext()
+        txtComplVM.sessionStory = ""
+        dismissDetailView()
+        viewModel.isShowingStoryEditorScreen.toggle()
+    }
+    
+    func exportToFile() {
+        
+    }
+    
+    func storyToShare() -> String {
+        let sheet = """
+        \(txtComplVM.sessionStory)
+        """
+        return sheet
+    }
+    
+    func presentShareView() {
+        viewModel.isShareViewPresented.toggle()
+    }
+    
+    func updateContext() {
+        //update the saved story
+        moc.performAndWait {
+            story.complStory = self.txtComplVM.sessionStory
+            
+            PersistenceController.shared.saveContext()
+        }
+    }
+    
+    func deleteBook() {
+        // delete from in memory storage
+        moc.delete(story)
+        
+        // write the changes out to persistent storage
+        PersistenceController.shared.saveContext()
+        
+        // hide current view
+        dismissDetailView()
+    }
 }

@@ -7,9 +7,8 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="sessionPrompt" optional="YES" attributeType="String"/>
         <attribute name="theme" optional="YES" attributeType="String"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Story" positionX="-63" positionY="-18" width="128" height="134"/>
+        <element name="Story" positionX="-63" positionY="-18" width="128" height="119"/>
     </elements>
 </model>

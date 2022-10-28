@@ -5,6 +5,8 @@
 //  Created by Kenneth Gutierrez on 10/7/22.
 //
 
+import Foundation
+import MessageUI
 import StoreKit
 import SwiftUI
 
@@ -31,8 +33,14 @@ struct UserImage: View {
                     .clipShape(Circle())
                 
             } else if phase.error != nil {
-                Color.red // Indicates an error.
+                // Indicates an error.
+                Image(systemName: "person.crop.circle.badge.exclamationmark")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 64)
+                    .clipShape(Circle())
             } else {
+                // a placeholder image
                 Image(systemName: "person")
                     .resizable()
                     .scaledToFit()
@@ -79,8 +87,8 @@ struct UserView: View {
 }
 
 struct AccountView: View {
-    // works starting from iOS 16
-//   @Environment(\.requestReview) var requestReview
+    // MARK: Properties
+
     @StateObject private var viewModel = AccountViewVM()
     @Environment(\.dismiss) var dismissAccountView
     private var storeReview = StoreReviewHelper()
@@ -103,6 +111,12 @@ struct AccountView: View {
                 }
                 
                 Section {
+                    Button("Contact Support", action: { viewModel.sendEmail() })
+
+    //                if viewModel.emailResult != nil {
+    //                    Text(String(describing: emailResult))
+    //                }
+                    
                     Button("Leave Feedback") {
                         storeReview.requestReview()
                    }
@@ -117,18 +131,24 @@ struct AccountView: View {
                 }
                 .disabled(!viewModel.isAuthenticated)
             }
+            .sheet(isPresented: $viewModel.isShowingMailView) {
+                MailView(isShowing: $viewModel.isShowingMailView, result: $viewModel.emailResult, showEmailResult: $viewModel.isShowingSendEmailAlert)
+            }
+            .alert(isPresented: $viewModel.isShowingSendEmailAlert, content: { viewModel.sendEmailAlert()
+            })
             .navigationTitle("Account")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                topTrailingToolbar
+                topToolbar
             }
         }
     }
     
-    var topTrailingToolbar: some ToolbarContent {
+    var topToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button("Done", action: { dismissAccountView() })
-            .padding()
-            .buttonStyle(.plain)
+                .padding()
+                .buttonStyle(.plain)
         }
     }
 }

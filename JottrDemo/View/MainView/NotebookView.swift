@@ -5,27 +5,52 @@
 //  Created by Kenneth Gutierrez on 10/7/22.
 //
 
+import Foundation
 import SwiftUI
 
-struct NoteBookView: View {
+// composite views of hidesectionview and notebokview
+struct HideSectionView: View {
     // MARK: Properties
     
+    @Binding var isHidden: Bool
+    
+    var body: some View {
+        Menu("...") {
+            if !isHidden {
+                Button(action: collapse, label: { Label("Collapse", systemImage: "rectangle.compress.vertical") })
+            } else {
+                Button(action: expand, label: { Label("Expand", systemImage: "rectangle.expand.vertical") })
+            }
+        }
+        .font(.system(.caption, design: .serif))
+    }
+    
+    private func collapse() {
+        isHidden.toggle()
+    }
+
+    private func expand() {
+        isHidden.toggle()
+    }
+}
+
+// primary view
+struct NotebookView: View {
+    // MARK: Properties
+    
+    // this view receives the TxtComplViewModel object in the environment
     @EnvironmentObject var txtComplVM: TxtComplViewModel
-    @State private var isShowingStoryEditorScreen: Bool = false
-    @State private var isShowingLoginScreen: Bool = false
-    @State private var isShowingAccountScreen: Bool = false
-    @State private var isShowingSearchScreen: Bool = false
-    @State private var isShowingStoryListView: Bool = false
-    @State private var isShowingSettingsScreen: Bool = false
-    @State private var isStoryListActive: Bool = false
-    @State private var isHidden: Bool = false
+    @StateObject var viewModel = NotebookViewVM()
+    // these two @State variable needs to be in this struct, values won't change when moved to ViewModel
+    @State var isShowingStoryEditorScreen: Bool = false
+    @State var isStoryListActive: Bool = false
     
     var body: some View {
         List {
             Section {
                 // a link to a list of stories
                 NavigationLink(isActive: $isStoryListActive) {
-                    ContentView(currentView: .storyList(false))
+                    ContentView(loadingState: .storyList(false))
                 } label: {
                     Label("Collection", systemImage: "archivebox")
                         .font(.custom("Futura", size: 13))
@@ -34,7 +59,7 @@ struct NoteBookView: View {
                 
                 // a link to a list of stories written in the past seven days
                 NavigationLink {
-                    ContentView(currentView: .storyList(true))
+                    ContentView(loadingState: .storyList(true))
                 } label: {
                     Label("Recent", systemImage: "deskclock")
                         .font(.custom("Futura", size: 13))
@@ -53,7 +78,7 @@ struct NoteBookView: View {
             }
             
             Section {
-                if !isHidden {
+                if !viewModel.isHidden {
                     Text("Intro")
                 }
             } header: {
@@ -61,7 +86,7 @@ struct NoteBookView: View {
                     Text("INTRODUCTION")
                         .font(.system(.caption, design: .serif))
                     Spacer()
-                    HideSectionView(isHidden: $isHidden)
+                    HideSectionView(isHidden: $viewModel.isHidden)
                 }
             }
         } // MARK: Form Modyfiers
@@ -72,25 +97,28 @@ struct NoteBookView: View {
                 StoryEditorView()
             }
         })
-        .sheet(isPresented: $isShowingAccountScreen) { AccountView() }
-        .sheet(isPresented: $isShowingLoginScreen) { LoginView() }
-        .sheet(isPresented: $isShowingSearchScreen) { SearchView() }
-        .magnifyingGlass(show: $isShowingSearchScreen) // add a magnifying glass to view
+        .fullScreenCover(isPresented: $viewModel.isShowingAccountScreen) { AccountView() }
+        .sheet(isPresented: $viewModel.isShowingSearchScreen) { SearchView() }
+        .overlay(MagnifyingGlass(showSearchScreen: $viewModel.isShowingSearchScreen), alignment: .bottomTrailing)
         .navigationTitle("🖋Jottr") //highlighter
-        .toolbar { noteBookToolbar }
+        .toolbar { noteBookTopToolbar }
     }
     
     // MARK: External Properties
     // the property will be inline very nicely by the swift optimizer also when the body is re-computed, changed program state for example, swift will recall the properties as needed
-    var noteBookToolbar: some ToolbarContent {
+    var noteBookTopToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
             Button(action: showStoryEditor, label: {
                 Label("New Story", systemImage: "square.and.pencil")
             })
+                .padding()
+                .buttonStyle(.plain)
             
-            Button(action: showAccountScreen, label: {
-                Label("Account", systemImage: "gearshape.2")
+            Button(action: { viewModel.showAccountScreen() }, label: {
+                Label("Account", systemImage: "ellipsis.circle")
             })
+                .padding(.trailing)
+                .buttonStyle(.plain)
             
 //            Menu {
 //                Button(action: showLoginScreen, label: {
@@ -107,26 +135,10 @@ struct NoteBookView: View {
 //            }
         }
     }
-    
-    private func showStoryEditor() {
-        isShowingStoryEditorScreen.toggle()
-    }
-
-    private func showLoginScreen() {
-        isShowingLoginScreen.toggle()
-    }
-    
-    private func showAccountScreen() {
-        isShowingAccountScreen.toggle()
-    }
-    
-    private func showSettingsScreen() {
-        isShowingAccountScreen.toggle()
-    }
 }
 
-struct NoteBookView_Previews: PreviewProvider {
+struct NotebookView_Previews: PreviewProvider {
     static var previews: some View {
-        NoteBookView()
+        NotebookView()
     }
 }

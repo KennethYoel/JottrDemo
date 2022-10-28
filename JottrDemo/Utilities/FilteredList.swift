@@ -45,23 +45,41 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
     @FetchRequest var fetchRequest: FetchedResults<T>
     // content closure that will accept a T and return some Content
     let content: (T) -> Content
+    @Binding var isSearching: Bool
     
     var body: some View {
-        List(fetchRequest, id: \.self) { item in
+        // two view options
+//        List(fetchRequest, id: \.self) { item in
+//            self.content(item)
+//        }
+        
+        ForEach(fetchRequest, id: \.self) { item in
             self.content(item)
         }
     }
     
-    init(filterKey: String, filterBy: Comparator, filterValue: String, @ViewBuilder content: @escaping (T) -> Content) {
+    init(sortKey: String, orderByAscending: Bool, isSearching: Binding<Bool>, filterKey: String, filterBy: Comparator, filterValue: String, @ViewBuilder content: @escaping (T) -> Content) {
+        // sort descriptors for, well sorting the data
+        let sort = NSSortDescriptor(key: sortKey, ascending: orderByAscending)
+        
+        // the predicate for searching for the data
+        _isSearching = isSearching
         let comparison = filterBy.stringComparisons()
-        debugPrint(comparison) //sortedBy: [String],
+        var nsPredicate: NSPredicate?
+        // getting underlying value referenced by the binding variable
+        if isSearching.wrappedValue {
+            nsPredicate = NSPredicate(format: "%K \(comparison) %@", filterKey, filterValue)
+        } else {
+            nsPredicate = nil
+        }
+        
         /*
          Did you notice how there’s an underscore at the start of _fetchRequest? That’s intentional.
          You see, we’re not writing to the fetched results object inside our fetch request, but
          instead writing a wholly new fetch request. Allow us to poke around the actual fetchRequest object and not the
          fetchResult inside it.
          */
-        _fetchRequest = FetchRequest<T>(sortDescriptors: [], predicate: NSPredicate(format: "%K \(comparison) %@", filterKey, filterValue))
+        _fetchRequest = FetchRequest<T>(sortDescriptors: [sort], predicate: nsPredicate, animation: .easeOut)
         
 //        request.fetchLimit = 10
 //        _fetchRequest = FetchRequest<T>(fetchRequest: request)

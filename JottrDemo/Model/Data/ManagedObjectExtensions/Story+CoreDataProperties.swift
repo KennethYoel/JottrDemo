@@ -17,7 +17,6 @@ extension Story {
     @NSManaged public var creationDate: Date?
     @NSManaged public var genre: String?
     @NSManaged public var theme: String?
-    @NSManaged public var title: String?
     @NSManaged public var sessionPrompt: String?
     @NSManaged public var complStory: String?
     
@@ -36,9 +35,6 @@ extension Story {
     }
     public var wrappedTheme: String {
         theme ?? "custom"
-    }
-    public var wrappedTitle: String {
-        title ?? "Unkown Title"
     }
     public var wrappedSessionPrompt: String {
         sessionPrompt ?? "Unkown Prompt"
