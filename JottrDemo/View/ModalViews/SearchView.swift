@@ -17,42 +17,44 @@ struct SearchView: View {
     @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)]) var workOfFiction: FetchedResults<Story>
     @State private var searchQuery: String = ""
     @State private var searching: Bool = false
-    @State private var highlightedSearchedText = AttributedString("")
    
     var body: some View {
         NavigationView {
-            List {
+            VStack(alignment: .leading) {
                 Text("Recently Modified")
-                    .font(.system(.title, design: .serif))
-                    .textSelection(.enabled)
-                    .listRowSeparator(.hidden)
+                    .padding(.leading)
+                    .font(.system(.title2, design: .serif))
                 
-                ForEach(searchResults, id: \.self) { eachStory in
-                    NavigationLink(destination: Text(eachStory)) {
-                        Text(eachStory)
+                List(searchResults, id: \.self) { item in
+                    NavigationLink(destination: Text(item)) {
+                        Text(LocalizedStringKey(item)) // requesting localization
                             .foregroundColor(.secondary)
                             .font(.system(.subheadline, design: .serif))
-                            // limit the amount of text shown in each item in the list
-                            .lineLimit(3)
+                            .lineLimit(3)  // limit the amount of text shown in each item in the list
                             .textSelection(.enabled)
                     }
                 }
             }
-            .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .always), prompt: "Seek It") {
-                //provide tappable suggestions as the user types
-                Text("\(searchResults.count) Pages")
-                    .font(.system(.title, design: .serif))
-                    .textSelection(.enabled)
-                
-                ForEach(searchResults, id: \.self) { result in
-                    Text("\(result)").searchCompletion(result)
-                        .foregroundColor(.green)
-                        .font(.system(.body, design: .serif))
-                        .textSelection(.enabled)
-                }
-            }
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.inline)
+            .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .always), prompt: "All") {
+                VStack(alignment: .leading) {
+                    Text("\(searchResults.count) Items")
+                        .font(.system(.title2, design: .serif))
+                    
+                    //provide tappable suggestions as the user types
+                    ForEach(highlightedResults, id: \.self) { result in
+                        NavigationLink(destination: Text(result)) {
+                            Text(result)
+                                .font(.system(.subheadline, design: .serif))
+                                .lineLimit(3) // limit the amount of text shown in each item in the list
+                        }
+                    }
+                }
+            }
+            .onSubmit(of: .search) {
+//                viewModel.submitCurrentSearchQuery()
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Close") {
@@ -63,44 +65,57 @@ struct SearchView: View {
                 }
             }
         }
-        .onChange(of: searchQuery) { _ in highlightText() }
+//        .onChange(of: searchQuery) { _ in highlightText() }
     }
     
-    var searchResults: [AttributedString] {
-        var stories: [AttributedString]!
-        
-        if searchQuery.isEmpty {
-            for tale in workOfFiction {
-                if let unwrappedStory = tale.complStory {
-                    let attributedStory = AttributedString(unwrappedStory)
-                    stories = [attributedStory] //[unwrappedStory] // now, how to cnvert from String to AttributedString
+    var searchResults: [String] {
+        get {
+            var stories: [String] = []
+            
+            if searchQuery.isEmpty {
+                for eachStory in workOfFiction {
+                    if let unwrappedStory = eachStory.complStory {
+                        stories += [unwrappedStory]
+                    }
                 }
-            }
-            return stories
-        } else {
-            /*
-             localizedCaseInsensitiveContains()
-             lets us check any part of the search strings, without worrying about
-             uppercase or lowercase letters
-             */
-            for tale in workOfFiction {
-                if let unwrappedStory = tale.complStory {
-                    let attributedStory = AttributedString(unwrappedStory)
-                    stories = [attributedStory] //+= [unwrappedStory]
+                return stories
+            } else {
+                /*
+                 localizedCaseInsensitiveContains()
+                 lets us check any part of the search strings, without worrying about
+                 uppercase or lowercase letters
+                 */
+                for tale in workOfFiction {
+                    if let unwrappedStory = tale.complStory {
+                        stories += [unwrappedStory]
+                    }
                 }
+                // may need to put the code back to what it was and convert it after in highlightText()
+                return stories.filter { $0.localizedCaseInsensitiveContains(searchQuery) }
             }
-            // may need to put the code back to what it was and convert it after in highlightText()
-            return stories.filter { $0.localizedCaseInsensitiveContains(searchQuery) }
         }
     }
     
-    private func highlightText() {
-        if !searchQuery.isEmpty {
-            print("sag, Hi!")
-            searchResults
+    var highlightedResults: [AttributedString] {
+        get {
+            var attributedResults: [AttributedString] = [AttributedString()]
+            var attributedItem: AttributedString!
+            
+            for item in searchResults {
+                // convert the item String to AttributedString
+                attributedItem = AttributedString(item)
+                
+                // assign color attribute to the substring that is equal to searchQuery substring
+                if let range = attributedItem.range(of: searchQuery) {
+                    attributedItem[range].backgroundColor = .blue
+                    attributedItem[range].foregroundColor = .white
+                }
+                
+                // append the attributedItem to attributedResults
+                attributedResults += [attributedItem]
+            }
+            
+            return attributedResults
         }
-        
-        let range = highlightedSearchedText.range(of: "\(searchQuery)")!
-        highlightedSearchedText[range].foregroundColor = .red
     }
 }
