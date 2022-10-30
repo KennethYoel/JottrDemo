@@ -24,6 +24,7 @@ struct SearchView: View {
                 Text("Recently Modified")
                     .padding(.leading)
                     .font(.system(.title2, design: .serif))
+                    .textSelection(.enabled)
                 
                 List(searchResults, id: \.self) { item in
                     NavigationLink(destination: Text(item)) {
@@ -31,7 +32,6 @@ struct SearchView: View {
                             .foregroundColor(.secondary)
                             .font(.system(.subheadline, design: .serif))
                             .lineLimit(3)  // limit the amount of text shown in each item in the list
-                            .textSelection(.enabled)
                     }
                 }
             }
@@ -41,6 +41,7 @@ struct SearchView: View {
                 VStack(alignment: .leading) {
                     Text("\(searchResults.count) Items")
                         .font(.system(.title2, design: .serif))
+                        .textSelection(.enabled)
                     
                     //provide tappable suggestions as the user types
                     ForEach(highlightedResults, id: \.self) { result in
@@ -105,8 +106,8 @@ struct SearchView: View {
                 // convert the item String to AttributedString
                 attributedItem = AttributedString(item)
                 
-                // assign color attribute to the substring that is equal to searchQuery substring
-                if let range = attributedItem.range(of: searchQuery) {
+                // assign color attribute to substring that is equal to searchQuery using case-insensitive search
+                if let range = attributedItem.range(of: searchQuery, options: .caseInsensitive) {
                     attributedItem[range].backgroundColor = .blue
                     attributedItem[range].foregroundColor = .white
                 }

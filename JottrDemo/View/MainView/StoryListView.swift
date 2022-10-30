@@ -17,7 +17,7 @@ struct StoryListView: View {
     @StateObject private var viewModel = StoryListViewVM()
     
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var stories: FetchedResults<Story>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)]) var stories: FetchedResults<Story>
     
     var isShowingRecentList: Bool = false
     
