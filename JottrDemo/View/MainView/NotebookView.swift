@@ -98,7 +98,7 @@ struct NotebookView: View {
             }
         })
         .fullScreenCover(isPresented: $viewModel.isShowingAccountScreen) { AccountView() }
-        .sheet(isPresented: $viewModel.isShowingSearchScreen) { SearchView() }
+        .sheet(isPresented: $viewModel.isShowingSearchScreen) { SearchView(activateListDetail: .init()) }
         .overlay(MagnifyingGlass(showSearchScreen: $viewModel.isShowingSearchScreen), alignment: .bottomTrailing)
         .navigationTitle("🖋Jottr") //highlighter
         .toolbar { noteBookTopToolbar }

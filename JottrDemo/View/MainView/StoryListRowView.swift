@@ -9,11 +9,12 @@ import Foundation
 import SwiftUI
 
 struct StoryListRowView: View {
+    @StateObject var activateListDetail = PerformNavigation()
     let story: Story
     
     // anything with content closure we rip out that chunk of code, if possible, and create a seperate view as we did here.
     var body: some View {
-        NavigationLink {
+        NavigationLink(isActive: $activateListDetail.showListingRow) {
             ContentView(loadingState: .storyListDetail(story))
         } label: {
             VStack(alignment: .leading) {

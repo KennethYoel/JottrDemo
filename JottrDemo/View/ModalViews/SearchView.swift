@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+//struct SearchQueryView: View {
+//    var searchable = SearchView()
+//
+//    var body: some  View {
+//
+//    }
+//}
+
 struct SearchView: View {
     // MARK: Properties
     
@@ -14,48 +22,59 @@ struct SearchView: View {
     @Environment(\.isSearching) private var isSearching: Bool
     @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.dismiss) private var dismiss
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)]) var workOfFiction: FetchedResults<Story>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)]) var narratives: FetchedResults<Story>
     @State private var searchQuery: String = ""
     @State private var searching: Bool = false
+    @ObservedObject var activateListDetail: PerformNavigation
    
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
-                Text("Recently Modified")
-                    .padding(.leading)
-                    .font(.system(.title2, design: .serif))
-                    .textSelection(.enabled)
+                if isSearching {
+                  Text("\(storyRequested.count) Items")
+                        .font(.system(.title2, design: .serif))
+                        .textSelection(.enabled)
+                } else {
+                    Text("Recently Modified")
+                        .padding(.leading)
+                        .font(.system(.title2, design: .serif))
+                        .textSelection(.enabled)
+                }
                 
-                List(searchResults, id: \.self) { item in
-                    NavigationLink(destination: Text(item)) {
-                        Text(LocalizedStringKey(item)) // requesting localization
-                            .foregroundColor(.secondary)
+                List(storyRequested, id: \.self) { item in //
+                    // for each story in the array, create a listing row
+                    Text(LocalizedStringKey(item.wrappedComplStory)) // requesting localization
+                        .foregroundColor(.secondary)
+                        .font(.system(.subheadline, design: .serif))
+                        .lineLimit(3)  // limit the amount of text shown in each item in the list
+                        .onTapGesture(perform: {
+                            activateListDetail.showListingRow.toggle()
+                            dismiss()
+                            debugPrint("Tap Gesture and this is: \(activateListDetail.showListingRow)")
+                        })
+                    
+//                    NavigationLink(destination: StoryListDetailView(story: item)) {
+//                        Text(LocalizedStringKey(item.wrappedComplStory)) // requesting localization
+//                            .foregroundColor(.secondary)
+//                            .font(.system(.subheadline, design: .serif))
+//                            .lineLimit(3)  // limit the amount of text shown in each item in the list
+//                    }
+                    
+                }
+                .listStyle(.inset)
+                .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .always), prompt: "All") {
+                    ForEach(highlightedResults, id: \.self) { result in  //provide tappable suggestions as the user types
+                        Text(result) // .searchCompletion(convertToString(contentOf: result))
                             .font(.system(.subheadline, design: .serif))
-                            .lineLimit(3)  // limit the amount of text shown in each item in the list
+                            .lineLimit(3) // limit the amount of text shown in each item in the list
                     }
+                }
+                .onSubmit(of: .search) {
+                    debugPrint("Search Submitted")
                 }
             }
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .always), prompt: "All") {
-                VStack(alignment: .leading) {
-                    Text("\(searchResults.count) Items")
-                        .font(.system(.title2, design: .serif))
-                        .textSelection(.enabled)
-                    
-                    //provide tappable suggestions as the user types
-                    ForEach(highlightedResults, id: \.self) { result in
-                        NavigationLink(destination: Text(result)) {
-                            Text(result)
-                                .font(.system(.subheadline, design: .serif))
-                                .lineLimit(3) // limit the amount of text shown in each item in the list
-                        }
-                    }
-                }
-            }
-            .onSubmit(of: .search) {
-//                viewModel.submitCurrentSearchQuery()
-            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Close") {
@@ -66,47 +85,51 @@ struct SearchView: View {
                 }
             }
         }
-//        .onChange(of: searchQuery) { _ in highlightText() }
     }
     
     var searchResults: [String] {
         get {
             var stories: [String] = []
             
-            if searchQuery.isEmpty {
-                for eachStory in workOfFiction {
-                    if let unwrappedStory = eachStory.complStory {
-                        stories += [unwrappedStory]
-                    }
-                }
-                return stories
-            } else {
-                /*
-                 localizedCaseInsensitiveContains()
-                 lets us check any part of the search strings, without worrying about
-                 uppercase or lowercase letters
-                 */
-                for tale in workOfFiction {
-                    if let unwrappedStory = tale.complStory {
-                        stories += [unwrappedStory]
-                    }
-                }
-                // may need to put the code back to what it was and convert it after in highlightText()
-                return stories.filter { $0.localizedCaseInsensitiveContains(searchQuery) }
+            // append Story in Core Data to stories array
+            for eachStory in narratives {
+                stories += [eachStory.wrappedComplStory]
             }
+            /*
+             localizedCaseInsensitiveContains() lets us
+             check any part of the search strings, without
+             worrying about uppercase or lowercase characters
+             */
+            return searchQuery.isEmpty ? stories : stories.filter { $0.localizedCaseInsensitiveContains(searchQuery) }
+        }
+    }
+    
+    var storyRequested: [Story] {
+        get {
+            var storyContents: [Story] = []
+            
+            if searchQuery.isEmpty {
+                storyContents.append(contentsOf: narratives)
+            } else {
+                let filteredStoryContent = narratives.filter {
+                    $0.wrappedComplStory.localizedCaseInsensitiveContains(searchQuery)
+                }
+                storyContents.append(contentsOf: filteredStoryContent)
+            }
+            
+            return storyContents
         }
     }
     
     var highlightedResults: [AttributedString] {
         get {
-            var attributedResults: [AttributedString] = [AttributedString()]
-            var attributedItem: AttributedString!
+            var attributedResults: [AttributedString] = []
             
-            for item in searchResults {
+            for item in storyRequested {
                 // convert the item String to AttributedString
-                attributedItem = AttributedString(item)
+                var attributedItem = AttributedString(item.wrappedComplStory)
                 
-                // assign color attribute to substring that is equal to searchQuery using case-insensitive search
+                // assign color attribute to substring that is equal to searchQuery with case-insensitive search
                 if let range = attributedItem.range(of: searchQuery, options: .caseInsensitive) {
                     attributedItem[range].backgroundColor = .blue
                     attributedItem[range].foregroundColor = .white
@@ -118,5 +141,15 @@ struct SearchView: View {
             
             return attributedResults
         }
+    }
+    
+    func convertToString(contentOf attribute: AttributedString) -> String {
+        let attributedSample = NSMutableAttributedString(attribute)
+     
+        return attributedSample.string
+    }
+    
+    private func openPage() {
+        
     }
 }

@@ -22,32 +22,33 @@ struct StoryListView: View {
     var isShowingRecentList: Bool = false
     
     var body: some View {
-        VStack {
-            List {
-                /*
-                 We don’t need to provide an identifier for the ForEach because all
-                 Core Data’s managed object class conform to Identifiable
-                 automatically, but things are trickier when it comes to creating
-                 views inside the ForEach. Swift will generate a memoize initializer
-                 for all its struct, memoizer that will accept the parameters of the
-                 struct.
-                 */
-                // for each story in the array, create a listing row
-                ForEach(listOfStories, content:  StoryListRowView.init).onDelete(perform: deleteStory) // swipe to delete
+        List {
+            /*
+             We don’t need to provide an identifier for the ForEach because all
+             Core Data’s managed object class conform to Identifiable
+             automatically, but things are trickier when it comes to creating
+             views inside the ForEach. Swift will generate a memoize initializer
+             for all its struct, memoizer that will accept the parameters of the
+             struct.
+             */
+            // for each story in the array, create a listing row
+            ForEach(listOfStories) { eachStory in
+                StoryListRowView(story: eachStory)
             }
-            .sheet(isPresented: $viewModel.isShareViewPresented, onDismiss: {
-                debugPrint("Dismiss")
-            }, content: {
-                ActivityViewController(itemsToShare: ["The Story"]) //[URL(string: "https://www.swifttom.com")!]
-            })
-        } // Complete Works -> Opera Omnia
+            .onDelete(perform: deleteStory) // swipe to delete content: StoryListRowView.init
+        }
+        .sheet(isPresented: $viewModel.isShareViewPresented, onDismiss: {
+            debugPrint("Dismiss")
+        }, content: {
+            ActivityViewController(itemsToShare: ["The Story"]) //[URL(string: "https://www.swifttom.com")!]
+        })// Complete Works -> Opera Omnia
         .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, content: {
             NavigationView {
                 StoryEditorView()
             }
         })
         .sheet(isPresented: $viewModel.isShowingLoginScreen) { LoginView() }
-        .sheet(isPresented: $viewModel.isShowingSearchScreen) { SearchView() }
+        .sheet(isPresented: $viewModel.isShowingSearchScreen) { SearchView(activateListDetail: .init()) }
         .navigationTitle(pageTitle())
         .toolbar { storyListTopToolbar }
         .overlay(MagnifyingGlass(showSearchScreen: $viewModel.isShowingSearchScreen), alignment: .bottomTrailing)
