@@ -116,6 +116,7 @@
 		57D5CA1D28FDD6D0005F7BA7 /* AccountView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountView-ViewModel.swift"; sourceTree = "<group>"; };
 		57E2B48E28F2CF31001DDC93 /* ViewModel-Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewModel-Extensions.swift"; sourceTree = "<group>"; };
 		57E2B49228F2D047001DDC93 /* FilteredList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredList.swift; sourceTree = "<group>"; };
+		57F6B06B2916CACB00BE3132 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		57F8B3F72906700D009DAD22 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		57FC683C28EE048100FB2DE8 /* OpenAI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OpenAI-Info.plist"; sourceTree = "<group>"; };
 		57FC683E28EE05C500FB2DE8 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
@@ -254,6 +255,7 @@
 			children = (
 				57D5CA1728FD7832005F7BA7 /* Auth0.plist */,
 				57FC683C28EE048100FB2DE8 /* OpenAI-Info.plist */,
+				57F6B06B2916CACB00BE3132 /* README.md */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
