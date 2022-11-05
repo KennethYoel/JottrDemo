@@ -35,13 +35,6 @@ struct EditorToolbar: ToolbarContent {
             }
             .foregroundColor(.black)
         }
-        
-        ToolbarItemGroup(placement: .bottomBar) {
-            if !keyboardActive {
-                Spacer()
-                GenrePickerView(genreChoices: $txtComplVM.setGenre).padding()
-            }
-        }
     }
 }
 

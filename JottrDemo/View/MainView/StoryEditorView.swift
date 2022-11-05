@@ -69,8 +69,7 @@ struct StoryEditorView: View {
     var topLeadingToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             HStack {
-                Image(systemName: "chevron.backward")
-                Button("Back", action: saveResetAndDismissEditor)
+                Button("Done", action: saveResetAndDismissEditor)
                     .buttonStyle(.plain)
             }
         }
@@ -78,6 +77,8 @@ struct StoryEditorView: View {
     
     var topTrailingToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
+//            Button(action: launchNewPage, label: {  Label("New Story", systemImage: "square.and.pencil") })
+            
             Menu {
                 // present the ExportView
                 Button(action: {  isShowingPromptEditorScreen.toggle() }, label: { Label("Export", systemImage: "arrow.up.doc") })

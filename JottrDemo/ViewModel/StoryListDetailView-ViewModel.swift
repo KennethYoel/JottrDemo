@@ -24,7 +24,7 @@ extension StoryListDetailView {
         updateContext()
     }
     
-    func sendToStoryCreator() {
+    func sendToStoryMaker() {
         Task {
             await txtComplVM.generateStory()
         }
