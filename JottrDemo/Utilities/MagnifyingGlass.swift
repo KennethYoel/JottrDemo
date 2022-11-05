@@ -22,7 +22,7 @@ struct MagnifyingGlass: View {
             } label: {
                 Image(systemName: "magnifyingglass")
                     .renderingMode(.original)
-                    .font(.headline)
+                    .font(.title3)
                     .padding([.trailing], 25)
             }
             .buttonStyle(.plain)

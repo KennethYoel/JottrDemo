@@ -8,7 +8,7 @@
 import CoreData
 import Foundation
 
-class PersistenceController { //: ObservableObject
+class PersistenceController {
     // A singleton for our entire app to use
     static let shared = PersistenceController()
     
@@ -48,9 +48,8 @@ class PersistenceController { //: ObservableObject
         }
         /*
          This asks Core Data to merge duplicate objects based on their properties – it tries to intelligently overwrite the
-         version in its database using properties from the new version. If you run the code again you’ll see something quite
-         brilliant: you can press Add as many times as you want, but when you press Save it will all collapse down into a
-         single row because Core Data strips out the duplicates.
+         version in its database using properties from the new version. When you Save the data, Core Data strips out
+         all the duplicates.
          */
         self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     }

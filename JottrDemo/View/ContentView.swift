@@ -4,7 +4,6 @@
 //
 //  Created by Kenneth Gutierrez on 9/24/22.
 //
-//   - a random quote page "I have been blessed with a wilder mind."
 
 import Foundation
 import SwiftUI
@@ -28,7 +27,7 @@ enum LoadingState {
 struct ContentView: View {
     // MARK: Properties
     
-    // this view receives the NetworkMonitor object in the environment
+    // view receives the NetworkMonitor object in the environment
     @EnvironmentObject var network: NetworkMonitor
     // shows an alert view if the cellular/wifi is off
     @State private var showNetworkAlert: Bool = false
@@ -44,7 +43,6 @@ struct ContentView: View {
                     .onAppear {
                         if !network.isActive {
                             showNetworkAlert.toggle()
-                            UserDefaults.standard.object(forKey: "reLaunchView")
                         }
                     }
                     .alert(isPresented: $showNetworkAlert) {

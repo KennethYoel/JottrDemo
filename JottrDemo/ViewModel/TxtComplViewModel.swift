@@ -19,17 +19,7 @@ import SwiftUI
     @Published var failed: Bool = false
     @Published var errorMessage: String = ""
     
-//    var primary: SessionStory {
-//        get {
-//            if sessionStory.isEmpty {
-//                return SessionStory.init(id: UUID(), text: "")
-//            }
-//            return sessionStory[0]
-//        }
-//        set(newStory) {
-//            sessionStory = [newStory]
-//        }
-//    }
+    static let standard = TxtComplViewModel()
     
     func generateStory() async {
         var theTheme = ""

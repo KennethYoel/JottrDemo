@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct InputView: View {
+struct TextInputView: View {
     @Binding var isLoading: Bool
     @Binding var pen: String
     
@@ -28,6 +28,6 @@ struct InputView: View {
 
 struct WritingPadView_Previews: PreviewProvider {
     static var previews: some View {
-        InputView(isLoading: .constant(true), pen: .constant("This is a test."))
+        TextInputView(isLoading: .constant(true), pen: .constant("This is a test."))
     }
 }

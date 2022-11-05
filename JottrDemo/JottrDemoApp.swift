@@ -13,7 +13,7 @@ import SwiftUI
 struct JottrDemoApp: App {
     // MARK: Properties
     
-    // an environment key that is automatically updated as the app moves between the foreground, background, and inactive states. 
+    // environment key that automatically updated as the app moves between the foreground, background, and inactive states 
     @Environment(\.scenePhase) var scenePhase
     // create an instance of NetworkMonitor then inject it into the SwiftUI environment
     let monitor = NetworkMonitor()

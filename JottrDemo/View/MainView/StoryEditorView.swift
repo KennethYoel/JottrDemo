@@ -5,31 +5,35 @@
 //  Created by Kenneth Gutierrez on 10/7/22.
 //
 
+import CoreData
 import Foundation
 import SwiftUI
 
 struct StoryEditorView: View {
     // MARK: Properties
     
+    // retrieve the txtcompl view model from the environment
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     // holds our Core Data managed object context (so we can delete or save stuff)
     @Environment(\.managedObjectContext) var moc
-    @Environment(\.undoManager) var undoManager
+    // dismiss this view
     @Environment(\.dismiss) var dismissStoryEditor
+    // returns a boolean whenever user taps on the TextEditor
+    @FocusState var isInputActive: Bool
     
-    @FocusState private var isInputActive: Bool
-
     @State private var storyEditorPlaceholder: String = "Perhap's we can begin with once upon a time..."
     @State private var isSearchViewPresented: Bool = false
     @State private var isShareViewPresented: Bool = false
     @State private var isShowingPromptEditorScreen: Bool = false
     @State private var isShowingEditorToolbar: Bool = false
     @State private var isSubmittingPromptContent: Bool = false
-//    @State private var isNewStoryEditorScreen = false
-//    @State var text = NSMutableAttributedString(string: "")
+    @State private var isKeyboardActive: Bool = false
+    @State private var id: UUID = UUID()
+    var idInStoryList: String = ""
+    // i need the id of the story in the list
     
     var body: some View {
-        InputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
+        TextInputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
             .focused($isInputActive)
             .sheet(isPresented: $isShowingPromptEditorScreen, onDismiss: {
                 promptContent()
@@ -50,50 +54,48 @@ struct StoryEditorView: View {
                 topTrailingToolbar
                 bottomToolbar
             }
-            .disabled(txtComplVM.loading) // when loading users can't interact with this view.
+            .disabled(txtComplVM.loading) // when loading, users can't interact with this view.
     }
     
     var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
-            if let undoManager = undoManager {
-                Button(action: undoManager.undo, label: { Label("Undo", systemImage: "arrow.uturn.backward") })
-                    .disabled(!undoManager.canUndo)
-                    .padding(.trailing)
-
-                Button(action: undoManager.redo, label: { Label("Redo", systemImage: "arrow.uturn.forward") })
-                    .disabled(!undoManager.canRedo)
-            }
             Spacer()
+            GenrePickerView(genreChoices: $txtComplVM.setGenre)
+                .padding(.trailing)
             Button(action: hideKeyboardAndSave, label: { Image(systemName: "keyboard.chevron.compact.down") })
         }
     }
     
     var topLeadingToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button("Done", role: .destructive, action: saveResetAndDismissEditor).buttonStyle(.borderedProminent)
+            HStack {
+                Image(systemName: "chevron.backward")
+                Button("Back", action: saveResetAndDismissEditor)
+                    .buttonStyle(.plain)
+            }
         }
     }
     
     var topTrailingToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
-            if isInputActive {
-                GenrePickerView(genreChoices: $txtComplVM.setGenre)
-                    .padding()
-                
-                Button(action: sendToStoryCreator, label: { Image(systemName: "arrow.up.circle.fill") })
-                    .buttonStyle(SendButtonStyle())
-                    .padding()
-            } else {
-                Button(action: showPromptEditor, label: {
+            Menu {
+                // present the ExportView
+                Button(action: {  isShowingPromptEditorScreen.toggle() }, label: { Label("Export", systemImage: "arrow.up.doc") })
+                // present the UIShareView
+                Button(action: { isShareViewPresented.toggle() }, label: { Label("Share", systemImage: "square.and.arrow.up") })
+                // routes user to the PromptEditorView
+                Button(action: {  isShowingPromptEditorScreen.toggle() }, label: {
                     Label("Prompt Editor", systemImage: "chevron.left.forwardslash.chevron.right")
                 })
-                
-                Menu {
-                    Button(action: showPromptEditor, label: { Label("Export", systemImage: "arrow.up.doc") })
-                    Button(action: presentShareView, label: { Label("Share", systemImage: "square.and.arrow.up") })
-                } label: {
-                     Image(systemName: "ellipsis.circle")
-                }
+            } label: {
+                 Image(systemName: "ellipsis.circle")
+            }
+            .foregroundColor(.black)
+            
+            if isInputActive {
+                Button(action: sendToStoryMaker, label: { Image(systemName: "arrow.up") })
+                    .padding([.leading, .trailing])
+                    .buttonStyle(.plain)
             }
         }
     }
@@ -136,7 +138,7 @@ struct StoryEditorView: View {
         )
     }
 
-    private func sendToStoryCreator() {
+    private func sendToStoryMaker() {
         Task {
             await txtComplVM.generateStory()
         }
@@ -162,20 +164,47 @@ struct StoryEditorView: View {
     }
     
     private func save() {
-        //add a story
-        let newStory = Story(context: moc)
-        newStory.id = UUID()
-        newStory.creationDate = Date()
-        newStory.genre = txtComplVM.setGenre.id
-        newStory.sessionPrompt = txtComplVM.promptLoader
-        newStory.complStory = txtComplVM.sessionStory
-
-        if txtComplVM.setTheme.id == "Custom" {
-            newStory.theme = txtComplVM.customTheme
+        let newStory: Story!
+        
+        let fetchStory: NSFetchRequest<Story> = Story.fetchRequest()
+        
+        if idInStoryList.isEmpty {
+            fetchStory.predicate = NSPredicate(format: "id = %@", id.uuidString) // create a UUID as a string
         } else {
-            newStory.theme = txtComplVM.setTheme.id
+            fetchStory.predicate = NSPredicate(format: "id = %@", idInStoryList)
+            debugPrint(idInStoryList)
         }
+        
+        var results: [Story]!
+        do {
+            results = try moc.fetch(fetchStory)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        if results.count == 0 {
+            // here you are inserting
+            newStory = Story(context: moc)
+         } else {
+            // here you are updating
+             newStory = results.first
+         }
+        
+        if !txtComplVM.sessionStory.isEmpty {
+            //add a story
+            newStory.id = id
+            newStory.creationDate = Date()
+            newStory.genre = txtComplVM.setGenre.id
+            newStory.sessionPrompt = txtComplVM.promptLoader
+            newStory.complStory = txtComplVM.sessionStory
 
-        PersistenceController.shared.saveContext()
+            if txtComplVM.setTheme.id == "Custom" {
+                newStory.theme = txtComplVM.customTheme
+            } else {
+                newStory.theme = txtComplVM.setTheme.id
+            }
+
+            PersistenceController.shared.saveContext()
+        }
     }
 }

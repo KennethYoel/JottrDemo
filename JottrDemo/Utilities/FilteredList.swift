@@ -48,12 +48,7 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
     @Binding var isSearching: Bool
     
     var body: some View {
-        // two view options
-//        List(fetchRequest, id: \.self) { item in
-//            self.content(item)
-//        }
-        
-        ForEach(fetchRequest, id: \.self) { item in
+        List(fetchRequest, id: \.self) { item in
             self.content(item)
         }
     }
@@ -64,6 +59,7 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
         
         // the predicate for searching for the data
         _isSearching = isSearching
+        // TODO: need to add a space value in stringComparison, app crashes with space inluded
         let comparison = filterBy.stringComparisons()
         var nsPredicate: NSPredicate?
         // getting underlying value referenced by the binding variable

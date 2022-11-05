@@ -9,11 +9,9 @@ import Foundation
 
 extension StoryListView {
     class StoryListViewVM: ObservableObject {
-        @Published var isShareViewPresented: Bool = false
         @Published var isShowingLoginScreen: Bool = false
         @Published var isShowingStoryEditorScreen: Bool = false
-        @Published var isShowingFeedbackScreen: Bool = false
-        @Published var isShowingSettingsScreen: Bool = false
+        @Published var isShowingAccountScreen: Bool = false
         @Published var isShowingSearchScreen: Bool = false
         @Published var isActive: Bool = false
     }

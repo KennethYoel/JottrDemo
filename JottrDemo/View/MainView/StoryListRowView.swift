@@ -8,36 +8,25 @@
 import Foundation
 import SwiftUI
 
+// sub-view of the composite view StoryListView, the content closure of ForEach
 struct StoryListRowView: View {
-    @StateObject var activateListDetail = PerformNavigation()
     let story: Story
     
-    // anything with content closure we rip out that chunk of code, if possible, and create a seperate view as we did here.
     var body: some View {
-        NavigationLink(isActive: $activateListDetail.showListingRow) {
+        NavigationLink {
             ContentView(loadingState: .storyListDetail(story))
         } label: {
             VStack(alignment: .leading) {
                 Text(story.wrappedComplStory)
-                    .foregroundColor(.secondary)
-                    .font(.system(.subheadline, design: .serif))
-                    // limit the amount of text shown in each item in the list
-                    .lineLimit(3)
+                    .listRowStyle()
                 
                 HStack {
-                    Label("Char(s)", systemImage: "text.alignleft")
+                    Label("Char(s) \(story.wrappedComplStory.count)", systemImage: "text.alignleft")
+                        .captionStyle()
                     Text(story.formattedDate)
-                        .font(.system(.caption, design: .serif))
+                        .captionStyle()
                 }
             }
         }
     }
 }
-
-//struct StoryListRow_Previews: PreviewProvider {
-//    let example = PersistenceController.preview
-//
-//    static var previews: some View {
-//        StoryListRow(story: example)
-//    }
-//}
