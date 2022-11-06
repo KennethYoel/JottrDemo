@@ -2,7 +2,7 @@
 
 In iOS, we traditionally use *Plist* (short for property list) files to store and manage configuration data. Plist files 
 essentially are XML files with benefits: for example, Xcode provides a graphical editor to make editing Plist files more 
-pleasant, and there's an easy-to-use API for reading Plist files.
+pleasant, and I've added an easy-to-use API for reading Plist files.
 
 ## The steps to get the app up and running are:
 1. Obtain an API key
