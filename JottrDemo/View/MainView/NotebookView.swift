@@ -108,7 +108,7 @@ struct NotebookView: View {
             isStoryListActive.toggle()
         }, content: {
             NavigationView {
-                StoryEditorView()
+                NewPageView()
             }
         })
         .fullScreenCover(isPresented: $viewModel.isShowingAccountScreen) { AccountView()

@@ -36,7 +36,7 @@ struct StoryListDetailView: View {
             .focused($isInputActive)
             .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, content: {
                 NavigationView {
-                    StoryEditorView()
+                    NewPageView()
                 }
             })
             .sheet(isPresented: $viewModel.isShareViewPresented, onDismiss: {

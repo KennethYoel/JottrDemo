@@ -29,7 +29,7 @@ struct StoryListView: View {
         }
         .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, content: {
             NavigationView {
-                StoryEditorView()
+                NewPageView()
             }
         })
         .fullScreenCover(isPresented: $viewModel.isShowingSearchScreen) { SearchView() }

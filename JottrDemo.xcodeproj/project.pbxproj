@@ -13,7 +13,7 @@
 		571A4A1828EFF99100E4F90B /* PromptEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A1728EFF99100E4F90B /* PromptEditorView.swift */; };
 		571A4A1C28EFFDEE00E4F90B /* StoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A1B28EFFDEE00E4F90B /* StoryListView.swift */; };
 		571A4A1E28EFFE1D00E4F90B /* StoryListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A1D28EFFE1D00E4F90B /* StoryListDetailView.swift */; };
-		571A4A2028EFFE5C00E4F90B /* StoryEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A1F28EFFE5C00E4F90B /* StoryEditorView.swift */; };
+		571A4A2028EFFE5C00E4F90B /* NewPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A1F28EFFE5C00E4F90B /* NewPageView.swift */; };
 		571A4A2728F0075A00E4F90B /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A2628F0075A00E4F90B /* SearchView.swift */; };
 		571A4A2B28F00DF300E4F90B /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A2A28F00DF300E4F90B /* AccountView.swift */; };
 		571A4A2D28F0193200E4F90B /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A2C28F0193200E4F90B /* UIViewController.swift */; };
@@ -71,7 +71,7 @@
 		571A4A1728EFF99100E4F90B /* PromptEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptEditorView.swift; sourceTree = "<group>"; };
 		571A4A1B28EFFDEE00E4F90B /* StoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryListView.swift; sourceTree = "<group>"; };
 		571A4A1D28EFFE1D00E4F90B /* StoryListDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryListDetailView.swift; sourceTree = "<group>"; };
-		571A4A1F28EFFE5C00E4F90B /* StoryEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryEditorView.swift; sourceTree = "<group>"; };
+		571A4A1F28EFFE5C00E4F90B /* NewPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPageView.swift; sourceTree = "<group>"; };
 		571A4A2628F0075A00E4F90B /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		571A4A2A28F00DF300E4F90B /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		571A4A2C28F0193200E4F90B /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -174,7 +174,7 @@
 				571A4A1528EFF96100E4F90B /* NotebookView.swift */,
 				571A4A1B28EFFDEE00E4F90B /* StoryListView.swift */,
 				5744805D28F7EE1800CA1191 /* StoryListRowView.swift */,
-				571A4A1F28EFFE5C00E4F90B /* StoryEditorView.swift */,
+				571A4A1F28EFFE5C00E4F90B /* NewPageView.swift */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -459,7 +459,7 @@
 				571A4A4028F02DAC00E4F90B /* SendButton.swift in Sources */,
 				5777670028F400DC008C888B /* CustomError-ViewModel.swift in Sources */,
 				57C0945D28FC0CD100C4D9C2 /* EmailResultAlert.swift in Sources */,
-				571A4A2028EFFE5C00E4F90B /* StoryEditorView.swift in Sources */,
+				571A4A2028EFFE5C00E4F90B /* NewPageView.swift in Sources */,
 				57D5CA1C28FD9166005F7BA7 /* UserProfile.swift in Sources */,
 				57D5CA1328FD4758005F7BA7 /* AppleSignIn-ViewModel.swift in Sources */,
 				5744806028F8210100CA1191 /* KeyboardToolbar.swift in Sources */,

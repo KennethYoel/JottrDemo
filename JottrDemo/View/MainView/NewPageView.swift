@@ -9,7 +9,7 @@ import CoreData
 import Foundation
 import SwiftUI
 
-struct StoryEditorView: View {
+struct NewPageView: View {
     // MARK: Properties
     
     // retrieve the txtcompl view model from the environment
