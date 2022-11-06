@@ -31,10 +31,9 @@ I chose API_KEY as the name for the **Key**. Most API keys are strings, so choos
 then insert the key you get from OpenAI into the **Value** field.
 
 ## Fourth
-So to make reading the API key and using it in the code as easy as possible, I've wrapped it in a computed property. This 
+Now to make reading the API key and using it in the code as easy as possible, I've wrapped it in a computed property. This 
 will also give us the opportunity to perform some error handling. You'll find the code within 
 Model/APIClient/OpenAIConnector.swift file and I've named it openAIKey. 
-Now one may ask why add this step? Because I want you too see how the app retrieve the API Key from the plist as well as how 
-it handles any fatal errors.
+You may be wondering why I've added this step? Because I want you too see how hard it was creating this app.
 
-After all that just run the app and hopefully you'll have access to OpenAI API.
+After all that just run the app and hopefully you'll be able to generate some stories.
