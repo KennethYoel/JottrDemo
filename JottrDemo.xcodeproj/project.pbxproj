@@ -203,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				5779E9AC28DEE62800FA58C0 /* JottrDemo */,
+				57F6B06B2916CACB00BE3132 /* README.md */,
 				5779E9AB28DEE62800FA58C0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -255,7 +256,6 @@
 			children = (
 				57D5CA1728FD7832005F7BA7 /* Auth0.plist */,
 				57FC683C28EE048100FB2DE8 /* OpenAI-Info.plist */,
-				57F6B06B2916CACB00BE3132 /* README.md */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
