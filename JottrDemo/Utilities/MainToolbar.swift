@@ -12,12 +12,12 @@ import SwiftUI
 struct MainToolbar: ToolbarContent {
     // MARK: Properties
     
-    @Binding var isShowingStoryEditor: Bool
+    @Binding var isShowingNewPage: Bool
     @Binding var isShowingAccount: Bool
     
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
-            Button(action: { isShowingStoryEditor.toggle() }, label: {
+            Button(action: { isShowingNewPage.toggle() }, label: {
                 Label("New Story", systemImage: "square.and.pencil")
             })
                 .buttonStyle(.plain)

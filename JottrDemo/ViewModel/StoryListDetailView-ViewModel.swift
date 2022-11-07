@@ -9,7 +9,7 @@ import Foundation
 
 extension StoryListDetailView {
     @MainActor class StoryListDetailVM: ObservableObject {
-        @Published var isShowingStoryEditorScreen: Bool = false
+        @Published var isShowingNewPageScreen: Bool = false
         @Published var isShowingPromptEditorScreen: Bool = false
         @Published var isShowingEditorToolbar: Bool = false
         @Published var isShareViewPresented: Bool = false
@@ -34,8 +34,8 @@ extension StoryListDetailView {
     func launchNewPage() {
         updateContext()
         txtComplVM.sessionStory = ""
-        dismissDetailView()
-        viewModel.isShowingStoryEditorScreen.toggle()
+//        dismissDetailView()
+        viewModel.isShowingNewPageScreen.toggle()
     }
     
     func exportToFile() {

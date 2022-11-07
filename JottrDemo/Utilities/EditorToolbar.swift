@@ -26,6 +26,9 @@ struct EditorToolbar: ToolbarContent {
                 Button(action: { showPromptEditor.toggle() }, label: { Label("Export", systemImage: "arrow.up.doc") })
                 // present the UIShareView
                 Button(action: { presentShareView.toggle() }, label: { Label("Share", systemImage: "square.and.arrow.up") })
+                
+                Divider()
+                
                 // routes user to the PromptEditorView
                 Button(action: { showPromptEditor.toggle() }, label: {
                     Label("Prompt Editor", systemImage: "chevron.left.forwardslash.chevron.right")

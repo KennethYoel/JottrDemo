@@ -34,7 +34,9 @@ struct StoryListDetailView: View {
                 self.txtComplVM.sessionStory = story.wrappedComplStory
             }
             .focused($isInputActive)
-            .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, content: {
+            .fullScreenCover(isPresented: $viewModel.isShowingNewPageScreen, onDismiss: {
+                debugPrint("detail list dismissed")
+            },content: {
                 NavigationView {
                     NewPageView()
                 }

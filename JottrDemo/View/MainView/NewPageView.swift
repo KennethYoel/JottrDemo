@@ -20,31 +20,29 @@ struct NewPageView: View {
     @Environment(\.dismiss) var dismissStoryEditor
     // returns a boolean whenever user taps on the TextEditor
     @FocusState var isInputActive: Bool
-    
-    @State private var storyEditorPlaceholder: String = "Perhap's we can begin with once upon a time..."
-    @State private var isSearchViewPresented: Bool = false
-    @State private var isShareViewPresented: Bool = false
-    @State private var isShowingPromptEditorScreen: Bool = false
-    @State private var isShowingEditorToolbar: Bool = false
-    @State private var isSubmittingPromptContent: Bool = false
-    @State private var isKeyboardActive: Bool = false
-    @State private var id: UUID = UUID()
-    var idInStoryList: String = ""
-    // i need the id of the story in the list
+    // the data managed within the ViewModel
+    @StateObject var viewModel = NewPageViewVM()
     
     var body: some View {
         TextInputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
             .focused($isInputActive)
-            .sheet(isPresented: $isShowingPromptEditorScreen, onDismiss: {
+            .sheet(isPresented: $viewModel.isShowingPromptEditorScreen, onDismiss: {
                 promptContent()
             }, content: {
-                PromptEditorView(submitPromptContent: $isSubmittingPromptContent)
+                PromptEditorView(submitPromptContent: $viewModel.isSubmittingPromptContent)
             })
             // the sheet below is shown when isShareViewPresented is true
-            .sheet(isPresented: $isShareViewPresented, onDismiss: {
+            .sheet(isPresented: $viewModel.isShareViewPresented, onDismiss: {
                 debugPrint("Dismiss")
             }, content: {
                 ActivityViewController(itemsToShare: [txtComplVM.sessionStory]) //[URL(string: "https://www.swifttom.com")!]
+            })
+            .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, onDismiss: {
+//                isStoryListActive.toggle()
+            }, content: {
+                NavigationView {
+                    NewPageView()
+                }
             })
             .alert(isPresented: $txtComplVM.failed, content: errorSubmitting)
             .navigationBarTitleDisplayMode(.inline)
@@ -77,15 +75,20 @@ struct NewPageView: View {
     
     var topTrailingToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
-//            Button(action: launchNewPage, label: {  Label("New Story", systemImage: "square.and.pencil") })
+            Button(action: { reload() }, label: {
+                Label("New Story", systemImage: "square.and.pencil")
+            })
             
             Menu {
                 // present the ExportView
-                Button(action: {  isShowingPromptEditorScreen.toggle() }, label: { Label("Export", systemImage: "arrow.up.doc") })
+                Button(action: {  viewModel.isShowingPromptEditorScreen.toggle() }, label: { Label("Export", systemImage: "arrow.up.doc") })
                 // present the UIShareView
-                Button(action: { isShareViewPresented.toggle() }, label: { Label("Share", systemImage: "square.and.arrow.up") })
+                Button(action: { viewModel.isShareViewPresented.toggle() }, label: { Label("Share", systemImage: "square.and.arrow.up") })
+                
+                Divider()
+                
                 // routes user to the PromptEditorView
-                Button(action: {  isShowingPromptEditorScreen.toggle() }, label: {
+                Button(action: {  viewModel.isShowingPromptEditorScreen.toggle() }, label: {
                     Label("Prompt Editor", systemImage: "chevron.left.forwardslash.chevron.right")
                 })
             } label: {
@@ -112,8 +115,13 @@ struct NewPageView: View {
     
     // MARK: Helper Methods
     
+    func launchNewPage() { // this part ist kaput, need an alternative to creating a new page, how to update UUID
+        saveResetAndDismissEditor()
+        viewModel.isShowingStoryEditorScreen.toggle()
+    }
+    
     private func promptContent() {
-        if isSubmittingPromptContent {
+        if viewModel.isSubmittingPromptContent {
             Task {
                 await txtComplVM.generateStory()
             }
@@ -146,11 +154,11 @@ struct NewPageView: View {
     }
     
     private func showPromptEditor() {
-        isShowingPromptEditorScreen.toggle()
+        viewModel.isShowingPromptEditorScreen.toggle()
     }
     
     private func presentShareView() {
-        isShareViewPresented.toggle()
+        viewModel.isShareViewPresented.toggle()
     }
     
     private func hideKeyboardAndSave() {
@@ -164,36 +172,30 @@ struct NewPageView: View {
         dismissStoryEditor()
     }
     
-    private func save() {
-        let newStory: Story!
-        
-        let fetchStory: NSFetchRequest<Story> = Story.fetchRequest()
-        
-        if idInStoryList.isEmpty {
-            fetchStory.predicate = NSPredicate(format: "id = %@", id.uuidString) // create a UUID as a string
-        } else {
-            fetchStory.predicate = NSPredicate(format: "id = %@", idInStoryList)
-            debugPrint(idInStoryList)
-        }
-        
-        var results: [Story]!
-        do {
-            results = try moc.fetch(fetchStory)
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        if results.count == 0 {
-            // here you are inserting
-            newStory = Story(context: moc)
-         } else {
-            // here you are updating
-             newStory = results.first
-         }
-        
+    func save() {
         if !txtComplVM.sessionStory.isEmpty {
+            let newStory: Story!
+            
+            let fetchStory: NSFetchRequest<Story> = Story.fetchRequest()
+            fetchStory.predicate = NSPredicate(format: "id = %@", viewModel.id.uuidString) // create a UUID as a string
+            
+            var results: [Story]!
+            do {
+                results = try moc.fetch(fetchStory)
+            } catch {
+                print(error.localizedDescription)
+            }
+            
+            if results.count == 0 {
+                // here you are inserting
+                newStory = Story(context: moc)
+             } else {
+                // here you are updating
+                 newStory = results.first
+             }
+        
             //add a story
-            newStory.id = id
+            newStory.id = viewModel.id
             newStory.creationDate = Date()
             newStory.genre = txtComplVM.setGenre.id
             newStory.sessionPrompt = txtComplVM.promptLoader

@@ -36,7 +36,7 @@ struct StoryListView: View {
         .fullScreenCover(isPresented: $viewModel.isShowingAccountScreen) { AccountView() }
         .navigationTitle(pageTitle())
         .toolbar {
-            MainToolbar(isShowingStoryEditor: $viewModel.isShowingStoryEditorScreen, isShowingAccount: $viewModel.isShowingAccountScreen)
+            MainToolbar(isShowingNewPage: $viewModel.isShowingStoryEditorScreen, isShowingAccount: $viewModel.isShowingAccountScreen)
         }
         .overlay(MagnifyingGlass(showSearchScreen: $viewModel.isShowingSearchScreen), alignment: .bottomTrailing)
     }

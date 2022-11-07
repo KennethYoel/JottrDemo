@@ -104,7 +104,7 @@ struct NotebookView: View {
                 }
             }
         }
-        .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, onDismiss: {
+        .fullScreenCover(isPresented: $viewModel.isShowingNewPageScreen, onDismiss: {
             isStoryListActive.toggle()
         }, content: {
             NavigationView {
@@ -119,7 +119,7 @@ struct NotebookView: View {
         .overlay(MagnifyingGlass(showSearchScreen: $viewModel.isShowingSearchScreen), alignment: .bottomTrailing)
         .navigationTitle("🖋Jottr")
         .toolbar {
-            MainToolbar(isShowingStoryEditor: $viewModel.isShowingStoryEditorScreen, isShowingAccount: $viewModel.isShowingAccountScreen)
+            MainToolbar(isShowingNewPage: $viewModel.isShowingNewPageScreen, isShowingAccount: $viewModel.isShowingAccountScreen)
         }
     }
 }
