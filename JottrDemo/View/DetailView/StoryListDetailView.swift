@@ -35,7 +35,7 @@ struct StoryListDetailView: View {
             }
             .focused($isInputActive)
             .fullScreenCover(isPresented: $viewModel.isShowingNewPageScreen, onDismiss: {
-                debugPrint("detail list dismissed")
+                dismissDetailView()
             },content: {
                 NavigationView {
                     NewPageView()

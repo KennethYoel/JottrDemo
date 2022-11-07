@@ -34,7 +34,6 @@ extension StoryListDetailView {
     func launchNewPage() {
         updateContext()
         txtComplVM.sessionStory = ""
-//        dismissDetailView()
         viewModel.isShowingNewPageScreen.toggle()
     }
     
