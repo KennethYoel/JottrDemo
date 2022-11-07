@@ -48,9 +48,12 @@ struct StoryListDetailView: View {
             })
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                newPageToolbarButton
-                
-                EditorToolbar(presentExportView: $viewModel.isShowingPromptEditorScreen, presentShareView: $viewModel.isShareViewPresented, showPromptEditor: $viewModel.isShowingPromptEditorScreen)
+                EditorToolbar(showNewPage: $viewModel.isShowingNewPageScreen.onChange(launchNewPage),
+                              presentExportView: $viewModel.isShowingPromptEditorScreen,
+                              presentShareView: $viewModel.isShareViewPresented,
+                              showPromptEditor: $viewModel.isShowingPromptEditorScreen,
+                              sendingContent: $viewModel.isSendingContent.onChange(sendToStoryMaker),
+                              keyboardActive: _isInputActive)
 
                 submitToolbarButton
                 
@@ -59,25 +62,21 @@ struct StoryListDetailView: View {
             .disabled(txtComplVM.loading) // when loading users can't interact with this view.
     }
     
-    var newPageToolbarButton: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: launchNewPage, label: {  Label("New Story", systemImage: "square.and.pencil") })
-        }
-    }
-    
     var submitToolbarButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            if isInputActive {
-                Button(action: sendToStoryMaker, label: { Image(systemName: "arrow.up.circle") })
-                    .padding(.trailing)
-                    .buttonStyle(.plain)
-            }
+//            if isInputActive {
+//                Button(action: sendToStoryMaker, label: { Image(systemName: "arrow.up.circle") })
+//                    .padding(.trailing)
+//                    .buttonStyle(.plain)
+//            }
         }
     }
     
     var keyboardToolbarButtons: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             Spacer()
+            GenrePickerView(genreChoices: $txtComplVM.setGenre)
+                .padding(.trailing)
             Button(action: hideKeyboardAndSave, label: { Image(systemName: "keyboard.chevron.compact.down") })
         }
     }

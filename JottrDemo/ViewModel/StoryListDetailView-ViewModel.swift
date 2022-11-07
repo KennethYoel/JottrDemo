@@ -13,6 +13,7 @@ extension StoryListDetailView {
         @Published var isShowingPromptEditorScreen: Bool = false
         @Published var isShowingEditorToolbar: Bool = false
         @Published var isShareViewPresented: Bool = false
+        @Published var isSendingContent: Bool = false
         // control whether we’re showing the delete confirmation alert or not
         @Published var showingDeleteAlert = false
     }
@@ -24,17 +25,21 @@ extension StoryListDetailView {
         updateContext()
     }
     
-    func sendToStoryMaker() {
-        Task {
-            await txtComplVM.generateStory()
+    func sendToStoryMaker(_ value: Bool) {
+        if value {
+            Task {
+                await txtComplVM.generateStory()
+            }
+            updateContext()
         }
-        updateContext()
     }
     
-    func launchNewPage() {
-        updateContext()
-        txtComplVM.sessionStory = ""
-        viewModel.isShowingNewPageScreen.toggle()
+    func launchNewPage(_ value: Bool) {
+        if value {
+            updateContext()
+            txtComplVM.sessionStory = ""
+            viewModel.isShowingNewPageScreen.toggle()
+        }
     }
     
     func exportToFile() {
