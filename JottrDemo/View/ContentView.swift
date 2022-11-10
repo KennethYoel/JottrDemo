@@ -9,55 +9,168 @@ import Foundation
 import SwiftUI
 
 // defining loading state of the app
-enum LoadingState {
-    case notebook, storyList(Bool), storyListDetail(Story)
+enum LoadingState: String {
+    case notebook, storyList, recentStoryList, storyListDetail
+}
+
+// sub-view of story section
+struct StoryListSectionView: View {
+    var showRecentList: Bool
+    var tagValue: String
+    @Binding var currentView: String?
+    var labelTitle: String
+    var labelImage: String
     
-    var stringValue: String {
-        switch self {
-        case .notebook:
-            return "notebook"
-        case .storyList:
-            return "storyList"
-        case .storyListDetail:
-            return "storyListDetail"
+    var body: some View {
+        ZStack(alignment: .leading) {
+            // a link to a list of stories
+            NavigationLink("", destination: StoryListView(isShowingRecentList: showRecentList),
+                           tag: tagValue,
+                           selection: $currentView
+            )
+            Button {
+                self.currentView = tagValue
+            } label: {
+                Label(labelTitle, systemImage: labelImage)
+                    .headerStyle()
+            }
+            .buttonStyle(.plain)
         }
     }
 }
 
+// sub-view of introduction section
+struct InfoSectionView: View {
+    @Binding var viewHidden: Bool
+    
+    var body: some View {
+        if !viewHidden {
+            Text("Intro")
+                .headerStyle()
+        }
+    }
+}
+
+// sub-view of hidesectionview and notebokview
+struct HideSectionView: View {
+    // MARK: Properties
+    
+    @Binding var isHidden: Bool
+    
+    var body: some View {
+        Menu("...") {
+            if !isHidden {
+                Button(action: collapse, label: {
+                    Label("Collapse", systemImage: "rectangle.compress.vertical")
+                })
+            } else {
+                Button(action: expand, label: {
+                    Label("Expand", systemImage: "rectangle.expand.vertical")
+                })
+            }
+        }
+        .font(.system(.caption, design: .serif))
+    }
+    
+    // MARK: Methods
+    
+    private func collapse() {
+        isHidden.toggle()
+    }
+
+    private func expand() {
+        isHidden.toggle()
+    }
+}
+
+// composite main view
 struct ContentView: View {
     // MARK: Properties
     
     // view receives the NetworkMonitor object in the environment
     @EnvironmentObject var network: NetworkMonitor
-    // shows an alert view if the cellular/wifi is off
+    // view receives the TxtComplViewModel object in the environment
+    @EnvironmentObject var txtComplVM: TxtComplViewModel
+    @StateObject var viewModel = ContentViewVM()
+    // store the default loading state and programmatically activate navigation link
+    @SceneStorage("ContentView.CurrenView") var currentView: String?
+    // present alert view if network if inactive
     @State private var showNetworkAlert: Bool = false
-    // store the default loading state
-    var loadingState = LoadingState.notebook
+    @State private var isStoryListActive: Bool = false
     
     var body: some View {
-        // initial view
-        switch loadingState {
-        case .notebook:
-            NavigationView {
-                NotebookView()
-                    .onAppear {
-                        if !network.isActive {
-                            showNetworkAlert.toggle()
-                        }
+        NavigationView {
+            List {
+                Section {
+                    // link to a all stories saved to CoreData
+                    StoryListSectionView(showRecentList: false,
+                                         tagValue: LoadingState.storyList.rawValue,
+                                         currentView: $currentView,
+                                         labelTitle: "Collection",
+                                         labelImage: "archivebox"
+                    )
+
+                    // link to a list of stories written in the past seven days
+                    StoryListSectionView(showRecentList: true,
+                                         tagValue: LoadingState.recentStoryList.rawValue,
+                                         currentView: $currentView,
+                                         labelTitle: "Recent",
+                                         labelImage: "deskclock"
+                    )
+                    
+                    // link to a list of stories the user recently deleted
+                    NavigationLink {
+    //                    self.currentView = .storyList
+    //                    StoryListView()
+                    } label: {
+                        Label("Trash", systemImage: "trash")
+                            .headerStyle()
                     }
-                    .alert(isPresented: $showNetworkAlert) {
-                        Alert(title: Text("Device Offline"),
-                              message: Text("Turn Off AirPlane Mode or Use Wi-Fi to Access Data"),
-                              dismissButton: .default(
-                                Text("OK")
-                              )
-                        )
+                    .buttonStyle(.plain)
+                }
+                
+                Section {
+                    InfoSectionView(viewHidden: $viewModel.isHidden)
+                } header: {
+                    HStack {
+                        Text("INTRODUCTION")
+                            .captionStyle()
+                        Spacer()
+                        HideSectionView(isHidden: $viewModel.isHidden)
                     }
+                }
             }
-        case .storyList(let showRecentList):
-            StoryListView(isShowingRecentList: showRecentList)
-        case .storyListDetail(let story):
-            StoryListDetailView(story: story)
+            .onAppear {
+                debugPrint("selectedView: \(String(describing: currentView))")
+                if !network.isActive {
+                    showNetworkAlert.toggle()
+                }
+            }
+            .alert(isPresented: $showNetworkAlert) {
+                Alert(title: Text("Device Offline"),
+                      message: Text("Turn Off AirPlane Mode or Use Wi-Fi to Access Data"),
+                      dismissButton: .default(
+                        Text("OK")
+                      )
+                )
+            }
+            .fullScreenCover(isPresented: $viewModel.isShowingNewPageScreen, onDismiss: {
+                isStoryListActive.toggle()
+            }, content: {
+                NavigationView {
+                    NewPageView()
+                }
+            })
+            .fullScreenCover(isPresented: $viewModel.isShowingAccountScreen) { AccountView()
+            }
+            .fullScreenCover(isPresented: $viewModel.isShowingSearchScreen) {
+                SearchView()
+            }
+            .overlay(MagnifyingGlass(showSearchScreen: $viewModel.isShowingSearchScreen), alignment: .bottomTrailing)
+            .navigationTitle("🖋Jottr")
+            .toolbar {
+                MainToolbar(isShowingNewPage: $viewModel.isShowingNewPageScreen, isShowingAccount: $viewModel.isShowingAccountScreen)
+            }
         }
     }
 }

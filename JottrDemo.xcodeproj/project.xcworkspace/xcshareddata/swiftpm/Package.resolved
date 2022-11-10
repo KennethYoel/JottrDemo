@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Auth0",
+        "repositoryURL": "https://github.com/auth0/Auth0.swift",
+        "state": {
+          "branch": null,
+          "revision": "2f9b27930444c40cc6431a9906ca1bedb8fe5d53",
+          "version": "2.3.1"
+        }
+      },
+      {
+        "package": "FLAnimatedImage",
+        "repositoryURL": "https://github.com/Flipboard/FLAnimatedImage",
+        "state": {
+          "branch": null,
+          "revision": "d4f07b6f164d53c1212c3e54d6460738b1981e9f",
+          "version": "1.0.17"
+        }
+      },
+      {
+        "package": "JWTDecode",
+        "repositoryURL": "https://github.com/auth0/JWTDecode.swift.git",
+        "state": {
+          "branch": null,
+          "revision": "d07041068fed2d4b8a38f2b321ea6d97c9152c4a",
+          "version": "3.0.0"
+        }
+      },
+      {
+        "package": "SimpleKeychain",
+        "repositoryURL": "https://github.com/auth0/SimpleKeychain.git",
+        "state": {
+          "branch": null,
+          "revision": "7f7be4a7dfc9164c2c66f95193cec9df9ac47d58",
+          "version": "1.0.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

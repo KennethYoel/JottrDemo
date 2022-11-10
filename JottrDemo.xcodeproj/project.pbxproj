@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		570EFB612902C28400B360EB /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570EFB602902C28400B360EB /* TextInputView.swift */; };
-		570EFB7A2902EFAE00B360EB /* NotebookView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570EFB792902EFAD00B360EB /* NotebookView-ViewModel.swift */; };
+		570EFB7A2902EFAE00B360EB /* ContentView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570EFB792902EFAD00B360EB /* ContentView-ViewModel.swift */; };
 		571A4A1628EFF96100E4F90B /* NotebookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A1528EFF96100E4F90B /* NotebookView.swift */; };
 		571A4A1828EFF99100E4F90B /* PromptEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A1728EFF99100E4F90B /* PromptEditorView.swift */; };
 		571A4A1C28EFFDEE00E4F90B /* StoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A1B28EFFDEE00E4F90B /* StoryListView.swift */; };
@@ -66,7 +66,7 @@
 
 /* Begin PBXFileReference section */
 		570EFB602902C28400B360EB /* TextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
-		570EFB792902EFAD00B360EB /* NotebookView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotebookView-ViewModel.swift"; sourceTree = "<group>"; };
+		570EFB792902EFAD00B360EB /* ContentView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView-ViewModel.swift"; sourceTree = "<group>"; };
 		571A4A1528EFF96100E4F90B /* NotebookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotebookView.swift; sourceTree = "<group>"; };
 		571A4A1728EFF99100E4F90B /* PromptEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptEditorView.swift; sourceTree = "<group>"; };
 		571A4A1B28EFFDEE00E4F90B /* StoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryListView.swift; sourceTree = "<group>"; };
@@ -312,7 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				5779E9BC28DEE78000FA58C0 /* TxtComplViewModel.swift */,
-				570EFB792902EFAD00B360EB /* NotebookView-ViewModel.swift */,
+				570EFB792902EFAD00B360EB /* ContentView-ViewModel.swift */,
 				57CBF0AB29031B7A004E8A4A /* StoryListView-ViewModel.swift */,
 				571A4A3728F0207400E4F90B /* StoryListDetailView-ViewModel.swift */,
 				57F6B06C29180C9500BE3132 /* NewPageView-ViewModel.swift */,
@@ -432,7 +432,7 @@
 				571A4A3C28F02CAD00E4F90B /* TextEditorView.swift in Sources */,
 				571A4A3E28F02D1700E4F90B /* MainToolbar.swift in Sources */,
 				571A4A1828EFF99100E4F90B /* PromptEditorView.swift in Sources */,
-				570EFB7A2902EFAE00B360EB /* NotebookView-ViewModel.swift in Sources */,
+				570EFB7A2902EFAE00B360EB /* ContentView-ViewModel.swift in Sources */,
 				571A4A4C28F057B400E4F90B /* PopoverTextView.swift in Sources */,
 				5779E9BD28DEE78100FA58C0 /* TxtComplViewModel.swift in Sources */,
 				571A4A4428F0432500E4F90B /* ModerationResponse.swift in Sources */,
