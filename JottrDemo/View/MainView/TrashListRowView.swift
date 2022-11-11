@@ -1,29 +1,29 @@
 //
-//  StoryListRow.swift
+//  TrashListRowView.swift
 //  JottrDemo
 //
-//  Created by Kenneth Gutierrez on 10/13/22.
+//  Created by Kenneth Gutierrez on 11/11/22.
 //
 
 import Foundation
 import SwiftUI
 
 // sub-view of the composite view StoryListView, the content closure of ForEach
-struct StoryListRowView: View {
-    let story: Story
+struct TrashListRowView: View {
+    let trash: TrashBin
     
     var body: some View {
         NavigationLink {
-            StoryListDetailView(story: story)
+            TrashListDetailView(trash: trash)
         } label: {
             VStack(alignment: .leading) {
-                Text(story.wrappedComplStory)
+                Text(trash.origin?.wrappedComplStory ?? "Unknown")
                     .listRowStyle()
                 
                 HStack {
-                    Label("Char(s) \(story.wrappedComplStory.count)", systemImage: "text.alignleft")
+                    Label("Char(s)", systemImage: "text.alignleft")
                         .captionStyle()
-                    Text(story.formattedDate)
+                    Text(trash.origin?.formattedDate ?? "N/A")
                         .captionStyle()
                 }
             }

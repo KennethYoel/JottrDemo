@@ -8,24 +8,34 @@
 import Foundation
 import SwiftUI
 
-struct StoryListView: View {
+struct ContentListView: View {
     // MARK: Properties
     
     // retrieve the txtcompl view model from the environment
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     // retrieve the story list view model where the data is managed
-    @StateObject private var viewModel = StoryListViewVM()
+    @StateObject private var viewModel = ContentListViewVM()
     // retrieve our Core Data managed object context (so we can delete or save stuff)
     @Environment(\.managedObjectContext) var moc
-    // fetch the Story attribute in Core Data
+    // fetch the Story entity in Core Data
     @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)]) var stories: FetchedResults<Story>
+    // fetch the TrashBin attribute in Core Data
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "dateDiscarded", ascending: false)]) var trashBin: FetchedResults<TrashBin>
     // toggle it to get the past seven days of stories or all of it
-    @State var isShowingRecentList: Bool = false
+    @Binding var isShowingRecentList: Bool
+    @Binding var isShowingTrashList: Bool
     
     var body: some View {
         List {
-            // for each story in the array, create a listing row
-            ForEach(listOfStories, content: StoryListRowView.init).onDelete(perform: deleteStory) // swipe to delete
+            if isShowingTrashList {
+                // for each story in the array, create a listing row. added as modifier the swipe to delete feature
+                ForEach(listOfTrashContent, id: \.self) { content in
+                    TrashListRowView(trash: content)
+                }.onDelete(perform: deleteStory)
+            } else {
+                // for each story in the array, create a listing row. added as modifier the swipe to delete feature
+                ForEach(listOfStories, content: StoryListRowView.init).onDelete(perform: deleteStory)
+            }
         }
         .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, onDismiss: {
             self.isShowingRecentList = false
@@ -66,12 +76,29 @@ struct StoryListView: View {
         }
     }
     
+    var listOfTrashContent: [TrashBin] {
+        get {
+            var fetchedTrashed: [TrashBin] = []
+            fetchedTrashed.append(contentsOf: trashBin)
+            return fetchedTrashed
+        }
+    }
+    
     private func deleteStory(at offsets: IndexSet) {
+        let discard = TrashBin(context: moc)
+        discard.dateDiscarded = Date()
+        discard.origin = Story(context: moc)
+        
         for offset in offsets {
             let story = stories[offset]
+            
+            discard.origin = story
+            discard.origin?.addToTrashBin(discard)
+            
             // delete from in memory storage
             moc.delete(story)
         }
+        
         // write the changes out to persistent storage
         do {
             try moc.save()

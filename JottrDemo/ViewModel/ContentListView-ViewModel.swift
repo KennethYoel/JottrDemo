@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension StoryListView {
-    class StoryListViewVM: ObservableObject {
+extension ContentListView {
+    class ContentListViewVM: ObservableObject {
         @Published var isShowingLoginScreen: Bool = false
         @Published var isShowingStoryEditorScreen: Bool = false
         @Published var isShowingAccountScreen: Bool = false
@@ -18,11 +18,13 @@ extension StoryListView {
     
     func pageTitle() -> String {
         var title: String!
-        if !isShowingRecentList {
-            title = "Collection"
-        } else {
+        if isShowingRecentList {
             let pastDateResults = (Date.now - 604800).formatted(date: .abbreviated, time: .omitted)
             title = "As of " + pastDateResults
+        } else if isShowingTrashList {
+            title = "Trash"
+        } else {
+            title = "Collection"
         }
         
         return title

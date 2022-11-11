@@ -10,12 +10,13 @@ import SwiftUI
 
 // defining loading state of the app
 enum LoadingState: String {
-    case notebook, storyList, recentStoryList, storyListDetail
+    case notebook, storyList, recentStoryList, storyListDetail, trashList, trashListDetail
 }
 
 // sub-view of story section
-struct StoryListSectionView: View {
-    var showRecentList: Bool
+struct ContentListSectionView: View {
+    @State var showRecentList: Bool
+    @State var showTrashList: Bool
     var tagValue: String
     @Binding var currentView: String?
     var labelTitle: String
@@ -24,9 +25,11 @@ struct StoryListSectionView: View {
     var body: some View {
         ZStack(alignment: .leading) {
             // a link to a list of stories
-            NavigationLink("", destination: StoryListView(isShowingRecentList: showRecentList),
-                           tag: tagValue,
-                           selection: $currentView
+            NavigationLink(
+                "",
+                destination: ContentListView(isShowingRecentList: $showRecentList, isShowingTrashList: $showTrashList),
+                tag: tagValue,
+                selection: $currentView
             )
             Button {
                 self.currentView = tagValue
@@ -103,30 +106,34 @@ struct ContentView: View {
             List {
                 Section {
                     // link to a all stories saved to CoreData
-                    StoryListSectionView(showRecentList: false,
-                                         tagValue: LoadingState.storyList.rawValue,
-                                         currentView: $currentView,
-                                         labelTitle: "Collection",
-                                         labelImage: "archivebox"
+                    ContentListSectionView(
+                        showRecentList: false,
+                        showTrashList: false,
+                        tagValue: LoadingState.storyList.rawValue,
+                        currentView: $currentView,
+                        labelTitle: "Collection",
+                        labelImage: "archivebox"
                     )
 
                     // link to a list of stories written in the past seven days
-                    StoryListSectionView(showRecentList: true,
-                                         tagValue: LoadingState.recentStoryList.rawValue,
-                                         currentView: $currentView,
-                                         labelTitle: "Recent",
-                                         labelImage: "deskclock"
+                    ContentListSectionView(
+                        showRecentList: true,
+                        showTrashList: false,
+                        tagValue: LoadingState.recentStoryList.rawValue,
+                        currentView: $currentView,
+                        labelTitle: "Recent",
+                        labelImage: "deskclock"
                     )
                     
                     // link to a list of stories the user recently deleted
-                    NavigationLink {
-    //                    self.currentView = .storyList
-    //                    StoryListView()
-                    } label: {
-                        Label("Trash", systemImage: "trash")
-                            .headerStyle()
-                    }
-                    .buttonStyle(.plain)
+                    ContentListSectionView(
+                        showRecentList: false,
+                        showTrashList: true,
+                        tagValue: LoadingState.trashList.rawValue,
+                        currentView: $currentView,
+                        labelTitle: "Trash",
+                        labelImage: "trash"
+                    )
                 }
                 
                 Section {
