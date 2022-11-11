@@ -5,6 +5,7 @@
 //  Created by Kenneth Gutierrez on 10/7/22.
 //
 
+import Combine
 import CoreData
 import Foundation
 import SwiftUI
@@ -26,6 +27,11 @@ struct NewPageView: View {
     var body: some View {
         TextInputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
             .focused($isInputActive)
+            .onChange(of: txtComplVM.sessionStory) { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    saveContext()
+                }
+            }
             .sheet(isPresented: $viewModel.isShowingPromptEditorScreen, onDismiss: {
                 promptContent()
             }, content: {
@@ -86,7 +92,7 @@ struct NewPageView: View {
             GenrePickerView(genreChoices: $txtComplVM.setGenre)
                 .padding(.trailing)
             
-            Button(action: hideKeyboardAndSave, label: { Image(systemName: "keyboard.chevron.compact.down") })
+            Button(action: { isInputActive.toggle() }, label: { Image(systemName: "keyboard.chevron.compact.down") })
         }
     }
 }

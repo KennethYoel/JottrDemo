@@ -20,14 +20,16 @@ struct StoryListView: View {
     // fetch the Story attribute in Core Data
     @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)]) var stories: FetchedResults<Story>
     // toggle it to get the past seven days of stories or all of it
-    var isShowingRecentList: Bool = false
+    @State var isShowingRecentList: Bool = false
     
     var body: some View {
         List {
             // for each story in the array, create a listing row
             ForEach(listOfStories, content: StoryListRowView.init).onDelete(perform: deleteStory) // swipe to delete
         }
-        .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, content: {
+        .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, onDismiss: {
+            self.isShowingRecentList = false
+        }, content: {
             NavigationView {
                 NewPageView()
             }

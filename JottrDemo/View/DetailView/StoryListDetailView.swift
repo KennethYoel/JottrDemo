@@ -59,6 +59,9 @@ struct StoryListDetailView: View {
                 
                 keyboardToolbarButtons
             }
+            .onDisappear {
+              updateContext()
+            }
             .disabled(txtComplVM.loading) // when loading users can't interact with this view.
     }
     

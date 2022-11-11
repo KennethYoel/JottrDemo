@@ -14,7 +14,8 @@ struct StoryListRowView: View {
     
     var body: some View {
         NavigationLink {
-            ContentView(loadingState: .storyListDetail(story))
+//            ContentView(loadingState: LoadingState.storyListDetail.rawValue, story: story)
+            StoryListDetailView(story: story)
         } label: {
             VStack(alignment: .leading) {
                 Text(story.wrappedComplStory)

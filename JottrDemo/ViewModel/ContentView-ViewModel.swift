@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension NotebookView {
-    @MainActor class NotebookViewVM: ObservableObject {
+extension ContentView {
+    @MainActor class ContentViewVM: ObservableObject {
         // MARK: Properties
         
         @Published var isShowingLoginScreen: Bool = false

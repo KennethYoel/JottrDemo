@@ -27,33 +27,9 @@ struct PromptEditorView: View {
     
     @Binding var submitPromptContent: Bool
     
-//    @State private var alertUser: Bool = false
-//    @State private var message: String = ""
-    
-//    @Binding var theme: String // = ""
-//    @State private var showingStoryEditorScreen = false
-    
     let themePlaceholder: String = "Type the theme here or pick one ⬇️."
     let premisePlaceholder: String = "Type the premise here..."
     let textLimit = 350
-    
-//    let detector = PassthroughSubject<Void, Never>()
-//    let publisher: AnyPublisher<Void, Never>
-    
-//    init() {
-//        publisher = detector
-//            .debounce(for: .seconds(3), scheduler: DispatchQueue.main)
-//            .eraseToAnyPublisher()
-//    }
-    
-//    let banner = """
-//              __,
-//             (           o  /) _/_
-//              `.  , , , ,  //  /
-//            (___)(_(_/_(_ //_ (__
-//                         /)
-//                        (/
-//            """
     
     var body: some View {
         NavigationView {
@@ -94,8 +70,6 @@ struct PromptEditorView: View {
                         .focused($isInputActive)
                         .foregroundColor(.primary)
                         .onReceive(Just(txtComplVM.sessionStory)) { _ in limitText(textLimit) }
-//                        .onChange(of: txtComplVM.sessionStory) { _ in detector.send() }
-//                        .onReceive(publisher) { save() }
                     
                     GenrePickerView(genreChoices: $txtComplVM.setGenre)
                         .padding(.trailing)

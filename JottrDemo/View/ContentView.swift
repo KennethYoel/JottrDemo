@@ -141,7 +141,6 @@ struct ContentView: View {
                 }
             }
             .onAppear {
-                debugPrint("selectedView: \(String(describing: currentView))")
                 if !network.isActive {
                     showNetworkAlert.toggle()
                 }
@@ -155,7 +154,7 @@ struct ContentView: View {
                 )
             }
             .fullScreenCover(isPresented: $viewModel.isShowingNewPageScreen, onDismiss: {
-                isStoryListActive.toggle()
+                self.currentView = LoadingState.storyList.rawValue
             }, content: {
                 NavigationView {
                     NewPageView()

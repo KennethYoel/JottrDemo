@@ -61,26 +61,28 @@ extension NewPageView {
         }
     }
     
-    func hideKeyboardAndSave() {
-        isInputActive = false
-        save()
-    }
+//    func hideKeyboardAndSave() {
+//        isInputActive = false
+//        saveContext()
+//    }
     
     func reload(_ value: Bool) {
         if value {
-            save()
+            saveContext()
             txtComplVM.sessionStory = ""
             viewModel.id = UUID()
         }
     }
     
     func saveResetAndDismissEditor() {
-        save()
+        saveContext()
         txtComplVM.sessionStory = ""
         dismissNewPage()
     }
     
-    func save() {
+    func saveContext() {
+        debugPrint("saved")
+        
         if !txtComplVM.sessionStory.isEmpty {
             let newStory: Story!
             
