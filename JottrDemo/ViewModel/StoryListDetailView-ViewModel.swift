@@ -8,6 +8,8 @@
 import Foundation
 
 extension StoryListDetailView {
+    // MARK: Manages The Data(the logic)
+    
     @MainActor class StoryListDetailVM: ObservableObject {
         @Published var isShowingNewPageScreen: Bool = false
         @Published var isShowingPromptEditorScreen: Bool = false

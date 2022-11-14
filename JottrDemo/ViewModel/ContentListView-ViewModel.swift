@@ -8,6 +8,8 @@
 import Foundation
 
 extension ContentListView {
+    // MARK: Manages The Data(the logic)
+    
     class ContentListViewVM: ObservableObject {
         @Published var isShowingLoginScreen: Bool = false
         @Published var isShowingStoryEditorScreen: Bool = false

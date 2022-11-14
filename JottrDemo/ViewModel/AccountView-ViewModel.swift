@@ -12,6 +12,8 @@ import MessageUI
 import SwiftUI
 
 extension AccountView {
+    // MARK: Manages The Data(the logic)
+    
     @MainActor class AccountViewVM: ObservableObject {
         @Published var isAuthenticated: Bool = false
         @Published var userProfile: UserProfile = UserProfile.empty

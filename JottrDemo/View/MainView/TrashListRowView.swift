@@ -10,20 +10,20 @@ import SwiftUI
 
 // sub-view of the composite view StoryListView, the content closure of ForEach
 struct TrashListRowView: View {
-    let trash: TrashBin
+    let trash: Story
     
     var body: some View {
         NavigationLink {
             TrashListDetailView(trash: trash)
         } label: {
             VStack(alignment: .leading) {
-                Text(trash.origin?.wrappedComplStory ?? "Unknown")
+                Text(trash.wrappedComplStory)
                     .listRowStyle()
                 
                 HStack {
                     Label("Char(s)", systemImage: "text.alignleft")
                         .captionStyle()
-                    Text(trash.origin?.formattedDate ?? "N/A")
+                    Text(trash.formattedDateCreated)
                         .captionStyle()
                 }
             }

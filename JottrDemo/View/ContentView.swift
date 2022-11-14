@@ -105,6 +105,7 @@ struct ContentView: View {
         NavigationView {
             List {
                 Section {
+                    // TODO: Need to have stories removed when delete is chosen--also rebuild data model
                     // link to a all stories saved to CoreData
                     ContentListSectionView(
                         showRecentList: false,

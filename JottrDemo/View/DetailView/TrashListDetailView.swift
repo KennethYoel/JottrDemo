@@ -12,10 +12,10 @@ struct TrashListDetailView: View {
     // MARK: Properties
     
     // data stored in the Core Data
-    let trash: TrashBin
+    let trash: Story
     
     var body: some View {
-        Text(trash.origin?.complStory ?? "Unknown")
+        Text(trash.wrappedComplStory)
     }
 }
 

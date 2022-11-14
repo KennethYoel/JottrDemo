@@ -8,14 +8,31 @@
 import Foundation
 import SwiftUI
 
+struct ItemList: View {
+    @Binding var isTrashBin: Bool
+    @Binding var isLoading: Bool
+    @Binding var storyContent: String
+    
+    var body: some View {
+        if !isTrashBin {
+            TextInputView(isLoading: $isLoading, pen: $storyContent)
+        } else {
+            Text(storyContent)
+                .multilineTextAlignment(.leading)
+        }
+    }
+}
+
 struct StoryListDetailView: View {
     // MARK: Properties
     
     // data stored in the Core Data
     let story: Story
     
-    @StateObject var viewModel = StoryListDetailVM()
+    @Binding var isTrashBin: Bool
     
+    // create an object that manages the data(the logic) of ListDetailView layout
+    @StateObject var viewModel = StoryListDetailVM()
     // holds our openai text completion model
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     // holds our Core Data managed object context (so we can delete stuff)
@@ -24,12 +41,11 @@ struct StoryListDetailView: View {
     @Environment(\.dismiss) var dismissDetailView
     // holds boolean value on whether the txt input field is active
     @FocusState var isInputActive: Bool
-    // create an object that manages the data(the logic) of ListDetailView layout
-    
     @State private var isSearchViewPresented: Bool = false
 
     var body: some View {
-        TextInputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
+//        TextInputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
+        ItemList(isTrashBin: $isTrashBin, isLoading: $txtComplVM.loading, storyContent: $txtComplVM.sessionStory)
             .onAppear {
                 self.txtComplVM.sessionStory = story.wrappedComplStory
             }
@@ -54,8 +70,6 @@ struct StoryListDetailView: View {
                               showPromptEditor: $viewModel.isShowingPromptEditorScreen,
                               sendingContent: $viewModel.isSendingContent.onChange(sendToStoryMaker),
                               keyboardActive: _isInputActive)
-
-                submitToolbarButton
                 
                 keyboardToolbarButtons
             }
@@ -63,16 +77,6 @@ struct StoryListDetailView: View {
               updateContext()
             }
             .disabled(txtComplVM.loading) // when loading users can't interact with this view.
-    }
-    
-    var submitToolbarButton: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-//            if isInputActive {
-//                Button(action: sendToStoryMaker, label: { Image(systemName: "arrow.up.circle") })
-//                    .padding(.trailing)
-//                    .buttonStyle(.plain)
-//            }
-        }
     }
     
     var keyboardToolbarButtons: some ToolbarContent {

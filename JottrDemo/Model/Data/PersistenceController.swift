@@ -21,11 +21,13 @@ class PersistenceController {
         
         // create a example story
         let story = Story(context: controller.container.viewContext)
-        story.id = UUID()
-        story.genre = "Horror"
-        story.theme = "Redemption"
-        story.sessionPrompt = "Test Prompt"
         story.complStory = "Test Story"
+        story.dateCreated = Date.now
+        story.genre = "Horror"
+        story.id = UUID()
+        story.isDiscarded = false
+        story.sessionPrompt = "Test Prompt"
+        story.theme = "Redemption"
         
         return controller
     }()

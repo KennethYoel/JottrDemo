@@ -2,19 +2,20 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="20G918" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Story" representedClassName="Story" syncable="YES">
         <attribute name="complStory" optional="YES" attributeType="String"/>
-        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateDiscarded" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="genre" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isDiscarded" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="sessionPrompt" optional="YES" attributeType="String"/>
         <attribute name="theme" optional="YES" attributeType="String"/>
-        <relationship name="trashBin" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TrashBin" inverseName="origin" inverseEntity="TrashBin"/>
-    </entity>
-    <entity name="TrashBin" representedClassName="TrashBin" syncable="YES">
-        <attribute name="dateDiscarded" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="origin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Story" inverseName="trashBin" inverseEntity="Story"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="Story" positionX="228.1876831054688" positionY="-48.35467529296875" width="128" height="148"/>
-        <element name="TrashBin" positionX="-63" positionY="27" width="128" height="59"/>
+        <element name="Story" positionX="228.1876831054688" positionY="-48.35467529296875" width="128" height="149"/>
     </elements>
 </model>

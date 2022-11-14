@@ -18,9 +18,8 @@ struct ContentListView: View {
     // retrieve our Core Data managed object context (so we can delete or save stuff)
     @Environment(\.managedObjectContext) var moc
     // fetch the Story entity in Core Data
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)]) var stories: FetchedResults<Story>
-    // fetch the TrashBin attribute in Core Data
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "dateDiscarded", ascending: false)]) var trashBin: FetchedResults<TrashBin>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) var stories: FetchedResults<Story>
+    @State private var listOfStories: [Story] = []
     // toggle it to get the past seven days of stories or all of it
     @Binding var isShowingRecentList: Bool
     @Binding var isShowingTrashList: Bool
@@ -29,13 +28,22 @@ struct ContentListView: View {
         List {
             if isShowingTrashList {
                 // for each story in the array, create a listing row. added as modifier the swipe to delete feature
-                ForEach(listOfTrashContent, id: \.self) { content in
-                    TrashListRowView(trash: content)
+                ForEach(listOfStories, id: \.self) { discardedItem in
+                    if discardedItem.wrappedIsDiscarded {
+                        StoryListRowView(story: discardedItem, isTrashBin: $isShowingTrashList)
+                    }
                 }.onDelete(perform: deleteStory)
             } else {
                 // for each story in the array, create a listing row. added as modifier the swipe to delete feature
-                ForEach(listOfStories, content: StoryListRowView.init).onDelete(perform: deleteStory)
+                ForEach(listOfStories, id: \.self) { item in // content: StoryListRowView.init
+                    if !item.wrappedIsDiscarded {
+                        StoryListRowView(story: item, isTrashBin: $isShowingTrashList)
+                    }
+                }.onDelete(perform: removeFromList)
             }
+        }
+        .onAppear {
+            self.listOfStories = coreDataContent
         }
         .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, onDismiss: {
             self.isShowingRecentList = false
@@ -54,7 +62,7 @@ struct ContentListView: View {
     }
     
     // either showing all the content in CoreData or the last seven days
-    var listOfStories: [Story] {
+    var coreDataContent: [Story] {
         get {
             var fetchedStories: [Story] = []
             
@@ -64,7 +72,7 @@ struct ContentListView: View {
             } else {
                 // filter returns stories from the last seven days.
                 let sortedByDate = stories.filter {
-                    guard let unwrappedValue = $0.creationDate else {
+                    guard let unwrappedValue = $0.dateCreated else {
                         return false
                     }
                     return unwrappedValue > (Date.now - 604_800) // 604800 sec. is seven days in seconds
@@ -76,34 +84,30 @@ struct ContentListView: View {
         }
     }
     
-    var listOfTrashContent: [TrashBin] {
-        get {
-            var fetchedTrashed: [TrashBin] = []
-            fetchedTrashed.append(contentsOf: trashBin)
-            return fetchedTrashed
+    private func removeFromList(at offsets: IndexSet) {
+        for offset in offsets {
+            let story = stories[offset]
+            
+            //update the saved story
+            moc.performAndWait {
+                story.isDiscarded = true
+                story.dateDiscarded = Date.now
+                PersistenceController.shared.saveContext()
+            }
+            
+            listOfStories.remove(at: offset)
         }
     }
     
     private func deleteStory(at offsets: IndexSet) {
-        let discard = TrashBin(context: moc)
-        discard.dateDiscarded = Date()
-        discard.origin = Story(context: moc)
-        
         for offset in offsets {
             let story = stories[offset]
-            
-            discard.origin = story
-            discard.origin?.addToTrashBin(discard)
             
             // delete from in memory storage
             moc.delete(story)
         }
         
         // write the changes out to persistent storage
-        do {
-            try moc.save()
-        } catch {
-            print(error.localizedDescription)
-        }
+        PersistenceController.shared.saveContext()
     }
 }

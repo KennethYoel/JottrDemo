@@ -37,7 +37,7 @@ struct SearchListView: View {
         
         List(searchedStoryList, id: \.self) { item in
             // for each story in the array, create a listing row
-            NavigationLink(destination: StoryListDetailView(story: item)) {
+            NavigationLink(destination: StoryListDetailView(story: item, isTrashBin: .constant(false))) {
                 Text(LocalizedStringKey(item.wrappedComplStory)) // requesting localization
                     .foregroundColor(.secondary)
                     .font(.system(.subheadline, design: .serif))

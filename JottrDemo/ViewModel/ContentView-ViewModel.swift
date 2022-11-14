@@ -8,6 +8,8 @@
 import Foundation
 
 extension ContentView {
+    // MARK: Manages The Data(the logic)
+    
     @MainActor class ContentViewVM: ObservableObject {
         // MARK: Properties
         

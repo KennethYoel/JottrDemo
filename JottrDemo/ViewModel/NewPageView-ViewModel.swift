@@ -10,6 +10,8 @@ import Foundation
 import SwiftUI
 
 extension NewPageView {
+    // MARK: Manages The Data(the logic)
+    
     @MainActor class NewPageViewVM: ObservableObject {
         // MARK: Properties
         
@@ -61,11 +63,6 @@ extension NewPageView {
         }
     }
     
-//    func hideKeyboardAndSave() {
-//        isInputActive = false
-//        saveContext()
-//    }
-    
     func reload(_ value: Bool) {
         if value {
             saveContext()
@@ -84,10 +81,10 @@ extension NewPageView {
         debugPrint("saved")
         
         if !txtComplVM.sessionStory.isEmpty {
-            let newStory: Story!
+            let saveStory: Story!
             
             let fetchStory: NSFetchRequest<Story> = Story.fetchRequest()
-            fetchStory.predicate = NSPredicate(format: "id = %@", viewModel.id.uuidString) // create a UUID as a string
+            fetchStory.predicate = NSPredicate(format: "id = %@", viewModel.id.uuidString) // create's a UUID as a string
             
             var results: [Story]!
             do {
@@ -98,23 +95,24 @@ extension NewPageView {
             
             if results.count == 0 {
                 // here you are inserting
-                newStory = Story(context: moc)
+                saveStory = Story(context: moc)
              } else {
                 // here you are updating
-                 newStory = results.first
+                 saveStory = results.first
              }
         
             //add a story
-            newStory.id = viewModel.id
-            newStory.creationDate = Date()
-            newStory.genre = txtComplVM.setGenre.id
-            newStory.sessionPrompt = txtComplVM.promptLoader
-            newStory.complStory = txtComplVM.sessionStory
+            saveStory.complStory = txtComplVM.sessionStory
+            saveStory.dateCreated = Date()
+            saveStory.genre = txtComplVM.setGenre.id
+            saveStory.id = viewModel.id
+            saveStory.isDiscarded = false
+            saveStory.sessionPrompt = txtComplVM.promptLoader
 
             if txtComplVM.setTheme.id == "Custom" {
-                newStory.theme = txtComplVM.customTheme
+                saveStory.theme = txtComplVM.customTheme
             } else {
-                newStory.theme = txtComplVM.setTheme.id
+                saveStory.theme = txtComplVM.setTheme.id
             }
 
             PersistenceController.shared.saveContext()
