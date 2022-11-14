@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 
 struct ItemList: View {
-    @Binding var isTrashBin: Bool
+    @Binding var showTrashBin: Bool
     @Binding var isLoading: Bool
     @Binding var storyContent: String
     
     var body: some View {
-        if !isTrashBin {
+        if !showTrashBin {
             TextInputView(isLoading: $isLoading, pen: $storyContent)
         } else {
             Text(storyContent)
@@ -28,9 +28,6 @@ struct StoryListDetailView: View {
     
     // data stored in the Core Data
     let story: Story
-    
-    @Binding var isTrashBin: Bool
-    
     // create an object that manages the data(the logic) of ListDetailView layout
     @StateObject var viewModel = StoryListDetailVM()
     // holds our openai text completion model
@@ -42,10 +39,10 @@ struct StoryListDetailView: View {
     // holds boolean value on whether the txt input field is active
     @FocusState var isInputActive: Bool
     @State private var isSearchViewPresented: Bool = false
+    @Binding var showTrashBin: Bool
 
     var body: some View {
-//        TextInputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
-        ItemList(isTrashBin: $isTrashBin, isLoading: $txtComplVM.loading, storyContent: $txtComplVM.sessionStory)
+        ItemList(showTrashBin: $showTrashBin, isLoading: $txtComplVM.loading, storyContent: $txtComplVM.sessionStory)
             .onAppear {
                 self.txtComplVM.sessionStory = story.wrappedComplStory
             }

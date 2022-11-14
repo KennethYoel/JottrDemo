@@ -11,11 +11,11 @@ import SwiftUI
 // sub-view of the composite view StoryListView, the content closure of ForEach
 struct StoryListRowView: View {
     let story: Story
-    @Binding var isTrashBin: Bool
+    @Binding var showTrashBin: Bool
     
     var body: some View {
         NavigationLink {
-            StoryListDetailView(story: story, isTrashBin: $isTrashBin)
+            StoryListDetailView(story: story, showTrashBin: $showTrashBin)
         } label: {
             VStack(alignment: .leading) {
                 Text(story.wrappedComplStory)

@@ -63,7 +63,6 @@ extension StoryListDetailView {
         //update the saved story
         moc.performAndWait {
             story.complStory = self.txtComplVM.sessionStory
-            
             PersistenceController.shared.saveContext()
         }
     }

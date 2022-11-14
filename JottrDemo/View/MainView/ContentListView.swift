@@ -22,25 +22,16 @@ struct ContentListView: View {
     @State private var listOfStories: [Story] = []
     // toggle it to get the past seven days of stories or all of it
     @Binding var isShowingRecentList: Bool
+    // toggle it to get the contents sent to trash list
     @Binding var isShowingTrashList: Bool
     
     var body: some View {
         List {
-            if isShowingTrashList {
-                // for each story in the array, create a listing row. added as modifier the swipe to delete feature
-                ForEach(listOfStories, id: \.self) { discardedItem in
-                    if discardedItem.wrappedIsDiscarded {
-                        StoryListRowView(story: discardedItem, isTrashBin: $isShowingTrashList)
-                    }
-                }.onDelete(perform: deleteStory)
-            } else {
-                // for each story in the array, create a listing row. added as modifier the swipe to delete feature
-                ForEach(listOfStories, id: \.self) { item in // content: StoryListRowView.init
-                    if !item.wrappedIsDiscarded {
-                        StoryListRowView(story: item, isTrashBin: $isShowingTrashList)
-                    }
-                }.onDelete(perform: removeFromList)
+            // for each story in the array, create a listing row. added as modifier the swipe to delete feature
+            ForEach(listOfStories, id: \.self) { item in // content: StoryListRowView.init
+                StoryListRowView(story: item, showTrashBin: $isShowingTrashList)
             }
+            .onDelete(perform: isShowingTrashList ? deleteStory : removeFromList)
         }
         .onAppear {
             self.listOfStories = coreDataContent
@@ -68,8 +59,7 @@ struct ContentListView: View {
             
             if !isShowingRecentList {
                 fetchedStories.append(contentsOf: stories)
-                return fetchedStories
-            } else {
+            } else if isShowingRecentList {
                 // filter returns stories from the last seven days.
                 let sortedByDate = stories.filter {
                     guard let unwrappedValue = $0.dateCreated else {
@@ -78,9 +68,14 @@ struct ContentListView: View {
                     return unwrappedValue > (Date.now - 604_800) // 604800 sec. is seven days in seconds
                 }
                 fetchedStories.append(contentsOf: sortedByDate)
-                
-                return fetchedStories
+            } else if isShowingTrashList {
+                let discardedContent = stories.filter {
+                    return $0.wrappedIsDiscarded
+                }
+                fetchedStories.append(contentsOf: discardedContent)
             }
+            
+            return fetchedStories
         }
     }
     
@@ -98,15 +93,16 @@ struct ContentListView: View {
             listOfStories.remove(at: offset)
         }
     }
-    
+    // TODO: Add a Timer of 30 Days Of Auto Delete
     private func deleteStory(at offsets: IndexSet) {
         for offset in offsets {
             let story = stories[offset]
-            
+            // delete from the list
+            listOfStories.remove(at: offset)
             // delete from in memory storage
             moc.delete(story)
         }
-        
+
         // write the changes out to persistent storage
         PersistenceController.shared.saveContext()
     }

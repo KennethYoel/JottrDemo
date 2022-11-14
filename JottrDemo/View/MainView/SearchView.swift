@@ -37,7 +37,7 @@ struct SearchListView: View {
         
         List(searchedStoryList, id: \.self) { item in
             // for each story in the array, create a listing row
-            NavigationLink(destination: StoryListDetailView(story: item, isTrashBin: .constant(false))) {
+            NavigationLink(destination: StoryListDetailView(story: item, showTrashBin: .constant(false))) {
                 Text(LocalizedStringKey(item.wrappedComplStory)) // requesting localization
                     .foregroundColor(.secondary)
                     .font(.system(.subheadline, design: .serif))
@@ -71,7 +71,7 @@ struct SearchView: View {
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.dismiss) private var dismiss
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "creationDate", ascending: false)]) var narratives: FetchedResults<Story>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) var narratives: FetchedResults<Story>
     @State private var searchQuery: String = ""
    
     var body: some View {
