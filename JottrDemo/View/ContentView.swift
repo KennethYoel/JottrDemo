@@ -15,6 +15,7 @@ enum LoadingState: String {
 
 // sub-view of story section
 struct ContentListSectionView: View {
+    // MARK: Properties
     @State var showRecentList: Bool
     @State var showTrashList: Bool
     var tagValue: String
@@ -24,7 +25,7 @@ struct ContentListSectionView: View {
     
     var body: some View {
         ZStack(alignment: .leading) {
-            // a link to a list of stories
+            // a link to the list view
             NavigationLink(
                 "",
                 destination: ContentListView(isShowingRecentList: $showRecentList, isShowingTrashList: $showTrashList),
@@ -44,6 +45,7 @@ struct ContentListSectionView: View {
 
 // sub-view of introduction section
 struct InfoSectionView: View {
+    // MARK: Properties
     @Binding var viewHidden: Bool
     
     var body: some View {
@@ -105,7 +107,6 @@ struct ContentView: View {
         NavigationView {
             List {
                 Section {
-                    // TODO: Need to have stories removed when delete is chosen--also rebuild data model
                     // link to a all stories saved to CoreData
                     ContentListSectionView(
                         showRecentList: false,
@@ -138,6 +139,7 @@ struct ContentView: View {
                 }
                 
                 Section {
+                    // link to introduction information
                     InfoSectionView(viewHidden: $viewModel.isHidden)
                 } header: {
                     HStack {

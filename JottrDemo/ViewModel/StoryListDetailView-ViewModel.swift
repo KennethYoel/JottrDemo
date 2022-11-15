@@ -20,6 +20,8 @@ extension StoryListDetailView {
         @Published var showingDeleteAlert = false
     }
     
+    // MARK: FileExporter Modifier
+    
     // MARK: Helper Methods
     
     func hideKeyboardAndSave() {

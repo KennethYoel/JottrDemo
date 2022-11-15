@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ItemList: View {
     @Binding var showTrashBin: Bool
@@ -17,8 +18,10 @@ struct ItemList: View {
         if !showTrashBin {
             TextInputView(isLoading: $isLoading, pen: $storyContent)
         } else {
-            Text(storyContent)
-                .multilineTextAlignment(.leading)
+            VStack {
+                Text(storyContent)
+                    .multilineTextAlignment(.leading)
+            }
         }
     }
 }
@@ -28,6 +31,9 @@ struct StoryListDetailView: View {
     
     // data stored in the Core Data
     let story: Story
+    @Binding var showTrashBin: Bool
+    // this variable updates the pdf in our PDFFile struct
+//    @Binding var document: PDFFile
     // create an object that manages the data(the logic) of ListDetailView layout
     @StateObject var viewModel = StoryListDetailVM()
     // holds our openai text completion model
@@ -39,8 +45,8 @@ struct StoryListDetailView: View {
     // holds boolean value on whether the txt input field is active
     @FocusState var isInputActive: Bool
     @State private var isSearchViewPresented: Bool = false
-    @Binding var showTrashBin: Bool
-
+    // a state to track when you want the exporter UI to show or not
+//    @State private var showingExporter = false
     var body: some View {
         ItemList(showTrashBin: $showTrashBin, isLoading: $txtComplVM.loading, storyContent: $txtComplVM.sessionStory)
             .onAppear {
@@ -71,7 +77,7 @@ struct StoryListDetailView: View {
                 keyboardToolbarButtons
             }
             .onDisappear {
-              updateContext()
+                updateContext()
             }
             .disabled(txtComplVM.loading) // when loading users can't interact with this view.
     }

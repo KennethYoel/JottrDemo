@@ -50,8 +50,6 @@
 		5779E9CB28DF834B00FA58C0 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5779E9CA28DF834B00FA58C0 /* Parameters.swift */; };
 		579334B8291E6F7000DE80A8 /* TrashBin+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579334B7291E6F7000DE80A8 /* TrashBin+CoreDataClass.swift */; };
 		579334BA291E6FF800DE80A8 /* TrashBin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579334B9291E6FF800DE80A8 /* TrashBin+CoreDataProperties.swift */; };
-		579334BC291E863D00DE80A8 /* TrashListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579334BB291E863D00DE80A8 /* TrashListRowView.swift */; };
-		579334BE291E87ED00DE80A8 /* TrashListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579334BD291E87ED00DE80A8 /* TrashListDetailView.swift */; };
 		57B83EAF28FEC9D20066DB92 /* ouroboros.gif in Resources */ = {isa = PBXBuildFile; fileRef = 57B83EAE28FEC9D20066DB92 /* ouroboros.gif */; };
 		57C0945D28FC0CD100C4D9C2 /* EmailResultAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C0945C28FC0CD100C4D9C2 /* EmailResultAlert.swift */; };
 		57CBF0AC29031B7A004E8A4A /* ContentListView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CBF0AB29031B7A004E8A4A /* ContentListView-ViewModel.swift */; };
@@ -111,8 +109,6 @@
 		5779E9CA28DF834B00FA58C0 /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
 		579334B7291E6F7000DE80A8 /* TrashBin+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrashBin+CoreDataClass.swift"; sourceTree = "<group>"; };
 		579334B9291E6FF800DE80A8 /* TrashBin+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrashBin+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		579334BB291E863D00DE80A8 /* TrashListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashListRowView.swift; sourceTree = "<group>"; };
-		579334BD291E87ED00DE80A8 /* TrashListDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashListDetailView.swift; sourceTree = "<group>"; };
 		57B83EAE28FEC9D20066DB92 /* ouroboros.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ouroboros.gif; sourceTree = "<group>"; };
 		57C0945C28FC0CD100C4D9C2 /* EmailResultAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailResultAlert.swift; sourceTree = "<group>"; };
 		57CBF0AB29031B7A004E8A4A /* ContentListView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentListView-ViewModel.swift"; sourceTree = "<group>"; };
@@ -164,7 +160,6 @@
 			isa = PBXGroup;
 			children = (
 				571A4A1D28EFFE1D00E4F90B /* StoryListDetailView.swift */,
-				579334BD291E87ED00DE80A8 /* TrashListDetailView.swift */,
 				571A4A1728EFF99100E4F90B /* PromptEditorView.swift */,
 				571A4A4B28F057B400E4F90B /* PopoverTextView.swift */,
 				571A4A4728F0569E00E4F90B /* GenrePickerView.swift */,
@@ -178,7 +173,6 @@
 			children = (
 				571A4A1B28EFFDEE00E4F90B /* ContentListView.swift */,
 				5744805D28F7EE1800CA1191 /* StoryListRowView.swift */,
-				579334BB291E863D00DE80A8 /* TrashListRowView.swift */,
 				571A4A1F28EFFE5C00E4F90B /* NewPageView.swift */,
 				571A4A2628F0075A00E4F90B /* SearchView.swift */,
 				571A4A2A28F00DF300E4F90B /* AccountView.swift */,
@@ -440,10 +434,8 @@
 			files = (
 				571A4A3C28F02CAD00E4F90B /* TextEditorView.swift in Sources */,
 				571A4A3E28F02D1700E4F90B /* MainToolbar.swift in Sources */,
-				579334BC291E863D00DE80A8 /* TrashListRowView.swift in Sources */,
 				571A4A1828EFF99100E4F90B /* PromptEditorView.swift in Sources */,
 				570EFB7A2902EFAE00B360EB /* ContentView-ViewModel.swift in Sources */,
-				579334BE291E87ED00DE80A8 /* TrashListDetailView.swift in Sources */,
 				571A4A4C28F057B400E4F90B /* PopoverTextView.swift in Sources */,
 				5779E9BD28DEE78100FA58C0 /* TxtComplViewModel.swift in Sources */,
 				571A4A4428F0432500E4F90B /* ModerationResponse.swift in Sources */,
