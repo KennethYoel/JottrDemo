@@ -23,14 +23,14 @@ struct NewPageView: View {
     @Environment(\.dismiss) var dismissNewPage
     // returns a boolean whenever user taps on the TextEditor
     @FocusState var isInputActive: Bool
+    // creates a timer publisher that fires every 3 second, and saves the managedObjectContext
+    let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     
     var body: some View {
         TextInputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
             .focused($isInputActive)
-            .onChange(of: txtComplVM.sessionStory) { _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    saveContext()
-                }
+            .onReceive(timer) { _ in
+                saveContext()
             }
             .sheet(isPresented: $viewModel.isShowingPromptEditorScreen, onDismiss: {
                 promptContent()
