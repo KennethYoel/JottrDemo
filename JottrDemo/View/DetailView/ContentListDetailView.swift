@@ -1,5 +1,5 @@
 //
-//  StoryListDetailView.swift
+//  ContentListDetailView.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/7/22.
@@ -26,7 +26,7 @@ struct ItemList: View {
     }
 }
 
-struct StoryListDetailView: View {
+struct ContentListDetailView: View {
     // MARK: Properties
     
     // data stored in the Core Data
@@ -35,7 +35,7 @@ struct StoryListDetailView: View {
     // this variable updates the pdf in our PDFFile struct
 //    @Binding var document: PDFFile
     // create an object that manages the data(the logic) of ListDetailView layout
-    @StateObject var viewModel = StoryListDetailVM()
+    @StateObject var viewModel = ContentListDetailVM()
     // holds our openai text completion model
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     // holds our Core Data managed object context (so we can delete stuff)

@@ -1,5 +1,5 @@
 //
-//  StoryListDetailView-ViewModel.swift
+//  ContentListDetailView-ViewModel.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/7/22.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-extension StoryListDetailView {
+extension ContentListDetailView {
     // MARK: Manages The Data(the logic)
     
-    @MainActor class StoryListDetailVM: ObservableObject {
+    @MainActor class ContentListDetailVM: ObservableObject {
         @Published var isShowingNewPageScreen: Bool = false
         @Published var isShowingPromptEditorScreen: Bool = false
         @Published var isShowingEditorToolbar: Bool = false

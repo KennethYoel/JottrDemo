@@ -1,5 +1,5 @@
 //
-//  StoryListView-ViewModel.swift
+//  ContentListView-ViewModel.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/21/22.
@@ -11,8 +11,9 @@ extension ContentListView {
     // MARK: Manages The Data(the logic)
     
     class ContentListViewVM: ObservableObject {
-        @Published var listOfStories: [Story] = []
-        @Published var deletionIndexSet: IndexSet = []
+//        @Published var deletionIndexSet: IndexSet = []
+        @Published var deletionIndexSet: Int? = nil
+        @Published var storyToBeRemoved: Story? = nil
         @Published var isPresentingConfirm: Bool = false
         @Published var confirmDeletion: Bool = false
         @Published var isShowingLoginScreen: Bool = false
@@ -20,7 +21,6 @@ extension ContentListView {
         @Published var isShowingAccountScreen: Bool = false
         @Published var isShowingSearchScreen: Bool = false
         @Published var isActive: Bool = false
-        @Published var resetList: Bool = false
         @Published var confirmMessage: String = """
         Are you sure you want to permanently erase the selected page?
         Erasing the page permanently deletes it.
@@ -45,45 +45,69 @@ extension ContentListView {
         return title
     }
     
-    func discardToTrashBin(at offsets: IndexSet) {
+    func discardToTrashBin(at offset: Int, of storyContent: Story) { //IndexSet
         // move the content into the trash bin for later deletion
-        for offset in offsets {
-            let story = stories[offset]
-            
-            //update the discarded story atributes in CoreData
-            moc.performAndWait {
-                story.isDiscarded = true
-                story.dateDiscarded = Date.now
-                PersistenceController.shared.saveContext()
-            }
-            
-            // remove the item in question from the list
-            viewModel.listOfStories.remove(at: offset)
+//        let story = storyContent //stories[offsets]
+        
+        // remove the item in question from the list and then...
+        listOfStories.remove(at: offset)
+        // add the removed story to trashList...
+        trashList.append(storyContent)
+        
+        //update the discarded story atributes in CoreData
+        moc.performAndWait {
+            storyContent.isDiscarded = true
+            storyContent.dateDiscarded = Date.now
+            PersistenceController.shared.saveContext()
         }
+        
+        debugPrint("offset: \(offset) story: \(storyContent)")
+//        for offset in offsets {
+//
+//        }
     }
-    // TODO: 
-    func undoDiscard(from source: IndexSet, to destination: Int) -> Void {
-        //Optional<(IndexSet, Int) -> Void>
+    // TODO: refresh fetchrequest somehow
+    func undoDiscard(for offset: Int, of storyContent: Story) {
+        // from source: IndexSet, to destination: Int -> Void 
+        debugPrint("Testing Undo")
+        
+        // move the content back to collection list
+        let story = storyContent
+        
+        //update the discarded story atributes in CoreData
+        moc.performAndWait {
+            story.isDiscarded = false
+            PersistenceController.shared.saveContext()
+        }
+        
+        // remove the item in question from the trashList and then...
+        trashList.remove(at: offset) // TODO: search story by id and remove that one
+        // ...add the removed item to listOfStories
+        listOfStories.append(story)
     }
     
-    func presentConfirmDelete(for offsets: IndexSet) {
+    func presentConfirmDelete(for offset: Int, of storyContent: Story) { //for offsets: IndexSet
         // pass the values of offsets to a State variable
-        viewModel.deletionIndexSet = offsets
+        viewModel.deletionIndexSet = offset
+        viewModel.storyToBeRemoved = storyContent
         // toggle switch to show confirmation dialog
         self.viewModel.isPresentingConfirm.toggle()
     }
     
     func deleteContent() {
+        // remove the item in question from the list and...
+        listOfStories.remove(at: viewModel.deletionIndexSet!)
+        
         // get the list IndexSet from the State variable
-        for offset in viewModel.deletionIndexSet {
-            let story = stories[offset]
-            
-            // remove the item in question from the list and...
-            viewModel.listOfStories.remove(at: offset)
-            
-            // delete from CoreData
-            moc.delete(story)
-        }
+        let story = viewModel.storyToBeRemoved //stories[viewModel.deletionIndexSet!]
+        
+        // delete from CoreData
+        guard let data = story else { return }
+        moc.delete(data)
+        
+//        for offset in viewModel.deletionIndexSet {
+//
+//        }
 
         // write the changes out to persistent storage
         PersistenceController.shared.saveContext()

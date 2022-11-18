@@ -23,7 +23,7 @@ struct NewPageView: View {
     @Environment(\.dismiss) var dismissNewPage
     // returns a boolean whenever user taps on the TextEditor
     @FocusState var isInputActive: Bool
-    // creates a timer publisher that fires every 3 second, and saves the managedObjectContext
+    // creates a timer publisher that fires every 3 second, and then saves the managedObjectContext
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     
     var body: some View {
