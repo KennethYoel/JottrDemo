@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ContentListView: View {
     // MARK: Properties
@@ -18,13 +19,16 @@ struct ContentListView: View {
     // retrieve our Core Data managed object context (so we can delete or save stuff)
     @Environment(\.managedObjectContext) var moc
     // fetch the Story entity in Core Data
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) var stories: FetchedResults<Story>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)])
+    var stories: FetchedResults<Story>
     // toggle it to get the past seven days of stories or all of it
     @Binding var isShowingRecentList: Bool
     // toggle it to get the contents sent to trash list
     @Binding var isShowingTrashList: Bool
-    // TODO: add the option for putting the content back from the trash bin
     var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
+    
+    @State private var showingExporter = false
+    @State private var target: String?
     
     var body: some View {
         List {
@@ -32,6 +36,13 @@ struct ContentListView: View {
             ForEach(viewModel.listOfStories, id: \.self) { content in
                 ContentListRowView(story: content, showTrashBin: $isShowingTrashList)
                     .swipeActions(allowsFullSwipe: false) {
+                        Button(action: {
+                            self.target = content.wrappedComplStory
+                            self.showingExporter.toggle()
+                        }, label: {
+                            Label("Export", systemImage: "arrow.up.doc")
+                        })
+                        
                         if isShowingTrashList {
                             Button(role: .destructive, action: { presentConfirmDelete(of: content) }, label: {
                                 Label("Delete", systemImage: "trash")
@@ -55,6 +66,14 @@ struct ContentListView: View {
         .onAppear {
             loadList()
             emptyTrashBin()
+        }
+        .fileExporter(isPresented: $showingExporter, document: TextFile(initialText: target ?? ""), contentType: .plainText) { result in
+            switch result {
+            case .success(let url):
+                print("Saved to \(url)")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
         .confirmationDialog("Are you sure?", isPresented: $viewModel.isPresentingConfirm) {
             Button("Erase", role: .destructive) {
@@ -99,7 +118,7 @@ struct ContentListView: View {
                 let sortedByDate = stories.filter {
                     guard let unwrappedValue = $0.dateCreated else {
                         return false
-                    } // 604800 sec. is seven days in seconds
+                    } // 604800 sec. is about seven days in seconds
                     return unwrappedValue > (Date.now - 604_800) && !$0.wrappedIsDiscarded
                 }
                 fetchedStories.append(contentsOf: sortedByDate)
@@ -116,5 +135,33 @@ struct ContentListView: View {
             
             return fetchedStories
         }
+    }
+}
+
+struct TextFile: FileDocument {
+    // tell the system we support only pdf
+    static var readableContentTypes = [UTType.plainText]
+    
+    // by default our document is empty
+    var text = ""
+    
+    // a simple initializer that creates new, empty documents
+    init(initialText: String = "") {
+       text = initialText
+    }
+    
+    // this initializer loads data that has been saved previously
+    init(configuration: ReadConfiguration) throws {
+        if let data = configuration.file.regularFileContents {
+            text = String(decoding: data, as: UTF8.self)
+        } else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+    }
+    
+    // this will be called when the system wants to write our data to disk
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        let data = Data(text.utf8)
+        return FileWrapper(regularFileWithContents: data)
     }
 }
