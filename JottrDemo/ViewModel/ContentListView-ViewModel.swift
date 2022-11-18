@@ -11,9 +11,9 @@ extension ContentListView {
     // MARK: Manages The Data(the logic)
     
     class ContentListViewVM: ObservableObject {
-//        @Published var deletionIndexSet: IndexSet = []
-        @Published var deletionIndexSet: Int? = nil
-        @Published var storyToBeRemoved: Story? = nil
+        @Published var listOfStories: [Story] = []
+        @Published var trashList: [Story] = []
+        @Published var contentToBeRemoved: Story? = nil
         @Published var isPresentingConfirm: Bool = false
         @Published var confirmDeletion: Bool = false
         @Published var isShowingLoginScreen: Bool = false
@@ -45,72 +45,53 @@ extension ContentListView {
         return title
     }
     
-    func discardToTrashBin(at offset: Int, of storyContent: Story) { //IndexSet
-        // move the content into the trash bin for later deletion
-//        let story = storyContent //stories[offsets]
-        
-        // remove the item in question from the list and then...
-        listOfStories.remove(at: offset)
-        // add the removed story to trashList...
-        trashList.append(storyContent)
-        
-        //update the discarded story atributes in CoreData
-        moc.performAndWait {
-            storyContent.isDiscarded = true
-            storyContent.dateDiscarded = Date.now
-            PersistenceController.shared.saveContext()
-        }
-        
-        debugPrint("offset: \(offset) story: \(storyContent)")
-//        for offset in offsets {
-//
-//        }
-    }
-    // TODO: refresh fetchrequest somehow
-    func undoDiscard(for offset: Int, of storyContent: Story) {
-        // from source: IndexSet, to destination: Int -> Void 
-        debugPrint("Testing Undo")
-        
-        // move the content back to collection list
-        let story = storyContent
-        
-        //update the discarded story atributes in CoreData
-        moc.performAndWait {
-            story.isDiscarded = false
-            PersistenceController.shared.saveContext()
-        }
-        
-        // remove the item in question from the trashList and then...
-        trashList.remove(at: offset) // TODO: search story by id and remove that one
-        // ...add the removed item to listOfStories
-        listOfStories.append(story)
+    func loadList() {
+        // loads when view forst appear and reloads the list for every persistence store save
+        self.viewModel.listOfStories = coreDataContent
     }
     
-    func presentConfirmDelete(for offset: Int, of storyContent: Story) { //for offsets: IndexSet
-        // pass the values of offsets to a State variable
-        viewModel.deletionIndexSet = offset
-        viewModel.storyToBeRemoved = storyContent
+    func presentConfirmDelete(of rowContent: Story) { //for offsets: IndexSet
+        // pass the value of storyContent to a storyToBeRemoved variable
+        viewModel.contentToBeRemoved = rowContent
+        
         // toggle switch to show confirmation dialog
         self.viewModel.isPresentingConfirm.toggle()
     }
     
     func deleteContent() {
-        // remove the item in question from the list and...
-        listOfStories.remove(at: viewModel.deletionIndexSet!)
-        
-        // get the list IndexSet from the State variable
-        let story = viewModel.storyToBeRemoved //stories[viewModel.deletionIndexSet!]
+        // get the content to be removed from the Published variable
+        let story = viewModel.contentToBeRemoved
         
         // delete from CoreData
         guard let data = story else { return }
         moc.delete(data)
-        
-//        for offset in viewModel.deletionIndexSet {
-//
-//        }
 
         // write the changes out to persistent storage
         PersistenceController.shared.saveContext()
+    }
+    
+    func undoDiscard(of rowContent: Story) {
+        // move the content back to collection list
+        let story = rowContent
+        
+        //change the discarded story atributes in CoreData
+        moc.performAndWait {
+            story.isDiscarded = false
+            story.dateDiscarded = nil
+            PersistenceController.shared.saveContext()
+        }
+    }
+    
+    func discardToTrashBin(of rowContent: Story) {
+        // move the content to trash bin
+        let story = rowContent
+        
+        //change the discarded content atributes in CoreData
+        moc.performAndWait {
+            story.isDiscarded = true
+            story.dateDiscarded = Date.now
+            PersistenceController.shared.saveContext()
+        }
     }
     
     func emptyTrashBin() {
