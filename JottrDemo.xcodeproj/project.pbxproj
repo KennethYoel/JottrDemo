@@ -57,6 +57,7 @@
 		57D5CA1828FD7832005F7BA7 /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = 57D5CA1728FD7832005F7BA7 /* Auth0.plist */; };
 		57D5CA1C28FD9166005F7BA7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D5CA1B28FD9166005F7BA7 /* UserProfile.swift */; };
 		57D5CA1E28FDD6D0005F7BA7 /* AccountView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D5CA1D28FDD6D0005F7BA7 /* AccountView-ViewModel.swift */; };
+		57DEEDF82928CAA500952CDE /* ExportFileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DEEDF72928CAA500952CDE /* ExportFileType.swift */; };
 		57E2B48F28F2CF31001DDC93 /* ViewModel-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E2B48E28F2CF31001DDC93 /* ViewModel-Extensions.swift */; };
 		57E2B49328F2D047001DDC93 /* FilteredList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E2B49228F2D047001DDC93 /* FilteredList.swift */; };
 		57F6B06D29180C9500BE3132 /* NewPageView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6B06C29180C9500BE3132 /* NewPageView-ViewModel.swift */; };
@@ -115,6 +116,7 @@
 		57D5CA1728FD7832005F7BA7 /* Auth0.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
 		57D5CA1B28FD9166005F7BA7 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		57D5CA1D28FDD6D0005F7BA7 /* AccountView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountView-ViewModel.swift"; sourceTree = "<group>"; };
+		57DEEDF72928CAA500952CDE /* ExportFileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportFileType.swift; sourceTree = "<group>"; };
 		57E2B48E28F2CF31001DDC93 /* ViewModel-Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewModel-Extensions.swift"; sourceTree = "<group>"; };
 		57E2B49228F2D047001DDC93 /* FilteredList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredList.swift; sourceTree = "<group>"; };
 		57F6B06B2916CACB00BE3132 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				571A4A3D28F02D1700E4F90B /* MainToolbar.swift */,
 				574775DD2913F8FF008FEF5B /* EditorToolbar.swift */,
 				5744805F28F8210100CA1191 /* KeyboardToolbar.swift */,
+				57DEEDF72928CAA500952CDE /* ExportFileType.swift */,
 				57E2B49228F2D047001DDC93 /* FilteredList.swift */,
 				571A4A3F28F02DAC00E4F90B /* SendButton.swift */,
 				5744806128F853F200CA1191 /* CustomButton.swift */,
@@ -439,6 +442,7 @@
 				571A4A4C28F057B400E4F90B /* PopoverTextView.swift in Sources */,
 				5779E9BD28DEE78100FA58C0 /* TxtComplViewModel.swift in Sources */,
 				571A4A4428F0432500E4F90B /* ModerationResponse.swift in Sources */,
+				57DEEDF82928CAA500952CDE /* ExportFileType.swift in Sources */,
 				571A4A1C28EFFDEE00E4F90B /* ContentListView.swift in Sources */,
 				5779E9C828DF82E600FA58C0 /* OpenAIConnector.swift in Sources */,
 				571A4A3828F0207400E4F90B /* ContentListDetailView-ViewModel.swift in Sources */,

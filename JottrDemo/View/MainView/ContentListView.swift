@@ -4,6 +4,8 @@
 //
 //  Created by Kenneth Gutierrez on 10/7/22.
 //
+// source code for fileExporter from
+// https://stackoverflow.com/questions/65993146/swiftui-2-0-export-images-with-fileexporter-modifier
 
 import Foundation
 import SwiftUI
@@ -27,8 +29,10 @@ struct ContentListView: View {
     @Binding var isShowingTrashList: Bool
     var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
     
-    @State private var showingExporter = false
-    @State private var target: String?
+    @State private var showingFileOptions: Bool = false
+    @State private var showingPlainTextExporter: Bool = false
+    @State private var showingPDFExporter: Bool = false
+    @State private var target: String = ""
     
     var body: some View {
         List {
@@ -36,13 +40,6 @@ struct ContentListView: View {
             ForEach(viewModel.listOfStories, id: \.self) { content in
                 ContentListRowView(story: content, showTrashBin: $isShowingTrashList)
                     .swipeActions(allowsFullSwipe: false) {
-                        Button(action: {
-                            self.target = content.wrappedComplStory
-                            self.showingExporter.toggle()
-                        }, label: {
-                            Label("Export", systemImage: "arrow.up.doc")
-                        })
-                        
                         if isShowingTrashList {
                             Button(role: .destructive, action: { presentConfirmDelete(of: content) }, label: {
                                 Label("Delete", systemImage: "trash")
@@ -57,6 +54,15 @@ struct ContentListView: View {
                                 Label("Trash Bin", systemImage: "trash")
                             })
                         }
+                        
+                        Button(action: {
+                            self.target = content.wrappedComplStory
+                            self.showingFileOptions.toggle()
+//                            self.showingExporter.toggle()
+                        }, label: {
+                            Label("Export", systemImage: "arrow.up.doc")
+                        })
+                            .tint(.blue)
                     }
             }
             .onReceive(self.didSave) { _ in // here is the listener for published context event
@@ -67,7 +73,15 @@ struct ContentListView: View {
             loadList()
             emptyTrashBin()
         }
-        .fileExporter(isPresented: $showingExporter, document: TextFile(initialText: target ?? ""), contentType: .plainText) { result in
+        .fileExporter(isPresented: $showingPlainTextExporter, document: PlainTextFile(initialText: target), contentType: .plainText) { result in
+            switch result {
+            case .success(let url):
+                print("Saved to \(url)")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        .fileExporter(isPresented: $showingPDFExporter, document: PDFFile(initialPDF: target), contentType: .pdf) { result in
             switch result {
             case .success(let url):
                 print("Saved to \(url)")
@@ -81,6 +95,15 @@ struct ContentListView: View {
             }
         } message: {
             Text(viewModel.confirmMessage)
+        }
+        .confirmationDialog("Choose a file type", isPresented: $showingFileOptions, titleVisibility: .visible) {
+            Button("Plain Text") {
+                self.showingPlainTextExporter.toggle()
+            }
+            
+            Button("PDF") {
+                self.showingPDFExporter.toggle()
+            }
         }
         .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, onDismiss: {
             self.isShowingRecentList = false
@@ -138,30 +161,30 @@ struct ContentListView: View {
     }
 }
 
-struct TextFile: FileDocument {
-    // tell the system we support only pdf
-    static var readableContentTypes = [UTType.plainText]
-    
-    // by default our document is empty
-    var text = ""
-    
-    // a simple initializer that creates new, empty documents
-    init(initialText: String = "") {
-       text = initialText
-    }
-    
-    // this initializer loads data that has been saved previously
-    init(configuration: ReadConfiguration) throws {
-        if let data = configuration.file.regularFileContents {
-            text = String(decoding: data, as: UTF8.self)
-        } else {
-            throw CocoaError(.fileReadCorruptFile)
-        }
-    }
-    
-    // this will be called when the system wants to write our data to disk
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        let data = Data(text.utf8)
-        return FileWrapper(regularFileWithContents: data)
-    }
-}
+//struct PlainTextFile: FileDocument {
+//    // tell the system we support only pdf
+//    static var readableContentTypes = [UTType.plainText] // TODO: can change to .pdf but dont know if it readable
+//    
+//    // by default our document is empty
+//    var text = ""
+//    
+//    // a simple initializer that creates new, empty documents
+//    init(initialText: String = "") {
+//       text = initialText
+//    }
+//    
+//    // this initializer loads data that has been saved previously
+//    init(configuration: ReadConfiguration) throws {
+//        if let data = configuration.file.regularFileContents {
+//            text = String(decoding: data, as: UTF8.self)
+//        } else {
+//            throw CocoaError(.fileReadCorruptFile)
+//        }
+//    }
+//    
+//    // this will be called when the system wants to write our data to disk
+//    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+//        let data = Data(text.utf8)
+//        return FileWrapper(regularFileWithContents: data)
+//    }
+//}
