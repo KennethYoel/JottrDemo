@@ -4,6 +4,9 @@
 //
 //  Created by Kenneth Gutierrez on 10/7/22.
 //
+// source code for fileExporter from
+// https://stackoverflow.com/questions/65993146/swiftui-2-0-export-images-with-fileexporter-modifier &
+// https://www.hackingwithswift.com/quick-start/swiftui/how-to-export-files-using-fileexporter
 
 import Foundation
 import SwiftUI
@@ -46,13 +49,45 @@ struct ContentListDetailView: View {
     @FocusState var isInputActive: Bool
     @State private var isSearchViewPresented: Bool = false
     // a state to track when you want the exporter UI to show or not
-//    @State private var showingExporter = false
+    @State private var showingFileOptions: Bool = false
+    // default content type for file export
+    @State private var givingContentType: UTType = .plainText
+    @State private var showingTextExporter: Bool = false
+    @State private var exportText: String = ""
+    
     var body: some View {
         ItemList(showTrashBin: $showTrashBin, isLoading: $txtComplVM.loading, storyContent: $txtComplVM.sessionStory)
             .onAppear {
                 self.txtComplVM.sessionStory = story.wrappedComplStory
             }
             .focused($isInputActive)
+            .confirmationDialog("Choose a file type", isPresented: $showingFileOptions, titleVisibility: .visible) {
+                Button("Text") {
+                    self.exportText = story.wrappedComplStory
+                    givingContentType = .plainText
+                    self.showingTextExporter.toggle()
+                }
+                
+                Button("PDF") {
+                    self.exportText = story.wrappedComplStory
+                    givingContentType = .pdf
+                    self.showingTextExporter.toggle()
+                }
+                
+                Button("ePub") {
+                    self.exportText = story.wrappedComplStory
+                    givingContentType = .epub
+                    self.showingTextExporter.toggle()
+                }
+            }
+            .fileExporter(isPresented: $showingTextExporter, document: TextFile(initialText: exportText), contentType: givingContentType, defaultFilename: story.id?.uuidString) { result in
+                switch result {
+                case .success(let url):
+                    print("Saved to \(url)")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
             .fullScreenCover(isPresented: $viewModel.isShowingNewPageScreen, onDismiss: {
                 dismissDetailView()
             },content: {
@@ -68,7 +103,7 @@ struct ContentListDetailView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 EditorToolbar(showNewPage: $viewModel.isShowingNewPageScreen.onChange(launchNewPage),
-                              presentExportView: $viewModel.isShowingPromptEditorScreen,
+                              presentExportView: $showingFileOptions,
                               presentShareView: $viewModel.isShareViewPresented,
                               showPromptEditor: $viewModel.isShowingPromptEditorScreen,
                               sendingContent: $viewModel.isSendingContent.onChange(sendToStoryMaker),

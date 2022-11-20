@@ -12,7 +12,6 @@ extension ContentListView {
     
     class ContentListViewVM: ObservableObject {
         @Published var listOfStories: [Story] = []
-        @Published var trashList: [Story] = []
         @Published var contentToBeRemoved: Story? = nil
         @Published var isPresentingConfirm: Bool = false
         @Published var confirmDeletion: Bool = false
@@ -26,6 +25,10 @@ extension ContentListView {
         Erasing the page permanently deletes it.
         You cannot undo this action.
         """
+        
+        @Published var showingFileOptions: Bool = false
+        @Published var showingTextExporter: Bool = false
+        @Published var exportText: String = ""
     }
     
     // MARK: Helper Methods

@@ -5,7 +5,8 @@
 //  Created by Kenneth Gutierrez on 10/7/22.
 //
 // source code for fileExporter from
-// https://stackoverflow.com/questions/65993146/swiftui-2-0-export-images-with-fileexporter-modifier
+// https://stackoverflow.com/questions/65993146/swiftui-2-0-export-images-with-fileexporter-modifier &
+// https://www.hackingwithswift.com/quick-start/swiftui/how-to-export-files-using-fileexporter
 
 import Foundation
 import SwiftUI
@@ -28,11 +29,7 @@ struct ContentListView: View {
     // toggle it to get the contents sent to trash list
     @Binding var isShowingTrashList: Bool
     var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
-    
-    @State private var showingFileOptions: Bool = false
-    @State private var showingPlainTextExporter: Bool = false
-    @State private var showingPDFExporter: Bool = false
-    @State private var target: String = ""
+    @State private var givingContentType: UTType = .plainText
     
     var body: some View {
         List {
@@ -56,9 +53,8 @@ struct ContentListView: View {
                         }
                         
                         Button(action: {
-                            self.target = content.wrappedComplStory
-                            self.showingFileOptions.toggle()
-//                            self.showingExporter.toggle()
+                            self.viewModel.exportText = content.wrappedComplStory
+                            self.viewModel.showingFileOptions.toggle()
                         }, label: {
                             Label("Export", systemImage: "arrow.up.doc")
                         })
@@ -73,22 +69,6 @@ struct ContentListView: View {
             loadList()
             emptyTrashBin()
         }
-        .fileExporter(isPresented: $showingPlainTextExporter, document: PlainTextFile(initialText: target), contentType: .plainText) { result in
-            switch result {
-            case .success(let url):
-                print("Saved to \(url)")
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        .fileExporter(isPresented: $showingPDFExporter, document: PDFFile(initialPDF: target), contentType: .pdf) { result in
-            switch result {
-            case .success(let url):
-                print("Saved to \(url)")
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
         .confirmationDialog("Are you sure?", isPresented: $viewModel.isPresentingConfirm) {
             Button("Erase", role: .destructive) {
                 deleteContent()
@@ -96,13 +76,28 @@ struct ContentListView: View {
         } message: {
             Text(viewModel.confirmMessage)
         }
-        .confirmationDialog("Choose a file type", isPresented: $showingFileOptions, titleVisibility: .visible) {
-            Button("Plain Text") {
-                self.showingPlainTextExporter.toggle()
+        .confirmationDialog("Choose a file type", isPresented: $viewModel.showingFileOptions, titleVisibility: .visible) {
+            Button("Text") {
+                givingContentType = .plainText
+                self.viewModel.showingTextExporter.toggle() // TODO: create a helper method, eliminate repeating code
             }
             
             Button("PDF") {
-                self.showingPDFExporter.toggle()
+                givingContentType = .pdf
+                self.viewModel.showingTextExporter.toggle()
+            }
+            
+            Button("ePub") {
+                givingContentType = .epub
+                self.viewModel.showingTextExporter.toggle()
+            }
+        }
+        .fileExporter(isPresented: $viewModel.showingTextExporter, document: TextFile(initialText: viewModel.exportText), contentType: givingContentType) { result in
+            switch result {
+            case .success(let url):
+                print("Saved to \(url)")
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
         .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, onDismiss: {

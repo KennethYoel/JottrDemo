@@ -28,7 +28,7 @@ struct EditorToolbar: ToolbarContent {
             
             Menu {
                 // present the ExportView
-                Button(action: { showPromptEditor.toggle() }, label: { Label("Export", systemImage: "arrow.up.doc") })
+                Button(action: { presentExportView.toggle() }, label: { Label("Export", systemImage: "arrow.up.doc") })
                 // present the UIShareView
                 Button(action: { presentShareView.toggle() }, label: { Label("Share", systemImage: "square.and.arrow.up") })
                 
