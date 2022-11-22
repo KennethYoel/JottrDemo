@@ -12,6 +12,17 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 
+struct TrashNotice: View {
+    @Binding var showTrashNotice: Bool
+    
+    var body: some View {
+        if showTrashNotice {
+            Text("Contents are available here for 30 days. After that time, contents will be permanently deleted. This may take up to 40 days.")
+                .font(.caption)
+        }
+    }
+}
+
 struct ContentListView: View {
     // MARK: Properties
     
@@ -29,10 +40,12 @@ struct ContentListView: View {
     // toggle it to get the contents sent to trash list
     @Binding var isShowingTrashList: Bool
     var didSave = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
-    @State private var givingContentType: UTType = .plainText
     
     var body: some View {
         List {
+            TrashNotice(showTrashNotice: $isShowingTrashList)
+                .listRowSeparator(.hidden)
+            
             // for each story in the array, create a listing row. added as modifier the swipeActions
             ForEach(viewModel.listOfStories, id: \.self) { content in
                 ContentListRowView(story: content, showTrashBin: $isShowingTrashList)
@@ -52,10 +65,7 @@ struct ContentListView: View {
                             })
                         }
                         
-                        Button(action: {
-                            self.viewModel.exportText = content.wrappedComplStory
-                            self.viewModel.showingFileOptions.toggle()
-                        }, label: {
+                        Button(action: { showFileOptions(textToExport: content) }, label: {
                             Label("Export", systemImage: "arrow.up.doc")
                         })
                             .tint(.blue)
@@ -76,23 +86,12 @@ struct ContentListView: View {
         } message: {
             Text(viewModel.confirmMessage)
         }
-        .confirmationDialog("Choose a file type", isPresented: $viewModel.showingFileOptions, titleVisibility: .visible) {
-            Button("Text") {
-                givingContentType = .plainText
-                self.viewModel.showingTextExporter.toggle() // TODO: create a helper method, eliminate repeating code
-            }
-            
-            Button("PDF") {
-                givingContentType = .pdf
-                self.viewModel.showingTextExporter.toggle()
-            }
-            
-            Button("ePub") {
-                givingContentType = .epub
-                self.viewModel.showingTextExporter.toggle()
-            }
+        .confirmationDialog("Export as...", isPresented: $viewModel.showingFileOptions, titleVisibility: .visible) {
+            Button("Text", action: { showTextExporter(with: .plainText) })
+            Button("PDF", action: { showTextExporter(with: .pdf) })
+            Button("ePub", action: { showTextExporter(with: .epub) })
         }
-        .fileExporter(isPresented: $viewModel.showingTextExporter, document: TextFile(initialText: viewModel.exportText), contentType: givingContentType) { result in
+        .fileExporter(isPresented: $viewModel.showingTextExporter, document: TextFile(initialText: viewModel.exportText), contentType: viewModel.givingContentType) { result in
             switch result {
             case .success(let url):
                 print("Saved to \(url)")
@@ -100,10 +99,9 @@ struct ContentListView: View {
                 print(error.localizedDescription)
             }
         }
-        .fullScreenCover(isPresented: $viewModel.isShowingStoryEditorScreen, onDismiss: {
+        .fullScreenCover(isPresented: $viewModel.isShowingNewPageScreen, onDismiss: {
             self.isShowingRecentList = false
             self.isShowingTrashList = false
-            // still no working need to fetch the data from CoreData
         }, content: {
             NavigationView {
                 NewPageView()
@@ -113,7 +111,10 @@ struct ContentListView: View {
         .fullScreenCover(isPresented: $viewModel.isShowingAccountScreen) { AccountView() }
         .navigationTitle(pageTitle())
         .toolbar {
-            MainToolbar(isShowingNewPage: $viewModel.isShowingStoryEditorScreen, isShowingAccount: $viewModel.isShowingAccountScreen)
+            MainToolbar(
+                isShowingNewPage: $viewModel.isShowingNewPageScreen.onChange(launchNewPage),
+                isShowingAccount: $viewModel.isShowingAccountScreen
+            )
         }
         .overlay(MagnifyingGlass(showSearchScreen: $viewModel.isShowingSearchScreen), alignment: .bottomTrailing)
     }
@@ -155,31 +156,3 @@ struct ContentListView: View {
         }
     }
 }
-
-//struct PlainTextFile: FileDocument {
-//    // tell the system we support only pdf
-//    static var readableContentTypes = [UTType.plainText] // TODO: can change to .pdf but dont know if it readable
-//    
-//    // by default our document is empty
-//    var text = ""
-//    
-//    // a simple initializer that creates new, empty documents
-//    init(initialText: String = "") {
-//       text = initialText
-//    }
-//    
-//    // this initializer loads data that has been saved previously
-//    init(configuration: ReadConfiguration) throws {
-//        if let data = configuration.file.regularFileContents {
-//            text = String(decoding: data, as: UTF8.self)
-//        } else {
-//            throw CocoaError(.fileReadCorruptFile)
-//        }
-//    }
-//    
-//    // this will be called when the system wants to write our data to disk
-//    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-//        let data = Data(text.utf8)
-//        return FileWrapper(regularFileWithContents: data)
-//    }
-//}

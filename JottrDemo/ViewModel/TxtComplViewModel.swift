@@ -45,8 +45,8 @@ import SwiftUI
         
         let prompt = """
         Topic: Breakfast
-        Two-Sentence Horror Story: He always stops crying when I pour the milk on his cereal. I just have to remember not to
-        let him see his face on the carton.
+        Two-Sentence Horror Story: He always stops crying when I pour the milk on his cereal. I just have to remember not
+        to let him see his face on the carton.
         
         Topic: \(mainTheme)
         Seventy-Sentence \(theGenre) Story: \(storyPrompt)

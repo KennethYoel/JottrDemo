@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 
 struct TextFile: FileDocument {
     // tell the system we support only plainText, text, pdf and epub
-    static var readableContentTypes = [UTType.plainText, UTType.text, UTType.pdf, UTType.epub]
+    static var readableContentTypes = [UTType.plainText, UTType.pdf, UTType.epub]
     
     // by default our document is empty
     var text = ""

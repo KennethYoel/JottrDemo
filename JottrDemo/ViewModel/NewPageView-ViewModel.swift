@@ -28,6 +28,11 @@ extension NewPageView {
     
     // MARK: Helper Methods
     
+    func hideKeyboardAndSave() {
+        isInputActive = false
+        saveContext()
+    }
+    
     func promptContent() {
         if viewModel.isSubmittingPromptContent {
             Task {

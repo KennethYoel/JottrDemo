@@ -30,7 +30,6 @@
 		571A4A4A28F0570300E4F90B /* ThemePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A4928F0570300E4F90B /* ThemePickerView.swift */; };
 		571A4A4C28F057B400E4F90B /* PopoverTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A4B28F057B400E4F90B /* PopoverTextView.swift */; };
 		5744805E28F7EE1800CA1191 /* ContentListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744805D28F7EE1800CA1191 /* ContentListRowView.swift */; };
-		5744806028F8210100CA1191 /* KeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744805F28F8210100CA1191 /* KeyboardToolbar.swift */; };
 		5744806228F853F200CA1191 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744806128F853F200CA1191 /* CustomButton.swift */; };
 		574775DE2913F8FF008FEF5B /* EditorToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574775DD2913F8FF008FEF5B /* EditorToolbar.swift */; };
 		5756449C290FDF6C0093A1E4 /* PerformNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5756449B290FDF6C0093A1E4 /* PerformNavigation.swift */; };
@@ -90,7 +89,6 @@
 		571A4A4928F0570300E4F90B /* ThemePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerView.swift; sourceTree = "<group>"; };
 		571A4A4B28F057B400E4F90B /* PopoverTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverTextView.swift; sourceTree = "<group>"; };
 		5744805D28F7EE1800CA1191 /* ContentListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentListRowView.swift; sourceTree = "<group>"; };
-		5744805F28F8210100CA1191 /* KeyboardToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardToolbar.swift; sourceTree = "<group>"; };
 		5744806128F853F200CA1191 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		574775DD2913F8FF008FEF5B /* EditorToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorToolbar.swift; sourceTree = "<group>"; };
 		5756449B290FDF6C0093A1E4 /* PerformNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformNavigation.swift; sourceTree = "<group>"; };
@@ -147,7 +145,6 @@
 				570EFB602902C28400B360EB /* TextInputView.swift */,
 				571A4A3D28F02D1700E4F90B /* MainToolbar.swift */,
 				574775DD2913F8FF008FEF5B /* EditorToolbar.swift */,
-				5744805F28F8210100CA1191 /* KeyboardToolbar.swift */,
 				57DEEDF72928CAA500952CDE /* ExportFileType.swift */,
 				57E2B49228F2D047001DDC93 /* FilteredList.swift */,
 				571A4A3F28F02DAC00E4F90B /* SendButton.swift */,
@@ -468,7 +465,6 @@
 				57C0945D28FC0CD100C4D9C2 /* EmailResultAlert.swift in Sources */,
 				571A4A2028EFFE5C00E4F90B /* NewPageView.swift in Sources */,
 				57D5CA1C28FD9166005F7BA7 /* UserProfile.swift in Sources */,
-				5744806028F8210100CA1191 /* KeyboardToolbar.swift in Sources */,
 				571A4A4A28F0570300E4F90B /* ThemePickerView.swift in Sources */,
 				57F6B06D29180C9500BE3132 /* NewPageView-ViewModel.swift in Sources */,
 				571A4A4828F0569E00E4F90B /* GenrePickerView.swift in Sources */,

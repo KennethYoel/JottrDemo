@@ -6,21 +6,23 @@
 //
 
 import Foundation
+import UniformTypeIdentifiers
 
 extension ContentListDetailView {
     // MARK: Manages The Data(the logic)
     
     @MainActor class ContentListDetailVM: ObservableObject {
+        // toolbar properties
         @Published var isShowingNewPageScreen: Bool = false
-        @Published var isShowingPromptEditorScreen: Bool = false
-        @Published var isShowingEditorToolbar: Bool = false
+        @Published var showingFileOptions: Bool = false
         @Published var isShareViewPresented: Bool = false
+        @Published var isShowingPromptEditorScreen: Bool = false
         @Published var isSendingContent: Bool = false
-        // control whether we’re showing the delete confirmation alert or not
-        @Published var showingDeleteAlert = false
+        // export properties
+        @Published var showingTextExporter: Bool = false
+        @Published var givingContentType: UTType = .plainText
+        @Published var exportText: String = ""
     }
-    
-    // MARK: FileExporter Modifier
     
     // MARK: Helper Methods
     
@@ -29,7 +31,7 @@ extension ContentListDetailView {
         updateContext()
     }
     
-    func sendToStoryMaker(_ value: Bool) {
+    func sendToContentMaker(_ value: Bool) {
         if value {
             Task {
                 await txtComplVM.generateStory()
@@ -38,16 +40,9 @@ extension ContentListDetailView {
         }
     }
     
-    func launchNewPage(_ value: Bool) {
-        if value {
-            updateContext()
-            txtComplVM.sessionStory = ""
-            viewModel.isShowingNewPageScreen.toggle()
-        }
-    }
-    
-    func exportToFile() {
-        
+    func showTextExporter(with contentType: UTType) {
+        viewModel.givingContentType = contentType
+        viewModel.showingTextExporter.toggle()
     }
     
     func storyToShare() -> String {
@@ -63,8 +58,10 @@ extension ContentListDetailView {
     
     func updateContext() {
         //update the saved story
-        moc.performAndWait {
+        if !txtComplVM.sessionStory.isEmpty {
+            //add a story
             story.complStory = self.txtComplVM.sessionStory
+
             PersistenceController.shared.saveContext()
         }
     }

@@ -6,17 +6,20 @@
 //
 
 import Foundation
+import UniformTypeIdentifiers
 
 extension ContentListView {
     // MARK: Manages The Data(the logic)
     
     class ContentListViewVM: ObservableObject {
+        // collection properties
         @Published var listOfStories: [Story] = []
         @Published var contentToBeRemoved: Story? = nil
+        // toolbar properties
         @Published var isPresentingConfirm: Bool = false
         @Published var confirmDeletion: Bool = false
         @Published var isShowingLoginScreen: Bool = false
-        @Published var isShowingStoryEditorScreen: Bool = false
+        @Published var isShowingNewPageScreen: Bool = false
         @Published var isShowingAccountScreen: Bool = false
         @Published var isShowingSearchScreen: Bool = false
         @Published var isActive: Bool = false
@@ -25,9 +28,10 @@ extension ContentListView {
         Erasing the page permanently deletes it.
         You cannot undo this action.
         """
-        
+        // export properties
         @Published var showingFileOptions: Bool = false
         @Published var showingTextExporter: Bool = false
+        @Published var givingContentType: UTType = .plainText
         @Published var exportText: String = ""
     }
     
@@ -50,7 +54,23 @@ extension ContentListView {
     
     func loadList() {
         // loads when view forst appear and reloads the list for every persistence store save
-        self.viewModel.listOfStories = coreDataContent
+        viewModel.listOfStories = coreDataContent
+    }
+    
+    func launchNewPage(_ value: Bool) {
+        if value {
+            self.txtComplVM.sessionStory = ""
+        }
+    }
+    
+    func showFileOptions(textToExport: Story) {
+        viewModel.exportText = textToExport.wrappedComplStory
+        viewModel.showingFileOptions.toggle()
+    }
+    
+    func showTextExporter(with contentType: UTType) {
+        viewModel.givingContentType = contentType
+        viewModel.showingTextExporter.toggle()
     }
     
     func presentConfirmDelete(of rowContent: Story) { //for offsets: IndexSet
@@ -58,7 +78,7 @@ extension ContentListView {
         viewModel.contentToBeRemoved = rowContent
         
         // toggle switch to show confirmation dialog
-        self.viewModel.isPresentingConfirm.toggle()
+        viewModel.isPresentingConfirm.toggle()
     }
     
     func deleteContent() {

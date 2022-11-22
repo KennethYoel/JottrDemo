@@ -19,16 +19,22 @@ struct NewPageView: View {
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     // holds our Core Data managed object context (so we can delete or save stuff)
     @Environment(\.managedObjectContext) var moc
+    
+    @Environment(\.isPresented) var isPresented
+    
     // dismiss this view
     @Environment(\.dismiss) var dismissNewPage
     // returns a boolean whenever user taps on the TextEditor
     @FocusState var isInputActive: Bool
     // creates a timer publisher that fires every 3 second, and then saves the managedObjectContext
-    let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     
     var body: some View {
         TextInputView(isLoading: $txtComplVM.loading, pen: $txtComplVM.sessionStory)
             .focused($isInputActive)
+            .onAppear {
+                self.txtComplVM.sessionStory = ""
+            }
             .onReceive(timer) { _ in
                 saveContext()
             }
@@ -54,12 +60,14 @@ struct NewPageView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 topLeadingToolbar
-                EditorToolbar(showNewPage: $viewModel.isShowingNewPageScreen.onChange(reload),
-                              presentExportView: $viewModel.isShowingPromptEditorScreen,
-                              presentShareView: $viewModel.isShareViewPresented,
-                              showPromptEditor: $viewModel.isShowingPromptEditorScreen,
-                              sendingContent: $viewModel.isSendingContent.onChange(sendToStoryMaker),
-                              keyboardActive: _isInputActive)
+                EditorToolbar(
+                    showNewPage: $viewModel.isShowingNewPageScreen.onChange(reload),
+                    presentExportView: $viewModel.isShowingPromptEditorScreen,
+                    presentShareView: $viewModel.isShareViewPresented,
+                    showPromptEditor: $viewModel.isShowingPromptEditorScreen,
+                    sendingContent: $viewModel.isSendingContent.onChange(sendToStoryMaker),
+                    keyboardActive: _isInputActive
+                )
                 bottomToolbar
                 keyboardToolbarButtons
             }
@@ -92,7 +100,7 @@ struct NewPageView: View {
             GenrePickerView(genreChoices: $txtComplVM.setGenre)
                 .padding(.trailing)
             
-            Button(action: { isInputActive.toggle() }, label: { Image(systemName: "keyboard.chevron.compact.down") })
+            Button(action: hideKeyboardAndSave, label: { Image(systemName: "keyboard.chevron.compact.down") })
         }
     }
 }

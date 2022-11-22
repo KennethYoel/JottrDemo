@@ -23,13 +23,14 @@ struct SearchItemCount: View {
 struct SearchListView: View {
     @Environment(\.isSearching) var isSearching
     var searchedStoryList: [Story]
+    @Binding var category: String
 
     var body: some  View {
         // if user is searching then return the total items in the array
         if isSearching {
             SearchItemCount(totalSearched: searchedStoryList)
         } else {
-            Text("Recently Modified")
+            Text(category)
                 .padding(.leading)
                 .font(.system(.title2, design: .serif))
                 .textSelection(.enabled)
@@ -73,13 +74,22 @@ struct SearchView: View {
     @Environment(\.dismiss) private var dismiss
     @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) var narratives: FetchedResults<Story>
     @State private var searchQuery: String = ""
+    @State private var defaultCategory: String = "All"
+    var category: [String] = ["All", "Recently", "Trash"]
    
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
-                SearchListView(searchedStoryList: storyRequested)
+                Picker("Choose A Category", selection: $defaultCategory) {
+                    ForEach(category, id: \.self) {
+                        Text($0)
+                    }
+                }
+                .pickerStyle(.segmented)
+                
+                SearchListView(searchedStoryList: storyRequested, category: $defaultCategory)
             }
-            .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .always), prompt: "All") {
+            .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search") {
                 SearchableView(searchableStory: storyRequested, attributedResults: highlightedResults)
             }
             .navigationTitle("Search")
@@ -99,24 +109,37 @@ struct SearchView: View {
     // return the stories requested in searchable by the user
     var storyRequested: [Story] {
         get {
-            var storyContents: [Story] = []
+            var fetchedStories: [Story] = []
             
-            if searchQuery.isEmpty {
-                // append Story in Core Data to storyContents array
-                storyContents.append(contentsOf: narratives)
-            } else {
-                let filteredStoryContent = narratives.filter {
-                    /*
-                     localizedCaseInsensitiveContains() lets us
-                     check any part of the search strings, without
-                     worrying about uppercase or lowercase characters
-                     */
-                   $0.wrappedComplStory.localizedCaseInsensitiveContains(searchQuery)
+            let contentList: String = defaultCategory
+            switch contentList {
+            case "All":
+                // filter returns all contents that hasn't been discarded
+                let unDiscardedContent = narratives.filter {
+                    return !$0.wrappedIsDiscarded
                 }
-                storyContents.append(contentsOf: filteredStoryContent)
+                fetchedStories.append(contentsOf: unDiscardedContent)
+            case "Recently":
+                // filter returns content that hasn't been discarded from the last seven days.
+                let sortedByDate = narratives.filter {
+                    guard let unwrappedValue = $0.dateCreated else {
+                        return false
+                    } // 604800 sec. is about seven days in seconds
+                    return unwrappedValue > (Date.now - 604_800) && !$0.wrappedIsDiscarded
+                }
+                fetchedStories.append(contentsOf: sortedByDate)
+            case "Trash":
+                // filter return content that has been discarded
+                let discardedContent = narratives.filter {
+                    return $0.wrappedIsDiscarded
+                }
+                fetchedStories.append(contentsOf: discardedContent)
+            default:
+                // if all else fail return an empty array
+                return [] // TODO: maybe return an error message
             }
             
-            return storyContents
+            return fetchedStories
         }
     }
     
