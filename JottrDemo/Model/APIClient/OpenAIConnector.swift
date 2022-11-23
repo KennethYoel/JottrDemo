@@ -7,8 +7,11 @@
 
 import Combine
 import Foundation
+import SwiftUI
 
-class OpenAIConnector {
+class OpenAIConnector: ObservableObject {
+    static let standard = OpenAIConnector()
+    
     // MARK: - OpenAI API URL's:
     
     /*
@@ -60,6 +63,12 @@ class OpenAIConnector {
     
     // MARK: Authentication Properties
     
+    @Published var maxTokens: Double = 100 // Defaults to 16, most models have a context length of 2048 tokens
+    @Published var temperature: Double = 0.6 // Defaults to 1, number between 0 and 1
+    @Published var topP: Double = 1.0 // Defaults to 1, rnumber between 0 and 1
+    @Published var presencePenalty: Double = 0.0 // Defaults to 0, number between -2.0 and 2.0
+    @Published var frequencyPenalty: Double = 0.5 // Defaults to 0, number between -2.0 and 2.0
+    
     static var openAIKey: String {
       get {
         // obtain the path to our Plist file
@@ -92,6 +101,9 @@ class OpenAIConnector {
     }
     
     class func executeRequest(from url: URL, sessionPrompt: String = "", textToClassify: String = "", moderated: Bool, withSessionConfig sessionConfig: URLSessionConfiguration?) async -> Data? {
+        
+        let parameterValues: OpenAIConnector = .standard
+        
         let session: URLSession
         
         if (sessionConfig != nil) {
@@ -114,7 +126,15 @@ class OpenAIConnector {
             }
             httpBodyJson = encodedHttpBody
         } else {
-            let httpBody = Parameters(prompt: sessionPrompt, maxTokens: 100, temperature: 0.6, topP: 1.0, echo: false, presencePenalty: 0.0, frequencyPenalty: 0.5)
+            let httpBody = Parameters(
+                prompt: sessionPrompt,
+                maxTokens: Int(parameterValues.maxTokens),
+                temperature: parameterValues.temperature,
+                topP: parameterValues.topP,
+                echo: false,
+                presencePenalty: parameterValues.presencePenalty,
+                frequencyPenalty: parameterValues.frequencyPenalty
+            )
             guard let encodedHttpBody = try? JSONEncoder().encode(httpBody) else { // error with casting from one to another
                 debugPrint("Failed to encode request")
                 return nil

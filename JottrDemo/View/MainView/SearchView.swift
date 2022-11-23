@@ -65,21 +65,21 @@ struct SearchableView: View {
     }
 }
 
-// composite view
+// composite search view
 struct SearchView: View {
     // MARK: Properties
     
     @EnvironmentObject var txtComplVM: TxtComplViewModel
-    @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.dismiss) private var dismiss
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) var narratives: FetchedResults<Story>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) var stories: FetchedResults<Story>
     @State private var searchQuery: String = ""
     @State private var defaultCategory: String = "All"
-    var category: [String] = ["All", "Recently", "Trash"]
+    var category: [String] = ["All", "Recent", "Trash"]
    
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
+                // gives the user the option to search in either all content, most recent, or trash bin
                 Picker("Choose A Category", selection: $defaultCategory) {
                     ForEach(category, id: \.self) {
                         Text($0)
@@ -87,17 +87,16 @@ struct SearchView: View {
                 }
                 .pickerStyle(.segmented)
                 
-                SearchListView(searchedStoryList: storyRequested, category: $defaultCategory)
+                SearchListView(searchedStoryList: contentRequested, category: $defaultCategory)
             }
             .searchable(text: $searchQuery, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search") {
-                SearchableView(searchableStory: storyRequested, attributedResults: highlightedResults)
+                SearchableView(searchableStory: contentRequested, attributedResults: highlightedResults)
             }
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
-//                        dismissSearch()
                         dismiss()
                     }
                     .buttonStyle(.plain)
@@ -107,7 +106,7 @@ struct SearchView: View {
     }
     
     // return the stories requested in searchable by the user
-    var storyRequested: [Story] {
+    var contentRequested: [Story] {
         get {
             var fetchedStories: [Story] = []
             
@@ -115,13 +114,13 @@ struct SearchView: View {
             switch contentList {
             case "All":
                 // filter returns all contents that hasn't been discarded
-                let unDiscardedContent = narratives.filter {
+                let unDiscardedContent = stories.filter {
                     return !$0.wrappedIsDiscarded
                 }
                 fetchedStories.append(contentsOf: unDiscardedContent)
-            case "Recently":
+            case "Recent":
                 // filter returns content that hasn't been discarded from the last seven days.
-                let sortedByDate = narratives.filter {
+                let sortedByDate = stories.filter {
                     guard let unwrappedValue = $0.dateCreated else {
                         return false
                     } // 604800 sec. is about seven days in seconds
@@ -130,7 +129,7 @@ struct SearchView: View {
                 fetchedStories.append(contentsOf: sortedByDate)
             case "Trash":
                 // filter return content that has been discarded
-                let discardedContent = narratives.filter {
+                let discardedContent = stories.filter {
                     return $0.wrappedIsDiscarded
                 }
                 fetchedStories.append(contentsOf: discardedContent)
@@ -148,7 +147,7 @@ struct SearchView: View {
         get {
             var attributedResults: [AttributedString] = []
             
-            for item in storyRequested {
+            for item in contentRequested {
                 // convert the item String to AttributedString
                 debugPrint(item.wrappedComplStory.lines.count) // total number of \n lines in each story
                 var attributedItem = AttributedString(item.wrappedComplStory)

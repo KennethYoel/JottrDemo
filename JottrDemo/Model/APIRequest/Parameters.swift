@@ -40,8 +40,8 @@ struct Parameters: Codable {
 }
 /*
  A UUID is a universally unique identifier, which means if you generate a UUID right now using UUID it's guaranteed to be
- unique across all devices in the world. This means it's a great way to generate a unique identifier for users, for files, or
- anything else you need to reference individually – guaranteed.
+ unique across all devices in the world. This means it's a great way to generate a unique identifier for users, for files,
+ or anything else you need to reference individually – guaranteed.
  */
 
 /*

@@ -12,6 +12,7 @@ import SwiftUI
 
 // MARK: Custom Views
 
+// sub-view displays the user's profile image
 struct UserImage: View {
     /*
      Given the URL of the user’s picture, this view asynchronously
@@ -51,6 +52,7 @@ struct UserImage: View {
     }
 }
 
+// sub-view displays the user's email address
 struct EmailAddress: View {
     var address: String
     
@@ -62,6 +64,7 @@ struct EmailAddress: View {
     }
 }
 
+// sub-view displays the user's details
 struct UserDetails: View {
     var userProfile: UserProfile
     
@@ -75,6 +78,7 @@ struct UserDetails: View {
     }
 }
 
+// sub-view displays the UserView in AccountView
 struct UserView: View {
     var userProfile: UserProfile
     
@@ -86,6 +90,63 @@ struct UserView: View {
     }
 }
 
+// sub-view displays the parameters slider options for OpenAI completion engine
+struct AIParametersView: View {
+    @ObservedObject var parameters: OpenAIConnector = .standard
+    
+    var body: some View {
+        // set the OpenAI parameters; locked at first user needs to pay for premium features
+        Text("AI Settings")
+        VStack(alignment: .leading) {
+            Group {
+                // Response Length
+                Text("Token Length") //need to create a seperate view, way too many views here
+                    .font(.body)
+                Text("Affects the max amount of characters the AI will return")
+                    .font(.caption)
+                Text("\(Int(parameters.maxTokens))")
+                Slider(value: $parameters.maxTokens, in: 1...2048)
+                
+                // Temperature
+                Text("Temperature")
+                    .font(.body)
+                Text("Affects the randomness of the AI. Higher values mean more randomness")
+                    .font(.caption)
+                Text("\(parameters.temperature, specifier: "%.1f")")
+                Slider(value: $parameters.temperature, in: 0...1)
+            }
+            Group {
+                // Top P
+                Text("Top P")
+                    .font(.body)
+                Text("An alternative to sampling with temperature. Affects the randomness of the AI. Higher values mean more randomness. We generally recommend altering this or temperature but not both.")
+                    .font(.caption)
+                Text("\(parameters.topP, specifier: "%.1f")")
+                Slider(value: $parameters.topP, in: 0...1)
+                
+                // Appearance Penalty
+                Text("Appearance Penalty")
+                    .font(.body)
+                Text("Penalizes repetition at the cost of more random outputs.")
+                    .font(.caption)
+                Text("\(parameters.presencePenalty, specifier: "%.1f")")
+                Slider(value: $parameters.presencePenalty, in: -2.0...2.0)
+            }
+            Group {
+                // Repetition Penalty
+                Text("Repetition Penalty")
+                    .font(.body)
+                Text("Penalizes repetition at the sake of more random outputs.")
+                    .font(.caption)
+                Text("\(parameters.frequencyPenalty, specifier: "%.1f")")
+                Slider(value: $parameters.frequencyPenalty, in: -2.0...2.0)
+            }
+            
+        }
+    }
+}
+
+// composite account view
 struct AccountView: View {
     // MARK: Properties
 
@@ -97,6 +158,7 @@ struct AccountView: View {
         NavigationView {
             Form {
                 Section {
+                    // login to show the user's details and load user's app settings
                     if viewModel.isAuthenticated {
                         HStack {
                             UserView(userProfile: viewModel.userProfile)
@@ -111,22 +173,40 @@ struct AccountView: View {
                 }
                 
                 Section {
+                    // contact options for the user
                     Button("Contact Support", action: { viewModel.sendEmail() })
-
-    //                if viewModel.emailResult != nil {
-    //                    Text(String(describing: emailResult))
-    //                }
-                    
+                    // once the app is on the store, the user can leave a review
                     Button("Leave Feedback") {
                         storeReview.requestReview()
                    }
                 }
                 
                 Section {
-                    Text("View Account Settings")
+                    AIParametersView()
+                    /*
+                     Temperature
+                     Affects the randomness of the AI. Higher values mean more randomness
+                     
+                     Response Length
+                     Affects the max amount of characters the ai will return
+                     
+                     Top K = 
+                     Penalizes repetition at the cost of more random outputs
+                     
+                     Top P
+                     An alternative to sampling with temperature. Affects the randomness of the ai. Higher values mean more
+                     randomness. We generally recommend altering this or temperature but not both.
+                     
+                     Repetition Penalty = presence penalty
+                     Penalizes repetition at the sake of more random outputs.
+                     
+                     Memory Length: 1024 = max_tokens
+                     1 - 1024
+                     */
                 }
                 
                 Section {
+                    // logout of the account
                     Button("Logout", action: { viewModel.logout() })
                 }
                 .disabled(!viewModel.isAuthenticated)
