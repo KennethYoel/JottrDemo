@@ -100,12 +100,12 @@ struct AIParametersView: View {
         VStack(alignment: .leading) {
             Group {
                 // Response Length
-                Text("Token Length") //need to create a seperate view, way too many views here
+                Text("Token Length")
                     .font(.body)
                 Text("Affects the max amount of characters the AI will return")
                     .font(.caption)
                 Text("\(Int(parameters.maxTokens))")
-                Slider(value: $parameters.maxTokens, in: 1...2048)
+                Slider(value: $parameters.maxTokens, in: 1...2048, step: 1)
                 
                 // Temperature
                 Text("Temperature")
@@ -113,7 +113,7 @@ struct AIParametersView: View {
                 Text("Affects the randomness of the AI. Higher values mean more randomness")
                     .font(.caption)
                 Text("\(parameters.temperature, specifier: "%.1f")")
-                Slider(value: $parameters.temperature, in: 0...1)
+                Slider(value: $parameters.temperature, in: 0...1, step: 0.1)
             }
             Group {
                 // Top P
@@ -122,7 +122,7 @@ struct AIParametersView: View {
                 Text("An alternative to sampling with temperature. Affects the randomness of the AI. Higher values mean more randomness. We generally recommend altering this or temperature but not both.")
                     .font(.caption)
                 Text("\(parameters.topP, specifier: "%.1f")")
-                Slider(value: $parameters.topP, in: 0...1)
+                Slider(value: $parameters.topP, in: 0...1, step: 0.1)
                 
                 // Appearance Penalty
                 Text("Appearance Penalty")
@@ -130,7 +130,7 @@ struct AIParametersView: View {
                 Text("Penalizes repetition at the cost of more random outputs.")
                     .font(.caption)
                 Text("\(parameters.presencePenalty, specifier: "%.1f")")
-                Slider(value: $parameters.presencePenalty, in: -2.0...2.0)
+                Slider(value: $parameters.presencePenalty, in: -2.0...2.0, step: 0.1)
             }
             Group {
                 // Repetition Penalty
@@ -139,7 +139,7 @@ struct AIParametersView: View {
                 Text("Penalizes repetition at the sake of more random outputs.")
                     .font(.caption)
                 Text("\(parameters.frequencyPenalty, specifier: "%.1f")")
-                Slider(value: $parameters.frequencyPenalty, in: -2.0...2.0)
+                Slider(value: $parameters.frequencyPenalty, in: -2.0...2.0, step: 0.1)
             }
             
         }
@@ -182,27 +182,27 @@ struct AccountView: View {
                 }
                 
                 Section {
-                    AIParametersView()
                     /*
                      Temperature
                      Affects the randomness of the AI. Higher values mean more randomness
                      
-                     Response Length
+                     Response Length = max_token??
                      Affects the max amount of characters the ai will return
                      
-                     Top K = 
+                     Top K = presence_penalty
                      Penalizes repetition at the cost of more random outputs
                      
                      Top P
                      An alternative to sampling with temperature. Affects the randomness of the ai. Higher values mean more
                      randomness. We generally recommend altering this or temperature but not both.
                      
-                     Repetition Penalty = presence penalty
+                     Repetition Penalty = frequency= penalty
                      Penalizes repetition at the sake of more random outputs.
                      
-                     Memory Length: 1024 = max_tokens
+                     Memory Length: 1024 = max_tokens??
                      1 - 1024
                      */
+                    AIParametersView()
                 }
                 
                 Section {
