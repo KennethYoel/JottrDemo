@@ -108,7 +108,7 @@ struct ContentListView: View {
             }
         })
         .fullScreenCover(isPresented: $viewModel.isShowingSearchScreen) { SearchView() }
-        .fullScreenCover(isPresented: $viewModel.isShowingAccountScreen) { AccountView() }
+        .sheet(isPresented: $viewModel.isShowingAccountScreen) { AccountView() }
         .navigationTitle(pageTitle())
         .toolbar {
             MainToolbar(

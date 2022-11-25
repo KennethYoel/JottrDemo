@@ -16,11 +16,13 @@ extension AccountView {
     
     @MainActor class AccountViewVM: ObservableObject {
         // MARK: Properties
+        
         @Published var isAuthenticated: Bool = false
         @Published var userProfile: UserProfile = UserProfile.empty
         @Published var emailResult: Result<MFMailComposeResult, Error>? = nil
         @Published var isShowingMailView: Bool = false
         @Published var isShowingSendEmailAlert: Bool = false
+        @Published var isShowingAdvanceSettings: Bool = false
         
         // MARK: Methods
         

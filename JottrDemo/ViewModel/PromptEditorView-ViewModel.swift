@@ -17,6 +17,7 @@ extension PromptEditorView {
         @Published var isShowingThemePopover: Bool = false
         @Published var isShowingPremisePopover: Bool = false
         @Published var isShowingBannedPopover: Bool = false
+        @Published var isShowingAdvanceSettings: Bool = false
         
         // MARK: Methods
         

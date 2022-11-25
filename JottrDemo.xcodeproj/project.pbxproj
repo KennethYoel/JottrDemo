@@ -231,6 +231,7 @@
 				5779E9BE28DEE7A900FA58C0 /* SupportingFiles */,
 				5779E9BF28DEE7BB00FA58C0 /* Resources */,
 				5779E9B328DEE62D00FA58C0 /* Preview Content */,
+				571BF4D7292F8D0200E71053 /* Info.plist */,
 			);
 			path = JottrDemo;
 			sourceTree = "<group>";
@@ -259,7 +260,6 @@
 			isa = PBXGroup;
 			children = (
 				57D5CA1728FD7832005F7BA7 /* Auth0.plist */,
-				571BF4D7292F8D0200E71053 /* Info.plist */,
 				57FC683C28EE048100FB2DE8 /* OpenAI-Info.plist */,
 			);
 			path = SupportingFiles;

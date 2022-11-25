@@ -80,6 +80,12 @@ struct PromptEditorView: View {
                 }
                 
                 Section {
+                    Button("Advance Settings", action: { viewModel.isShowingAdvanceSettings.toggle() })
+                        .buttonStyle(.plain)
+                        .padding()
+                }
+                
+                Section {
                     HStack {
                         Spacer()
                             
@@ -93,6 +99,7 @@ struct PromptEditorView: View {
                     }
                 }
             }
+            .sheet(isPresented: $viewModel.isShowingAdvanceSettings) { AccountDetailView() }
             .navigationTitle("Prompt Editor")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

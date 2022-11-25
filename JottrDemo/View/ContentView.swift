@@ -170,7 +170,8 @@ struct ContentView: View {
                     NewPageView()
                 }
             })
-            .fullScreenCover(isPresented: $viewModel.isShowingAccountScreen) { AccountView()
+            .sheet(isPresented: $viewModel.isShowingAccountScreen) {
+                AccountView()
             }
             .fullScreenCover(isPresented: $viewModel.isShowingSearchScreen) {
                 SearchView()

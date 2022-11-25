@@ -44,7 +44,8 @@ struct SearchListView: View {
                     .font(.system(.subheadline, design: .serif))
                     .lineLimit(3)  // limit the amount of text shown in each item in the list
             }
-        }.listStyle(.inset)
+        }
+        .listStyle(.inset)
     }
 }
 
