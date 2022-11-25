@@ -89,7 +89,7 @@
 		571A4A4928F0570300E4F90B /* ThemePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerView.swift; sourceTree = "<group>"; };
 		571A4A4B28F057B400E4F90B /* PopoverTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverTextView.swift; sourceTree = "<group>"; };
 		571BF4D5292F571B00E71053 /* spacetimeCurvature.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spacetimeCurvature.gif; sourceTree = "<group>"; };
-		571BF4D7292F8D0200E71053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		571BF4D7292F8D0200E71053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		571BF4D8292F976F00E71053 /* PromptEditorView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PromptEditorView-ViewModel.swift"; sourceTree = "<group>"; };
 		571BF4DA2931174E00E71053 /* AccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailView.swift; sourceTree = "<group>"; };
 		5744805D28F7EE1800CA1191 /* ContentListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentListRowView.swift; sourceTree = "<group>"; };
@@ -223,7 +223,6 @@
 		5779E9AC28DEE62800FA58C0 /* JottrDemo */ = {
 			isa = PBXGroup;
 			children = (
-				571BF4D7292F8D0200E71053 /* Info.plist */,
 				5779E9AD28DEE62800FA58C0 /* JottrDemoApp.swift */,
 				5779E9C028DEE82700FA58C0 /* View */,
 				57FC684028EE0DF200FB2DE8 /* ViewModel */,
@@ -260,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				57D5CA1728FD7832005F7BA7 /* Auth0.plist */,
+				571BF4D7292F8D0200E71053 /* Info.plist */,
 				57FC683C28EE048100FB2DE8 /* OpenAI-Info.plist */,
 			);
 			path = SupportingFiles;
