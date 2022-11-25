@@ -29,6 +29,8 @@
 		571A4A4828F0569E00E4F90B /* GenrePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A4728F0569E00E4F90B /* GenrePickerView.swift */; };
 		571A4A4A28F0570300E4F90B /* ThemePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A4928F0570300E4F90B /* ThemePickerView.swift */; };
 		571A4A4C28F057B400E4F90B /* PopoverTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A4B28F057B400E4F90B /* PopoverTextView.swift */; };
+		571BF4D6292F571B00E71053 /* spacetimeCurvature.gif in Resources */ = {isa = PBXBuildFile; fileRef = 571BF4D5292F571B00E71053 /* spacetimeCurvature.gif */; };
+		571BF4D9292F976F00E71053 /* PromptEditorView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571BF4D8292F976F00E71053 /* PromptEditorView-ViewModel.swift */; };
 		5744805E28F7EE1800CA1191 /* ContentListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744805D28F7EE1800CA1191 /* ContentListRowView.swift */; };
 		5744806228F853F200CA1191 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744806128F853F200CA1191 /* CustomButton.swift */; };
 		574775DE2913F8FF008FEF5B /* EditorToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574775DD2913F8FF008FEF5B /* EditorToolbar.swift */; };
@@ -48,7 +50,6 @@
 		5779E9CB28DF834B00FA58C0 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5779E9CA28DF834B00FA58C0 /* Parameters.swift */; };
 		579334B8291E6F7000DE80A8 /* TrashBin+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579334B7291E6F7000DE80A8 /* TrashBin+CoreDataClass.swift */; };
 		579334BA291E6FF800DE80A8 /* TrashBin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579334B9291E6FF800DE80A8 /* TrashBin+CoreDataProperties.swift */; };
-		57B83EAF28FEC9D20066DB92 /* ouroboros.gif in Resources */ = {isa = PBXBuildFile; fileRef = 57B83EAE28FEC9D20066DB92 /* ouroboros.gif */; };
 		57C0945D28FC0CD100C4D9C2 /* EmailResultAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C0945C28FC0CD100C4D9C2 /* EmailResultAlert.swift */; };
 		57CBF0AC29031B7A004E8A4A /* ContentListView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CBF0AB29031B7A004E8A4A /* ContentListView-ViewModel.swift */; };
 		57D5CA1628FD76A1005F7BA7 /* Auth0 in Frameworks */ = {isa = PBXBuildFile; productRef = 57D5CA1528FD76A1005F7BA7 /* Auth0 */; };
@@ -86,6 +87,9 @@
 		571A4A4728F0569E00E4F90B /* GenrePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenrePickerView.swift; sourceTree = "<group>"; };
 		571A4A4928F0570300E4F90B /* ThemePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerView.swift; sourceTree = "<group>"; };
 		571A4A4B28F057B400E4F90B /* PopoverTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverTextView.swift; sourceTree = "<group>"; };
+		571BF4D5292F571B00E71053 /* spacetimeCurvature.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spacetimeCurvature.gif; sourceTree = "<group>"; };
+		571BF4D7292F8D0200E71053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		571BF4D8292F976F00E71053 /* PromptEditorView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PromptEditorView-ViewModel.swift"; sourceTree = "<group>"; };
 		5744805D28F7EE1800CA1191 /* ContentListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentListRowView.swift; sourceTree = "<group>"; };
 		5744806128F853F200CA1191 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		574775DD2913F8FF008FEF5B /* EditorToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorToolbar.swift; sourceTree = "<group>"; };
@@ -105,7 +109,6 @@
 		5779E9CA28DF834B00FA58C0 /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
 		579334B7291E6F7000DE80A8 /* TrashBin+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrashBin+CoreDataClass.swift"; sourceTree = "<group>"; };
 		579334B9291E6FF800DE80A8 /* TrashBin+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrashBin+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		57B83EAE28FEC9D20066DB92 /* ouroboros.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ouroboros.gif; sourceTree = "<group>"; };
 		57C0945C28FC0CD100C4D9C2 /* EmailResultAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailResultAlert.swift; sourceTree = "<group>"; };
 		57CBF0AB29031B7A004E8A4A /* ContentListView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentListView-ViewModel.swift"; sourceTree = "<group>"; };
 		57D5CA1728FD7832005F7BA7 /* Auth0.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
@@ -217,6 +220,7 @@
 		5779E9AC28DEE62800FA58C0 /* JottrDemo */ = {
 			isa = PBXGroup;
 			children = (
+				571BF4D7292F8D0200E71053 /* Info.plist */,
 				5779E9AD28DEE62800FA58C0 /* JottrDemoApp.swift */,
 				5779E9C028DEE82700FA58C0 /* View */,
 				57FC684028EE0DF200FB2DE8 /* ViewModel */,
@@ -263,8 +267,8 @@
 			children = (
 				5779E9B128DEE62D00FA58C0 /* Assets.xcassets */,
 				5779E9C128DF815F00FA58C0 /* openairesponse.json */,
-				57B83EAE28FEC9D20066DB92 /* ouroboros.gif */,
 				5777670628F5CF47008C888B /* darwin.gif */,
+				571BF4D5292F571B00E71053 /* spacetimeCurvature.gif */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -314,6 +318,7 @@
 				57CBF0AB29031B7A004E8A4A /* ContentListView-ViewModel.swift */,
 				571A4A3728F0207400E4F90B /* ContentListDetailView-ViewModel.swift */,
 				57F6B06C29180C9500BE3132 /* NewPageView-ViewModel.swift */,
+				571BF4D8292F976F00E71053 /* PromptEditorView-ViewModel.swift */,
 				57D5CA1D28FDD6D0005F7BA7 /* AccountView-ViewModel.swift */,
 				577766FF28F400DC008C888B /* CustomError-ViewModel.swift */,
 				57E2B48E28F2CF31001DDC93 /* ViewModel-Extensions.swift */,
@@ -392,9 +397,9 @@
 				57D5CA1828FD7832005F7BA7 /* Auth0.plist in Resources */,
 				5779E9C228DF815F00FA58C0 /* openairesponse.json in Resources */,
 				5779E9B528DEE62D00FA58C0 /* Preview Assets.xcassets in Resources */,
-				57B83EAF28FEC9D20066DB92 /* ouroboros.gif in Resources */,
 				5777670728F5CF47008C888B /* darwin.gif in Resources */,
 				5779E9B228DEE62D00FA58C0 /* Assets.xcassets in Resources */,
+				571BF4D6292F571B00E71053 /* spacetimeCurvature.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +431,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				571BF4D9292F976F00E71053 /* PromptEditorView-ViewModel.swift in Sources */,
 				571A4A3C28F02CAD00E4F90B /* TextEditorView.swift in Sources */,
 				571A4A3E28F02D1700E4F90B /* MainToolbar.swift in Sources */,
 				571A4A1828EFF99100E4F90B /* PromptEditorView.swift in Sources */,
@@ -604,9 +610,9 @@
 				DEVELOPMENT_TEAM = MYK9549KKA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = JottrDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -633,9 +639,9 @@
 				DEVELOPMENT_TEAM = MYK9549KKA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = JottrDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

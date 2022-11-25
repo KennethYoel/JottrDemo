@@ -102,7 +102,7 @@ struct AIParametersView: View {
                 // Response Length
                 Text("Token Length")
                     .font(.body)
-                Text("Affects the max amount of characters the AI will return")
+                Text("Affects the max amount of characters the AI will return.")
                     .font(.caption)
                 Text("\(Int(parameters.maxTokens))")
                 Slider(
@@ -120,7 +120,7 @@ struct AIParametersView: View {
                 // Temperature
                 Text("Temperature")
                     .font(.body)
-                Text("Affects the randomness of the AI. Higher values mean more randomness")
+                Text("Affects the randomness of the AI. Higher values mean more randomness.")
                     .font(.caption)
                 Text("\(parameters.temperature, specifier: "%.1f")")
                 Slider(
@@ -139,7 +139,7 @@ struct AIParametersView: View {
                 // Top P
                 Text("Top P")
                     .font(.body)
-                Text("An alternative to sampling with temperature. Affects the randomness of the AI. Higher values mean more randomness. We generally recommend altering this or temperature but not both.")
+                Text("An alternative to sampling with temperature. Higher values mean more randomness. We generally recommend altering this or temperature but not both.")
                     .font(.caption)
                 Text("\(parameters.topP, specifier: "%.1f")")
                 Slider(

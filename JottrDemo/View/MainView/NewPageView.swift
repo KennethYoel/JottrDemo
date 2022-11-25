@@ -22,7 +22,7 @@ struct NewPageView: View {
     
     @Environment(\.isPresented) var isPresented
     
-    // dismiss this view
+    // dismisses this view
     @Environment(\.dismiss) var dismissNewPage
     // returns a boolean whenever user taps on the TextEditor
     @FocusState var isInputActive: Bool
