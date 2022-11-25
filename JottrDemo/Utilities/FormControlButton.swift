@@ -8,10 +8,11 @@
 import Foundation
 import SwiftUI
 
-struct CustomButton: ButtonStyle {
+struct FormControlButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 1.2 : 1)
+            .font(.system(size: 17, weight: .semibold, design: .serif))
+            .scaleEffect(configuration.isPressed ? 1.5 : 1)
             .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
     }
 }

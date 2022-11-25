@@ -12,6 +12,8 @@ extension ContentListView {
     // MARK: Manages The Data(the logic)
     
     class ContentListViewVM: ObservableObject {
+        //MARK: Properties
+        
         // collection properties
         @Published var listOfStories: [Story] = []
         @Published var contentToBeRemoved: Story? = nil

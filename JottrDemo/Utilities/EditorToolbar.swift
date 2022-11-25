@@ -25,6 +25,8 @@ struct EditorToolbar: ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
             // present a new page for content writing
             Button(action: { showNewPage.toggle() }, label: { Label("New Story", systemImage: "square.and.pencil") })
+                .buttonStyle(.plain)
+                .padding(.trailing)
             
             Menu {
                 // present the ExportView
@@ -42,6 +44,7 @@ struct EditorToolbar: ToolbarContent {
                  Image(systemName: "ellipsis.circle")
             }
             .foregroundColor(.black)
+            .padding(.trailing)
             
             // show submit button if keyboard is active
             if keyboardActive {

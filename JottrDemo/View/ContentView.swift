@@ -36,7 +36,7 @@ struct ContentListSectionView: View {
                 self.currentView = tagValue
             } label: {
                 Label(labelTitle, systemImage: labelImage)
-                    .headerStyle()
+                    .subHeaderStyle()
             }
             .buttonStyle(.plain)
         }

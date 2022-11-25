@@ -37,7 +37,7 @@ extension Text {
 
 // custom view extension, for reusing a label layout-bundle together for one use case
 extension Label {
-    func headerStyle() -> some View {
+    func subHeaderStyle() -> some View {
         self
             .font(.system(.subheadline, design: .serif))
     }
@@ -113,22 +113,6 @@ extension View {
     
     func macOS<Content: View>(_ modifier: (Self) -> Content) -> some View {
         #if os(macOS)
-        return modifier(self)
-        #else
-        return self
-        #endif
-    }
-    
-    func tvOS<Content: View>(_ modifier: (Self) -> Content) -> some View {
-        #if os(tvOS)
-        return modifier(self)
-        #else
-        return self
-        #endif
-    }
-    
-    func watchOS<Content: View>(_ modifier: (Self) -> Content) -> some View {
-        #if os(watchOS)
         return modifier(self)
         #else
         return self

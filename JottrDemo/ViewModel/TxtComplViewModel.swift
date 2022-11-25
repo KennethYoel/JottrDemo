@@ -9,8 +9,9 @@ import Foundation
 import SwiftUI
 
 @MainActor class TxtComplViewModel: ObservableObject {
+    // MARK: Properties
+    
     @Published var promptLoader: String = ""
-    // use ... private(set) var ... to ensure only the class itself can write to this value, reading can be done by anyone
     @Published var sessionStory: String = ""
     @Published var setTheme: CommonTheme = .custom
     @Published var customTheme: String = ""
@@ -20,6 +21,8 @@ import SwiftUI
     @Published var errorMessage: String = ""
     
     static let standard = TxtComplViewModel()
+    
+    // MARK: Methods
     
     func generateStory() async {
         var theTheme = ""
@@ -40,13 +43,13 @@ import SwiftUI
         await getTextResponse(moderated: false, sessionStory: textResults)
     }
     
+    // create the prompt for the OpenAI API parameter
     func promptDesign(_ mainTheme: String = "", _ storyPrompt: String) -> String {
         let theGenre: String = setGenre.id
         
         let prompt = """
         Topic: Breakfast
-        Two-Sentence Horror Story: He always stops crying when I pour the milk on his cereal. I just have to remember not
-        to let him see his face on the carton.
+        Seventy-Sentence Horror Story: He always stops crying when I pour the milk on his cereal. I just have to remember not to let him see his face on the carton.
         
         Topic: \(mainTheme)
         Seventy-Sentence \(theGenre) Story: \(storyPrompt)
@@ -55,6 +58,7 @@ import SwiftUI
         return prompt
     }
     
+    // send the text data to OpenAI API
     func getTextResponse(moderated: Bool, sessionStory: String) async {
         loading.toggle()
     
@@ -85,9 +89,6 @@ import SwiftUI
         let newText = data.choices[0].completionText
         self.appendToStory(sessionStory: newText)
         loading.toggle()
-        //        DispatchQueue.main.async {
-        //            self.state = .loaded(completedText) no longer need DispatchQueue weil using MainActor
-        //        }
     }
     
     func appendToStory(sessionStory: String) {

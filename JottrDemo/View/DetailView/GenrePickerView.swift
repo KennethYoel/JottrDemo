@@ -43,12 +43,12 @@ struct GenrePickerView: View {
             Spacer()
             
             Text("Genre_")
-                .font(.custom("Futura", size: 15))
+                .font(.system(size: 15, weight: .semibold, design: .serif))
             
             Picker("Genre", selection: $genreChoices) {
                 ForEach(CommonGenre.allCases) {
                     Text($0.id).tag($0)
-                        .font(.custom("Futura", size: 15))
+                        .font(.system(size: 15, weight: .semibold, design: .serif))
                 }
             }
             .pickerStyle(.menu)

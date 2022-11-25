@@ -31,8 +31,9 @@
 		571A4A4C28F057B400E4F90B /* PopoverTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571A4A4B28F057B400E4F90B /* PopoverTextView.swift */; };
 		571BF4D6292F571B00E71053 /* spacetimeCurvature.gif in Resources */ = {isa = PBXBuildFile; fileRef = 571BF4D5292F571B00E71053 /* spacetimeCurvature.gif */; };
 		571BF4D9292F976F00E71053 /* PromptEditorView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571BF4D8292F976F00E71053 /* PromptEditorView-ViewModel.swift */; };
+		571BF4DB2931174F00E71053 /* AccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571BF4DA2931174E00E71053 /* AccountDetailView.swift */; };
 		5744805E28F7EE1800CA1191 /* ContentListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744805D28F7EE1800CA1191 /* ContentListRowView.swift */; };
-		5744806228F853F200CA1191 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744806128F853F200CA1191 /* CustomButton.swift */; };
+		5744806228F853F200CA1191 /* FormControlButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744806128F853F200CA1191 /* FormControlButton.swift */; };
 		574775DE2913F8FF008FEF5B /* EditorToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574775DD2913F8FF008FEF5B /* EditorToolbar.swift */; };
 		5772A73B28F8A0320010C423 /* StoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5772A73A28F8A0320010C423 /* StoreReviewHelper.swift */; };
 		5777670028F400DC008C888B /* CustomError-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577766FF28F400DC008C888B /* CustomError-ViewModel.swift */; };
@@ -90,8 +91,9 @@
 		571BF4D5292F571B00E71053 /* spacetimeCurvature.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spacetimeCurvature.gif; sourceTree = "<group>"; };
 		571BF4D7292F8D0200E71053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		571BF4D8292F976F00E71053 /* PromptEditorView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PromptEditorView-ViewModel.swift"; sourceTree = "<group>"; };
+		571BF4DA2931174E00E71053 /* AccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailView.swift; sourceTree = "<group>"; };
 		5744805D28F7EE1800CA1191 /* ContentListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentListRowView.swift; sourceTree = "<group>"; };
-		5744806128F853F200CA1191 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		5744806128F853F200CA1191 /* FormControlButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormControlButton.swift; sourceTree = "<group>"; };
 		574775DD2913F8FF008FEF5B /* EditorToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorToolbar.swift; sourceTree = "<group>"; };
 		5772A73A28F8A0320010C423 /* StoreReviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReviewHelper.swift; sourceTree = "<group>"; };
 		577766FF28F400DC008C888B /* CustomError-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomError-ViewModel.swift"; sourceTree = "<group>"; };
@@ -146,7 +148,7 @@
 				574775DD2913F8FF008FEF5B /* EditorToolbar.swift */,
 				57DEEDF72928CAA500952CDE /* ExportFileType.swift */,
 				571A4A3F28F02DAC00E4F90B /* SendButton.swift */,
-				5744806128F853F200CA1191 /* CustomButton.swift */,
+				5744806128F853F200CA1191 /* FormControlButton.swift */,
 				571A4A2C28F0193200E4F90B /* UIViewController.swift */,
 				5772A73A28F8A0320010C423 /* StoreReviewHelper.swift */,
 				57C0945C28FC0CD100C4D9C2 /* EmailResultAlert.swift */,
@@ -159,6 +161,7 @@
 			children = (
 				571A4A1D28EFFE1D00E4F90B /* ContentListDetailView.swift */,
 				571A4A1728EFF99100E4F90B /* PromptEditorView.swift */,
+				571BF4DA2931174E00E71053 /* AccountDetailView.swift */,
 				571A4A4B28F057B400E4F90B /* PopoverTextView.swift */,
 				571A4A4728F0569E00E4F90B /* GenrePickerView.swift */,
 				571A4A4928F0570300E4F90B /* ThemePickerView.swift */,
@@ -449,6 +452,7 @@
 				5779E9B028DEE62800FA58C0 /* ContentView.swift in Sources */,
 				5779E9C428DF821500FA58C0 /* OpenAIResponse.swift in Sources */,
 				5744805E28F7EE1800CA1191 /* ContentListRowView.swift in Sources */,
+				571BF4DB2931174F00E71053 /* AccountDetailView.swift in Sources */,
 				5772A73B28F8A0320010C423 /* StoreReviewHelper.swift in Sources */,
 				5779E9AE28DEE62800FA58C0 /* JottrDemoApp.swift in Sources */,
 				5779E9CB28DF834B00FA58C0 /* Parameters.swift in Sources */,
@@ -459,7 +463,7 @@
 				570EFB612902C28400B360EB /* TextInputView.swift in Sources */,
 				5777670228F57E74008C888B /* MagnifyingGlass.swift in Sources */,
 				571A4A2D28F0193200E4F90B /* UIViewController.swift in Sources */,
-				5744806228F853F200CA1191 /* CustomButton.swift in Sources */,
+				5744806228F853F200CA1191 /* FormControlButton.swift in Sources */,
 				571A4A4028F02DAC00E4F90B /* SendButton.swift in Sources */,
 				5777670028F400DC008C888B /* CustomError-ViewModel.swift in Sources */,
 				57C0945D28FC0CD100C4D9C2 /* EmailResultAlert.swift in Sources */,

@@ -42,12 +42,12 @@ struct ThemePickerView: View {
             Spacer()
             
             Text("Theme ...")
-                .font(.custom("Futura", size: 15))
+                .font(.system(size: 15, weight: .semibold, design: .serif))
             
             Picker("Theme", selection: $themeChoices) {
                 ForEach(CommonTheme.allCases) {
                     Text($0.id).tag($0)
-                        .font(.custom("Futura", size: 15))
+                        .font(.system(size: 15, weight: .semibold, design: .serif))
                 }
             }
             .pickerStyle(.menu)

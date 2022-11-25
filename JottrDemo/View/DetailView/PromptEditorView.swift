@@ -46,15 +46,9 @@ struct PromptEditorView: View {
                             .font(.system(.subheadline, design: .serif))
                         
                         // popover with instructional information
-                        Button {
-                            self.viewModel.explainerContent = .themeExplainer
-                            viewModel.isShowingThemePopover.toggle()
-                            if viewModel.isShowingThemePopover {
-                                viewModel.isShowingPremisePopover = false
-                            }
-                        } label: {
+                        Button(action: { viewModel.showThemePopover() }, label: {
                             Image(systemName: "questionmark.circle")
-                        }
+                        })
                         .popover(isPresented: $viewModel.isShowingThemePopover) {
                             PopoverTextView(mainPopover: $viewModel.explainerContent)
                         }
@@ -76,35 +70,24 @@ struct PromptEditorView: View {
                             .font(.system(.subheadline, design: .serif))
 
                         // popover with instructional information
-                        Button {
-                            self.viewModel.explainerContent = .premiseExplainer
-                            viewModel.isShowingPremisePopover.toggle()
-                            if viewModel.isShowingPremisePopover {
-                                viewModel.isShowingThemePopover = false
-                            }
-                        } label: {
+                        Button(action: { viewModel.showPremisePopover() }, label: {
                             Image(systemName: "questionmark.circle")
-                        }
-                        .popover(isPresented: $viewModel.isShowingPremisePopover) {
-                            PopoverTextView(mainPopover: $viewModel.explainerContent)
-                        }
+                        })
+                            .popover(isPresented: $viewModel.isShowingPremisePopover) {
+                                PopoverTextView(mainPopover: $viewModel.explainerContent)
+                            }
                     }
                 }
                 
                 Section {
                     HStack {
                         Spacer()
-                        
-                        Text("Add Prompt")
-                            .font(.system(.subheadline, design: .serif))
-                        
-                        Button(action: addPrompt, label: {
-                            Image(systemName: "plus.square")
-                                .font(.system(.subheadline))
                             
+                        Button(action: addPrompt, label: {
+                            Label("Add Prompt", systemImage: "plus.square")
                         })
+                            .buttonStyle(FormControlButton())
                             .padding()
-                            .buttonStyle(CustomButton())
                         
                         Spacer()
                     }
@@ -121,9 +104,7 @@ struct PromptEditorView: View {
     
     var topTrailingToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button("Done", action: {
-                dismissPromptEdit()
-            })
+            Button("Done", action: { dismissPromptEdit() })
                 .buttonStyle(.plain)
         }
     }
@@ -131,7 +112,9 @@ struct PromptEditorView: View {
     var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             Spacer()
-            Button(action: { isInputActive.toggle() }, label: { Image(systemName: "keyboard.chevron.compact.down") })
+            Button(action: { isInputActive.toggle() }, label: {
+                Image(systemName: "keyboard.chevron.compact.down")
+            })
         }
     }
 }

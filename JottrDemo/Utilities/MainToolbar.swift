@@ -21,10 +21,11 @@ struct MainToolbar: ToolbarContent {
                 Label("New Story", systemImage: "square.and.pencil")
             })
                 .buttonStyle(.plain)
+                .padding(.trailing)
             
             Button(action: { isShowingAccount.toggle() }, label: { Label("Account", systemImage: "ellipsis.circle") })
-                .padding()
                 .buttonStyle(.plain)
+                .padding(.trailing)
         }
     }
 }

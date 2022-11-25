@@ -17,10 +17,30 @@ extension PromptEditorView {
         @Published var isShowingThemePopover: Bool = false
         @Published var isShowingPremisePopover: Bool = false
         @Published var isShowingBannedPopover: Bool = false
+        
+        // MARK: Methods
+        
+        // shows popover content
+        func showThemePopover() {
+            self.explainerContent = .themeExplainer
+            self.isShowingThemePopover.toggle()
+            if self.isShowingThemePopover {
+                self.isShowingPremisePopover = false
+            }
+        }
+        
+        func showPremisePopover() {
+            self.explainerContent = .premiseExplainer
+            self.isShowingPremisePopover.toggle()
+            if self.isShowingPremisePopover {
+                self.isShowingThemePopover = false
+            }
+        }
     }
     
     // MARK: Helper Methods
     
+    // notifies NewPageView to submit the prompt user has created for the AI story generator
     func addPrompt() {
         submitPromptContent = true
         dismissPromptEdit()

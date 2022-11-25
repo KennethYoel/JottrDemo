@@ -15,11 +15,14 @@ extension AccountView {
     // MARK: Manages The Data(the logic)
     
     @MainActor class AccountViewVM: ObservableObject {
+        // MARK: Properties
         @Published var isAuthenticated: Bool = false
         @Published var userProfile: UserProfile = UserProfile.empty
         @Published var emailResult: Result<MFMailComposeResult, Error>? = nil
         @Published var isShowingMailView: Bool = false
         @Published var isShowingSendEmailAlert: Bool = false
+        
+        // MARK: Methods
         
         func login() {
             Auth0
@@ -29,8 +32,6 @@ extension AccountView {
                 case .success(let credentials):
                     self.isAuthenticated = true
                     self.userProfile = UserProfile.from(credentials.idToken)
-//                    print("Credentials: \(credentials)")
-//                    print("ID token: \(credentials.idToken)")
                 case .failure(let error):
                     print("Failed with: \(error)")
                 }
@@ -71,20 +72,6 @@ extension AccountView {
             
             return alertMessage
         }
-    }
-    
-    // A view that expects to find a AccountViewVM object in the environment, and shows its value.
-    struct AlertError: Identifiable {
-        var id: ObjectIdentifier
-        var results: AccountView.AccountViewVM {
-            return sendEmailResult
-        }
-        @EnvironmentObject var sendEmailResult: AccountViewVM
-//        let resultMessage: String
-        
-//        init() {
-//            resultMessage = String(describing: sendEmailAlert.emailResult)
-//        }
     }
 }
 
