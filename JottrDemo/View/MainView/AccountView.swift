@@ -111,28 +111,28 @@ struct AccountView: View {
                         HStack {
                             Image(systemName: "person.crop.circle")
                                 .font(.title)
-                            Button("Login", action: { viewModel.login() })
+                            Button("Login...", action: { viewModel.login() })
                         }
                     }
                 }
                 
                 Section {
                     // contact options for the user
-                    Button("Contact Support", action: { viewModel.sendEmail() })
+                    Button("Contact Support...", action: { viewModel.sendEmail() })
                     // once the app is on the store, the user can leave a review
-                    Button("Leave Feedback") {
+                    Button("Leave Feedback...") {
                         storeReview.requestReview()
                    }
                 }
                 
                 Section {
                     // displays the parameters slider options for OpenAI completion engine
-                    Button("AI Settings", action: { viewModel.isShowingAdvanceSettings.toggle() })
+                    Button("AI Settings...", action: { viewModel.isShowingAdvanceSettings.toggle() })
                 }
                 
                 Section {
                     // logout of the account
-                    Button("Logout", action: { viewModel.logout() })
+                    Button("Logout...", action: { viewModel.logout() })
                 }
                 .disabled(!viewModel.isAuthenticated)
             }
@@ -147,16 +147,10 @@ struct AccountView: View {
             .navigationTitle("Account")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                topToolbar
+                DoneButton(isDismiss: $viewModel.isDismiss.onChange { _ in
+                    dismissAccountView()
+                })
             }
-        }
-    }
-    
-    var topToolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button("Done", action: { dismissAccountView() })
-                .padding()
-                .buttonStyle(.plain)
         }
     }
 }

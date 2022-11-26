@@ -49,6 +49,7 @@
 		5779E9C428DF821500FA58C0 /* OpenAIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5779E9C328DF821500FA58C0 /* OpenAIResponse.swift */; };
 		5779E9C828DF82E600FA58C0 /* OpenAIConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5779E9C728DF82E600FA58C0 /* OpenAIConnector.swift */; };
 		5779E9CB28DF834B00FA58C0 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5779E9CA28DF834B00FA58C0 /* Parameters.swift */; };
+		5783A1D7293204B500B52358 /* DoneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5783A1D6293204B500B52358 /* DoneButton.swift */; };
 		579334B8291E6F7000DE80A8 /* TrashBin+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579334B7291E6F7000DE80A8 /* TrashBin+CoreDataClass.swift */; };
 		579334BA291E6FF800DE80A8 /* TrashBin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579334B9291E6FF800DE80A8 /* TrashBin+CoreDataProperties.swift */; };
 		57C0945D28FC0CD100C4D9C2 /* EmailResultAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C0945C28FC0CD100C4D9C2 /* EmailResultAlert.swift */; };
@@ -109,6 +110,7 @@
 		5779E9C328DF821500FA58C0 /* OpenAIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIResponse.swift; sourceTree = "<group>"; };
 		5779E9C728DF82E600FA58C0 /* OpenAIConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIConnector.swift; sourceTree = "<group>"; };
 		5779E9CA28DF834B00FA58C0 /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
+		5783A1D6293204B500B52358 /* DoneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneButton.swift; sourceTree = "<group>"; };
 		579334B7291E6F7000DE80A8 /* TrashBin+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrashBin+CoreDataClass.swift"; sourceTree = "<group>"; };
 		579334B9291E6FF800DE80A8 /* TrashBin+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrashBin+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		57C0945C28FC0CD100C4D9C2 /* EmailResultAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailResultAlert.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				570EFB602902C28400B360EB /* TextInputView.swift */,
 				571A4A3D28F02D1700E4F90B /* MainToolbar.swift */,
 				574775DD2913F8FF008FEF5B /* EditorToolbar.swift */,
+				5783A1D6293204B500B52358 /* DoneButton.swift */,
 				57DEEDF72928CAA500952CDE /* ExportFileType.swift */,
 				571A4A3F28F02DAC00E4F90B /* SendButton.swift */,
 				5744806128F853F200CA1191 /* FormControlButton.swift */,
@@ -463,6 +466,7 @@
 				570EFB612902C28400B360EB /* TextInputView.swift in Sources */,
 				5777670228F57E74008C888B /* MagnifyingGlass.swift in Sources */,
 				571A4A2D28F0193200E4F90B /* UIViewController.swift in Sources */,
+				5783A1D7293204B500B52358 /* DoneButton.swift in Sources */,
 				5744806228F853F200CA1191 /* FormControlButton.swift in Sources */,
 				571A4A4028F02DAC00E4F90B /* SendButton.swift in Sources */,
 				5777670028F400DC008C888B /* CustomError-ViewModel.swift in Sources */,

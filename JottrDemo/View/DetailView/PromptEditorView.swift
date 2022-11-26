@@ -80,9 +80,7 @@ struct PromptEditorView: View {
                 }
                 
                 Section {
-                    Button("Advance Settings", action: { viewModel.isShowingAdvanceSettings.toggle() })
-                        .buttonStyle(.plain)
-                        .padding()
+                    NavigationLink("Advance Settings", destination: AccountDetailView())
                 }
                 
                 Section {
@@ -99,20 +97,14 @@ struct PromptEditorView: View {
                     }
                 }
             }
-            .sheet(isPresented: $viewModel.isShowingAdvanceSettings) { AccountDetailView() }
             .navigationTitle("Prompt Editor")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                topTrailingToolbar
+                DoneButton(isDismiss: $viewModel.isDismiss.onChange { _ in
+                    dismissPromptEdit()
+                })
                 keyboardToolbar
             }
-        }
-    }
-    
-    var topTrailingToolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button("Done", action: { dismissPromptEdit() })
-                .buttonStyle(.plain)
         }
     }
     
