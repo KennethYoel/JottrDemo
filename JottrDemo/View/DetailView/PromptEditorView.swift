@@ -38,6 +38,7 @@ struct PromptEditorView: View {
                         .font(.system(.body, design: .serif))
                         .onReceive(Just(txtComplVM.customTheme)) { _ in limitText(textLimit) }
                     
+                    // user can choose a theme here from a list of enums or type one above in TextField
                     ThemePickerView(themeChoices: $txtComplVM.setTheme)
                             .padding(.trailing)
                 } header: {
@@ -57,11 +58,14 @@ struct PromptEditorView: View {
                 .listRowSeparator(.hidden)
                 
                 Section {
+                    // here a user can define the prompt paramater for the OpenAI API
                     TextEditorView(text: $txtComplVM.promptLoader, placeholder: premisePlaceholder)
                         .focused($isInputActive)
                         .foregroundColor(.primary)
+                        .font(.system(.body, design: .serif))
                         .onReceive(Just(txtComplVM.sessionStory)) { _ in limitText(textLimit) }
                     
+                    // user can choose a theme here from a list of enum
                     GenrePickerView(genreChoices: $txtComplVM.setGenre)
                         .padding(.trailing)
                 } header: {
@@ -80,19 +84,17 @@ struct PromptEditorView: View {
                 }
                 
                 Section {
+                    // a link to other OpenAI API advanced parameters that a user can adjust
                     NavigationLink("Advance Settings", destination: AccountDetailView())
                 }
                 
                 Section {
                     HStack {
                         Spacer()
-                            
-                        Button(action: addPrompt, label: {
-                            Label("Add Prompt", systemImage: "plus.square")
-                        })
+                        // adds prompt parameter and request for text completion to OpenAI API
+                        Button(action: addPrompt, label: { Label("Add Prompt", systemImage: "plus.square") })
                             .buttonStyle(FormControlButton())
                             .padding()
-                        
                         Spacer()
                     }
                 }
@@ -100,9 +102,12 @@ struct PromptEditorView: View {
             .navigationTitle("Prompt Editor")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                // top trailing dismiss button
                 DoneButton(isDismiss: $viewModel.isDismiss.onChange { _ in
                     dismissPromptEdit()
                 })
+                
+                // keyboard bar dismiss button
                 keyboardToolbar
             }
         }
@@ -111,6 +116,7 @@ struct PromptEditorView: View {
     var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             Spacer()
+            // dismisses keyboard
             Button(action: { isInputActive.toggle() }, label: {
                 Image(systemName: "keyboard.chevron.compact.down")
             })

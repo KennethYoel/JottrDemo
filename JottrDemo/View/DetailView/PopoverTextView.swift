@@ -56,6 +56,7 @@ struct PopoverTextView: View {
                 .multilineTextAlignment(.leading)
                 .textSelection(.enabled)
                 .padding()
+                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     topPrincipleToolbar
                 }

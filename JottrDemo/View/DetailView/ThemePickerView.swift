@@ -41,7 +41,7 @@ struct ThemePickerView: View {
         HStack {
             Spacer()
             
-            Text("Theme ...")
+            Text("Theme_")
                 .font(.system(size: 15, weight: .semibold, design: .serif))
             
             Picker("Theme", selection: $themeChoices) {

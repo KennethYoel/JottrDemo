@@ -13,11 +13,14 @@ struct AccountDetailView: View {
     @State private var isDismiss: Bool = false
     
     var body: some View {
-        // set the OpenAI parameters; user needs to pay for premium features
+        // set the OpenAI parameters; users needs to pay for this premium features
         Form {
             Group {
                 Section {
-                    // Response Length
+                    /*
+                     Response Length - Affects the max amount of characters the ai
+                     will return
+                     */
                     Text("Token Length")
                         .font(.subheadline)
                     Text("Affects the max amount of characters the AI will return.")
@@ -40,7 +43,10 @@ struct AccountDetailView: View {
                     }
                 }
                 Section {
-                    // Temperature
+                    /*
+                     Temperature - Affects the randomness of the AI. Higher values
+                     mean more randomness
+                     */
                     Text("Temperature")
                         .font(.subheadline)
                     Text("Affects the randomness of the AI. Higher values mean more randomness.")
@@ -58,6 +64,10 @@ struct AccountDetailView: View {
                     }
                     HStack {
                         Spacer()
+                        /*
+                         using specifer signature to specify floating-point
+                         precision number with ne digit after the decimal point
+                         */
                         Text("\(parameters.temperature, specifier: "%.1f")")
                         Spacer()
                     }
@@ -67,7 +77,12 @@ struct AccountDetailView: View {
             
             Group {
                 Section {
-                    // Top P
+                    /*
+                     Top P - An alternative to sampling with temperature. Affects
+                     the randomness of the ai.
+                     Higher values mean more randomness. We generally recommend
+                     altering this or temperature but not both.
+                     */
                     Text("Top P")
                         .font(.subheadline)
                     Text("An alternative to sampling with temperature. Higher values mean more randomness. We generally recommend altering this or temperature but not both.")
@@ -153,18 +168,11 @@ struct AccountDetailView: View {
 }
 
 /*
- Temperature
- Affects the randomness of the AI. Higher values mean more randomness
- 
  Response Length = max_token??
  Affects the max amount of characters the ai will return
  
  Top K = presence_penalty
  Penalizes repetition at the cost of more random outputs
- 
- Top P
- An alternative to sampling with temperature. Affects the randomness of the ai. Higher values mean more
- randomness. We generally recommend altering this or temperature but not both.
  
  Repetition Penalty = frequency= penalty
  Penalizes repetition at the sake of more random outputs.
