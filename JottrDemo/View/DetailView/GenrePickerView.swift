@@ -42,13 +42,14 @@ struct GenrePickerView: View {
         HStack {
             Spacer()
             
-            Text("Genre_")
-                .font(.system(size: 15, weight: .semibold, design: .serif))
+            Text("Genre_").activeItemStyle()
             
             Picker("Genre", selection: $genreChoices) {
                 ForEach(CommonGenre.allCases) {
-                    Text($0.id).tag($0)
-                        .font(.system(size: 15, weight: .semibold, design: .serif))
+                    Text($0.id)
+                        .activeItemStyle()
+                        .tag($0)
+                        
                 }
             }
             .pickerStyle(.menu)

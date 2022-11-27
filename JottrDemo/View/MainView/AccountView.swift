@@ -140,7 +140,7 @@ struct AccountView: View {
                 MailView(isShowing: $viewModel.isShowingMailView, result: $viewModel.emailResult, showEmailResult: $viewModel.isShowingSendEmailAlert)
             }
             .sheet(isPresented: $viewModel.isShowingAdvanceSettings) {
-                AccountDetailView()
+                AccountDetailView(isHidingNavigation: .constant(false))
             }
             .alert(isPresented: $viewModel.isShowingSendEmailAlert, content: { viewModel.sendEmailAlert()
             })

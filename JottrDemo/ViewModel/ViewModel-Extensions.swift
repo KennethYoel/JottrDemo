@@ -12,13 +12,12 @@ import SwiftUI
 
 // custom view extension, for reusing a text layout-bundle together for one use case
 extension Text {
-    func headerStyle() -> some View {
-        self
-            .font(.system(.subheadline, design: .serif))
-            .foregroundColor(.secondary)
-            .fontWeight(.black)
-            .textCase(.uppercase)
-            .iOS { $0.padding(10) }
+    func activeItemStyle() -> some View {
+        self.font(.system(size: 15, weight: .semibold, design: .serif))
+    }
+    
+    func captionStyle() -> some View {
+        self.font(.system(.caption, design: .serif))
     }
     
     func listRowStyle() -> some View {
@@ -29,9 +28,13 @@ extension Text {
             .lineLimit(3)
     }
     
-    func captionStyle() -> some View {
+    func subSecondaryStyle() -> some View {
         self
-            .font(.system(.caption, design: .serif))
+            .font(.system(.subheadline, design: .serif))
+            .foregroundColor(.secondary)
+            .fontWeight(.black)
+            .textCase(.uppercase)
+            .iOS { $0.padding(10) }
     }
 }
 

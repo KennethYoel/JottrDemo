@@ -41,13 +41,13 @@ struct ThemePickerView: View {
         HStack {
             Spacer()
             
-            Text("Theme_")
-                .font(.system(size: 15, weight: .semibold, design: .serif))
+            Text("Theme_").activeItemStyle()
             
             Picker("Theme", selection: $themeChoices) {
                 ForEach(CommonTheme.allCases) {
-                    Text($0.id).tag($0)
-                        .font(.system(size: 15, weight: .semibold, design: .serif))
+                    Text($0.id)
+                        .activeItemStyle()
+                        .tag($0)
                 }
             }
             .pickerStyle(.menu)

@@ -51,7 +51,7 @@ struct InfoSectionView: View {
     var body: some View {
         if !viewHidden {
             Text("Intro")
-                .headerStyle()
+                .subSecondaryStyle()
         }
     }
 }
