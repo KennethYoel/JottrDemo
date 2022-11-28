@@ -18,7 +18,7 @@ struct MainToolbar: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
             Button(action: { isShowingNewPage.toggle() }, label: {
-                Label("New Story", systemImage: "square.and.pencil")
+                Label("New Page", systemImage: "square.and.pencil")
             })
                 .buttonStyle(.plain)
                 .padding(.trailing)

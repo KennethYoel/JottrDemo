@@ -93,7 +93,7 @@ struct PromptEditorView: View {
                         Spacer()
                         // adds prompt parameter and request for text completion to OpenAI API
                         Button(action: addPrompt, label: { Label("Add Prompt", systemImage: "plus.square") })
-                            .buttonStyle(FormControlButton())
+                            .buttonStyle(AnimatedButton())
                             .padding()
                         Spacer()
                     }

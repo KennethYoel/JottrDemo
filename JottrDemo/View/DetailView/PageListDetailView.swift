@@ -1,5 +1,5 @@
 //
-//  ContentListDetailView.swift
+//  PageListDetailView.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/7/22.
@@ -29,14 +29,14 @@ struct ItemList: View {
     }
 }
 
-struct ContentListDetailView: View {
+struct PageListDetailView: View {
     // MARK: Properties
     
     // data stored in the Core Data
     let story: Story
     @Binding var showTrashBin: Bool
     // create an object that manages the data(the logic) of ListDetailView layout
-    @StateObject var viewModel = ContentListDetailVM()
+    @StateObject var viewModel = PageListDetailVM()
     // holds our openai text completion model
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     // holds our Core Data managed object context (so we can delete stuff)
@@ -71,7 +71,7 @@ struct ContentListDetailView: View {
                 dismissDetailView()
             },content: {
                 NavigationView {
-                    NewPageView()
+                    EditorView()
                 }
             })
             .sheet(isPresented: $viewModel.isShareViewPresented, onDismiss: {

@@ -27,7 +27,7 @@ struct TextEditorView: View {
             if text.isEmpty {
                VStack {
                     Text(placeholder)
-                       .font(.system(.body, design: .serif)) //.font(.custom("Futura", size: 17))
+                       .font(.system(.body, design: .serif))
                        .padding(.top, 10)
                        .padding(.leading, 5)
                        .opacity(0.7)

@@ -1,5 +1,5 @@
 //
-//  WritingPadView.swift
+//  TextInputView.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/21/22.
@@ -12,6 +12,7 @@ struct TextInputView: View {
     @Binding var isLoading: Bool
     @Binding var pen: String
     
+    // builds and loads the progress view
     @ViewBuilder private var loadingOverlay: some View {
         if isLoading {
             Color(white: 0, opacity: 0.05)
@@ -26,7 +27,7 @@ struct TextInputView: View {
     }
 }
 
-struct WritingPadView_Previews: PreviewProvider {
+struct TextInputView_Previews: PreviewProvider {
     static var previews: some View {
         TextInputView(isLoading: .constant(true), pen: .constant("This is a test."))
     }

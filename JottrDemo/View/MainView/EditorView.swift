@@ -1,5 +1,5 @@
 //
-//  StoryEditorView.swift
+//  EditorView.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/7/22.
@@ -10,11 +10,11 @@ import CoreData
 import Foundation
 import SwiftUI
 
-struct NewPageView: View {
+struct EditorView: View {
     // MARK: Properties
     
     // the data managed within the ViewModel
-    @StateObject var viewModel = NewPageViewVM()
+    @StateObject var viewModel = EditorViewVM()
     // retrieve the txtcompl view model from the environment
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     // holds our Core Data managed object context (so we can delete or save stuff)
@@ -53,7 +53,7 @@ struct NewPageView: View {
                 dismissNewPage()
             }, content: {
                 NavigationView {
-                    NewPageView()
+                    EditorView()
                 }
             })
             .alert(isPresented: $txtComplVM.failed, content: errorSubmitting)

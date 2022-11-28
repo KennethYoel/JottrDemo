@@ -1,5 +1,5 @@
 //
-//  ContentListView-ViewModel.swift
+//  PageListView-ViewModel.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/21/22.
@@ -8,10 +8,10 @@
 import Foundation
 import UniformTypeIdentifiers
 
-extension ContentListView {
+extension PageListView {
     // MARK: Manages The Data(the logic)
     
-    class ContentListViewVM: ObservableObject {
+    class PageListViewVM: ObservableObject {
         //MARK: Properties
         
         // collection properties

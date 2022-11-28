@@ -1,5 +1,5 @@
 //
-//  ContentListRow.swift
+//  PageListRow.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/13/22.
@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 
 // sub-view of the composite view StoryListView, the content closure of ForEach
-struct ContentListRowView: View {
+struct PageListRowView: View {
     let story: Story
     @Binding var showTrashBin: Bool
     
     var body: some View {
         NavigationLink {
-            ContentListDetailView(story: story, showTrashBin: $showTrashBin)
+            PageListDetailView(story: story, showTrashBin: $showTrashBin)
         } label: {
             VStack(alignment: .leading) {
                 Text(story.wrappedComplStory)

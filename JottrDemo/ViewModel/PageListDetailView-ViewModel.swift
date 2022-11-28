@@ -1,5 +1,5 @@
 //
-//  ContentListDetailView-ViewModel.swift
+//  PageListDetailView-ViewModel.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/7/22.
@@ -8,10 +8,10 @@
 import Foundation
 import UniformTypeIdentifiers
 
-extension ContentListDetailView {
+extension PageListDetailView {
     // MARK: Manages The Data(the logic)
     
-    @MainActor class ContentListDetailVM: ObservableObject {
+    @MainActor class PageListDetailVM: ObservableObject {
         // toolbar properties
         @Published var isShowingNewPageScreen: Bool = false
         @Published var showingFileOptions: Bool = false

@@ -14,7 +14,7 @@ enum LoadingState: String {
 }
 
 // sub-view of story section
-struct ContentListSectionView: View {
+struct PageListSectionView: View {
     // MARK: Properties
     @State var showRecentList: Bool
     @State var showTrashList: Bool
@@ -28,7 +28,7 @@ struct ContentListSectionView: View {
             // a link to the list view
             NavigationLink(
                 "",
-                destination: ContentListView(isShowingRecentList: $showRecentList, isShowingTrashList: $showTrashList),
+                destination: PageListView(isShowingRecentList: $showRecentList, isShowingTrashList: $showTrashList),
                 tag: tagValue,
                 selection: $currentView
             )
@@ -108,7 +108,7 @@ struct ContentView: View {
             List {
                 Section {
                     // link to a all stories saved to CoreData
-                    ContentListSectionView(
+                    PageListSectionView(
                         showRecentList: false,
                         showTrashList: false,
                         tagValue: LoadingState.storyList.rawValue,
@@ -118,7 +118,7 @@ struct ContentView: View {
                     )
 
                     // link to a list of stories written in the past seven days
-                    ContentListSectionView(
+                    PageListSectionView(
                         showRecentList: true,
                         showTrashList: false,
                         tagValue: LoadingState.recentStoryList.rawValue,
@@ -128,7 +128,7 @@ struct ContentView: View {
                     )
                     
                     // link to a list of stories the user recently deleted
-                    ContentListSectionView(
+                    PageListSectionView(
                         showRecentList: false,
                         showTrashList: true,
                         tagValue: LoadingState.trashList.rawValue,
@@ -167,7 +167,7 @@ struct ContentView: View {
                 self.currentView = LoadingState.storyList.rawValue
             }, content: {
                 NavigationView {
-                    NewPageView()
+                    EditorView()
                 }
             })
             .sheet(isPresented: $viewModel.isShowingAccountScreen) {

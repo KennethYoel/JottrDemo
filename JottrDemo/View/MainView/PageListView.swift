@@ -1,5 +1,5 @@
 //
-//  ContentListView.swift
+//  PageListView.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/7/22.
@@ -23,13 +23,13 @@ struct TrashNotice: View {
     }
 }
 
-struct ContentListView: View {
+struct PageListView: View {
     // MARK: Properties
     
     // retrieve the txtcompl view model from the environment
     @EnvironmentObject var txtComplVM: TxtComplViewModel
     // retrieve the story list view model where the data is managed
-    @StateObject var viewModel = ContentListViewVM()
+    @StateObject var viewModel = PageListViewVM()
     // retrieve our Core Data managed object context (so we can delete or save stuff)
     @Environment(\.managedObjectContext) var moc
     // fetch the Story entity in Core Data
@@ -48,7 +48,7 @@ struct ContentListView: View {
             
             // for each story in the array, create a listing row. added as modifier the swipeActions
             ForEach(viewModel.listOfStories, id: \.self) { content in
-                ContentListRowView(story: content, showTrashBin: $isShowingTrashList)
+                PageListRowView(story: content, showTrashBin: $isShowingTrashList)
                     .swipeActions(allowsFullSwipe: false) {
                         if isShowingTrashList {
                             Button(role: .destructive, action: { presentConfirmDelete(of: content) }, label: {
@@ -104,7 +104,7 @@ struct ContentListView: View {
             self.isShowingTrashList = false
         }, content: {
             NavigationView {
-                NewPageView()
+                EditorView()
             }
         })
         .fullScreenCover(isPresented: $viewModel.isShowingSearchScreen) { SearchView() }

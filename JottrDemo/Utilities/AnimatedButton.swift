@@ -1,5 +1,5 @@
 //
-//  CustomButton.swift
+//  AnimatedButton.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 10/13/22.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct FormControlButton: ButtonStyle {
+struct AnimatedButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 17, weight: .semibold, design: .serif))

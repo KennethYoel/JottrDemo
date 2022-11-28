@@ -16,7 +16,7 @@ enum CustomError: Error {
         case .failCodableResponse:
             return "We have trouble submitting your work. Contact client support, notify them of a parameter encoding error."
         case .dataTooLong:
-            return "its too long"
+            return "The data is too long"
         }
     }
 }

@@ -40,14 +40,12 @@ extension Text {
 
 // custom view extension, for reusing a label layout-bundle together for one use case
 extension Label {
-    func subHeaderStyle() -> some View {
-        self
-            .font(.system(.subheadline, design: .serif))
+    func captionStyle() -> some View {
+        self.font(.system(.caption, design: .serif))
     }
     
-    func captionStyle() -> some View {
-        self
-            .font(.system(.caption, design: .serif))
+    func subHeaderStyle() -> some View {
+        self.font(.system(.subheadline, design: .serif))
     }
 }
 
