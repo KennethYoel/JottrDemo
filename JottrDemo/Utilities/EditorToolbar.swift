@@ -26,7 +26,7 @@ struct EditorToolbar: ToolbarContent {
             // present a new page for content writing
             Button(action: { showNewPage.toggle() }, label: { Label("New Story", systemImage: "square.and.pencil") })
                 .buttonStyle(.plain)
-                .padding(.trailing)
+                .padding(.trailing, 8)
             
             Menu {
                 // present the ExportView
@@ -49,7 +49,7 @@ struct EditorToolbar: ToolbarContent {
             // show submit button if keyboard is active
             if keyboardActive {
                 Button(action: { sendingContent.toggle() }, label: { Image(systemName: "arrow.up") })
-                    .padding([.leading, .trailing])
+                    .padding(.trailing)
                     .buttonStyle(.plain)
             }
         }

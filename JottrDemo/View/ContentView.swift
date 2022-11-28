@@ -113,7 +113,7 @@ struct ContentView: View {
                         showTrashList: false,
                         tagValue: LoadingState.storyList.rawValue,
                         currentView: $currentView,
-                        labelTitle: "Collection",
+                        labelTitle: "Entirety",
                         labelImage: "archivebox"
                     )
 
@@ -177,7 +177,7 @@ struct ContentView: View {
                 SearchView()
             }
             .overlay(MagnifyingGlass(showSearchScreen: $viewModel.isShowingSearchScreen), alignment: .bottomTrailing)
-            .navigationTitle("🖋Jottr")
+            .navigationTitle("🖋Collection")
             .toolbar {
                 MainToolbar(isShowingNewPage: $viewModel.isShowingNewPageScreen, isShowingAccount: $viewModel.isShowingAccountScreen)
             }

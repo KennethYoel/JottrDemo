@@ -48,7 +48,7 @@ extension PageListView {
         } else if isShowingTrashList {
             title = "Trash"
         } else {
-            title = "Collection"
+            title = "Entirety"
         }
         
         return title

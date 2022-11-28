@@ -37,7 +37,7 @@ and then insert the key you get from OpenAI into the **Value** field.
 Now to read the API key and using it in the code as easy as possible, I've wrapped it in a computed property that 
 will also give us the opportunity to perform some error handling. You'll find the code within 
 Model/APIClient/OpenAIConnector.swift file and I've named it openAIKey. 
-Don't need to worry too much about this step since the code has been written, but if you run into any problems or need to adjust the computed property that is where you'll find the Plist reader.
+Don't need to worry too much about this step since the code has been written, but if you run into any problems or need to adjust the computed property the location above is where you'll find the Plist reader.
 
 After all that just run the app and hopefully you'll be able to generate some exciting stories.
 
@@ -48,9 +48,9 @@ Jottr's interface has three main views you should get familiar with:
 - Page List
 - Editor
 
-The *collection* allows access to your texts and it is divided into sections. Such as *recent* which contains your written work from the past seven days, and *trash* where any deleted content will be held for only thirty days which at that point it is permanently deleted.
+The *collection* allows access to your texts and it is divided into sections. Such as *entirety* the name says it all, *recent* which contains your written work from the past seven days, and *trash* where any deleted content will be held for thirty days which at that point it is permanently deleted.
 
-The *collection list* is where all your and the AI co-writer written texts inhabit.
+The *collection list* is where all your and the AI co-writer written texts lives.
 
 And the *editor* where all the magic happens.
 
@@ -58,5 +58,8 @@ And the *editor* where all the magic happens.
 To switch between the three main views simply tap on the links, and to go back use the navigation bar or tap done. 
 
 ## Pages
-All generated content is done on Jottr custom text editor I like to call pages. Pages are similar to Notes, in that a title or a file name isn't required. Pages can hold any amount of text.
+All generated content is done on Jottr custom text editor I like to call pages. Pages are similar to Notes, in that a title or a file name isn't required and the pages are saved automatically. Pages can hold any amount of text.
 You request pages via the navigation bar New Page 􀈎 button found in the collection/page list or in the editor.
+
+## Editor
+You'll arrive at the *editor* when launching a new page via New Page 􀈎 button or tapping a one of the *pages* in the *page list*, and on the navigation bar from the right-if the iPhone's virtual keyboard is active-you'll see the *new page*, *menu*, and a *submit* button.
