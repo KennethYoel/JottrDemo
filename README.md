@@ -1,5 +1,5 @@
 # About Jottr
-Jottr makes it easier to write a short story, interactive fiction, or boxed text for your favorite ttrpg. The app uses OpenAI GPT-3 to genererate any story you desire, just input some text as a prompt, and the OpenAI model will generate a text completion that attempts to match whatever context or pattern you gave it. 
+Jottr makes it easier to write a short story, interactive fiction, or boxed text for your favorite ttrpg. The app uses OpenAI API to genererate any story you desire, just input some text as a prompt, and the OpenAI model will generate a text completion that attempts to match whatever context or pattern you gave it. 
 What you actually read may differ every time you call it with the same prompt, because the API is stochastic by default. So you may get a slightly different text completion every time you call it. 
 
 # Getting Started
@@ -48,15 +48,15 @@ Jottr's interface has three main views you should get familiar with:
 - Page List
 - Editor
 
-The *collection* allows access to your texts and it is divided into sections. Such as *recent* which contains your written work from the past seven days, and *trash* where any deleted content will be held for only thirty days then at that point it is permanently deleted.
+The *collection* allows access to your texts and it is divided into sections. Such as *recent* which contains your written work from the past seven days, and *trash* where any deleted content will be held for only thirty days which at that point it is permanently deleted.
 
 The *collection list* is where all your and the AI co-writer written texts inhabit.
 
 And the *editor* where all the magic happens.
 
 ## Basic Navigation
-To switch between the three main views either use the navigation bar or just swipe to the right.
+To switch between the three main views simply tap on the links, and to go back use the navigation bar or tap done. 
 
 ## Pages
-All generated content is done on Jottr pages. Pages are similar to Notes, in that a title or a file name isn't required. Pages can hold any amount of text.
-You request pages via the navigation bar New Page 􀈎 button in the collection/page list or in the editor.
+All generated content is done on Jottr custom text editor I like to call pages. Pages are similar to Notes, in that a title or a file name isn't required. Pages can hold any amount of text.
+You request pages via the navigation bar New Page 􀈎 button found in the collection/page list or in the editor.
