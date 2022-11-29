@@ -14,7 +14,7 @@ pleasant. For accessing the Plist, I've added an easy-to-use API for reading Pli
 4. Reading the API key from the Plist file
 
 ## First
-First lets go to [OpenAI](https://www.openai.com) and sign up for a developer account and follow the instructions to get 
+Let's go to [OpenAI](https://www.openai.com) and sign up for a developer account and follow the instructions to get 
 an API keys.
 
 ## Second
@@ -48,7 +48,7 @@ Jottr's interface has three main views you should get familiar with:
 - Page List
 - Editor
 
-The *collection* allows access to your texts and it is divided into sections. Such as *entirety* the name says it all, *recent* which contains your written work from the past seven days, and *trash* where any deleted content will be held for thirty days which at that point it wiil be permanently deleted.
+The **collection** allows access to your texts and it is divided into sections. Such as **entirety** the name says it all, **recent** which contains your written work from the past seven days, and **trash** where any deleted content will be held for thirty days which at that point it wiil be permanently deleted.
 
 The *collection list* is where all your and the AI co-writer written texts lives.
 
@@ -59,7 +59,7 @@ To switch between the three main views simply tap on the links, and to go back u
 
 ## Pages
 All generated content is done on Jottr custom text editor I like to call pages. Pages are similar to Notes, in that a title or a file name isn't required and the pages are saved automatically. Pages can hold any amount of text.
-You request pages via the navigation bar New Page 􀈎 button found in the collection/page list or in the editor.
+You request pages via the navigation bar New Page `􀈎` button found in the collection/page list or in the editor.
 
 ## Editor
 You'll arrive at the *editor* by either tapping New Page 􀈎 button on the navigation bar or tap one of the *pages* in the *page list* where you can edit your work. Once there, at the bottom right is the *genre* picker where you can set the genre of the story and on top from the right, if the iPhone's virtual keyboard is active, you'll see the *new page*, *menu*, and a *submit* button. The *submit* button is hidden when the virtual keyboard becomes inactive. 
