@@ -23,7 +23,7 @@ struct MainToolbar: ToolbarContent {
                 .buttonStyle(.plain)
                 .padding(.trailing)
             
-            Button(action: { isShowingAccount.toggle() }, label: { Label("Account", systemImage: "ellipsis.circle") })
+            Button(action: { isShowingAccount.toggle() }, label: { Label("Account", systemImage: "gear") })
                 .buttonStyle(.plain)
                 .padding(.trailing)
         }
