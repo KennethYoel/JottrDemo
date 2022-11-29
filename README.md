@@ -4,7 +4,7 @@ What you actually read may differ every time you call it with the same prompt, b
 
 # Getting Started
 In iOS, we traditionally use *Plist* (short for property list) files to store and manage configuration data. Plist files 
-essentially are XML files with benefits; for example Xcode provides a graphical editor to make editing Plist files more 
+are essentially XML files with benefits; for example Xcode provides a graphical editor to make editing Plist files more 
 pleasant. For accessing the Plist, I've added an easy-to-use API for reading Plist files.
 
 ## The steps to get the app up and running are:
@@ -41,18 +41,18 @@ Don't need to worry too much about this step since the code has been written, bu
 
 After all that just run the app and hopefully you'll be able to generate some exciting stories.
 
-## Overview
+# Overview
 Jottr's interface has three main views you should get familiar with:
 
 - Collection
 - Page List
 - Editor
 
-The *collection* allows access to your texts and it is divided into sections. Such as *entirety* the name says it all, *recent* which contains your written work from the past seven days, and *trash* where any deleted content will be held for thirty days which at that point it is permanently deleted.
+The *collection* allows access to your texts and it is divided into sections. Such as *entirety* the name says it all, *recent* which contains your written work from the past seven days, and *trash* where any deleted content will be held for thirty days which at that point it wiil be permanently deleted.
 
 The *collection list* is where all your and the AI co-writer written texts lives.
 
-And the *editor* where all the magic happens.
+And the *editor* where all the magic happens. Simply write and your AI co-writer will complete your texts.
 
 ## Basic Navigation
 To switch between the three main views simply tap on the links, and to go back use the navigation bar or tap done. 
@@ -62,4 +62,7 @@ All generated content is done on Jottr custom text editor I like to call pages. 
 You request pages via the navigation bar New Page 􀈎 button found in the collection/page list or in the editor.
 
 ## Editor
-You'll arrive at the *editor* when launching a new page via New Page 􀈎 button or tapping a one of the *pages* in the *page list*, and on the navigation bar from the right-if the iPhone's virtual keyboard is active-you'll see the *new page*, *menu*, and a *submit* button.
+You'll arrive at the *editor* by either tapping New Page 􀈎 button on the navigation bar or tap one of the *pages* in the *page list* where you can edit your work. Once there, at the bottom right is the *genre* picker where you can set the genre of the story and on top from the right, if the iPhone's virtual keyboard is active, you'll see the *new page*, *menu*, and a *submit* button. The *submit* button is hidden when the virtual keyboard becomes inactive. 
+When active the virtual keyboard will have a button row sitting directly above it. Far right there's the dismiss keyboard icon and next to that is the *genre* picker again.
+Back to the navigation bar above you can tap the Menu 􀍡 button to access the *export*, *share*, and *prompt editor* options. 
+*Export* gives you the option to save the text to your device either as plain text, pdf, or epub. With *share* you can send current text in the editor. And the *prompt editor* allows you the write the backstory 
