@@ -63,10 +63,10 @@ class OpenAIConnector: ObservableObject {
     
     @Published var maxTokens: Double = 100 // Defaults to 16, most models have a context length of 2048 tokens
     @Published var temperature: Double = 0.6 // Defaults to 1, number between 0 and 1
-    @Published var topP: Double = 1.0 // Defaults to 1, rnumber between 0 and 1
+    @Published var topP: Double = 1.0 // Defaults to 1, number between 0 and 1
     @Published var presencePenalty: Double = 0.0 // Defaults to 0, number between -2.0 and 2.0
     @Published var frequencyPenalty: Double = 0.5 // Defaults to 0, number between -2.0 and 2.0
-    @Published var user: String = "" // unique identifier representing the end-user, can help OpenAI to monitor and detect abuse.
+    @Published var user: String = "" // unique identifier representing end-user, can help OpenAI to monitor and detect abuse.
     
     static var openAIKey: String {
       get {

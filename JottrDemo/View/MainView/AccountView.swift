@@ -80,12 +80,17 @@ struct UserDetails: View {
 
 // sub-view displays the UserView in AccountView
 struct UserView: View {
+    @ObservedObject var parameter: OpenAIConnector = .standard
     var userProfile: UserProfile
     
     var body: some View {
         HStack {
             UserImage(urlString: userProfile.picture)
             UserDetails(userProfile: userProfile)
+                .onAppear {
+                    // set the OpenAI API user parameter to userProfile's id
+                    self.parameter.user = self.userProfile.id
+                }
         }
     }
 }
@@ -119,18 +124,19 @@ struct AccountView: View {
                     // contact options for the user
                     Button("Contact Support...", action: { viewModel.sendEmail() })
                     // once the app is on the store, the user can leave a review
-                    Button("Leave Feedback...") {
+                    Button("Leave Feedback...", action: {
                         storeReview.requestReview()
-                   }
+                    })
                 }
                 
                 Section {
                     // displays the parameters slider options for OpenAI completion engine
-                    Button("AI Settings...", action: { viewModel.isShowingAdvanceSettings.toggle() })
+                    Button("AI Settings...", action: { viewModel.isShowingAdvanceSettings.toggle()
+                    })
                 }
                 
                 Section {
-                    // logout of the account
+                    // TODO: logout of the account and erase user id in parameter
                     Button("Logout...", action: { viewModel.logout() })
                 }
                 .disabled(!viewModel.isAuthenticated)
