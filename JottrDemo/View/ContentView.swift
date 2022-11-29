@@ -177,7 +177,7 @@ struct ContentView: View {
                 SearchView()
             }
             .overlay(MagnifyingGlass(showSearchScreen: $viewModel.isShowingSearchScreen), alignment: .bottomTrailing)
-            .navigationTitle("🖋Collection")
+            .navigationTitle("Collection🖋")
             .toolbar {
                 MainToolbar(isShowingNewPage: $viewModel.isShowingNewPageScreen, isShowingAccount: $viewModel.isShowingAccountScreen)
             }

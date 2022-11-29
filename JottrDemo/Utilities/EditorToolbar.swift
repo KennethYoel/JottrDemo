@@ -26,7 +26,7 @@ struct EditorToolbar: ToolbarContent {
             // present a new page for content writing
             Button(action: { showNewPage.toggle() }, label: { Label("New Story", systemImage: "square.and.pencil") })
                 .buttonStyle(.plain)
-                .padding(.trailing, 8)
+                .padding(.trailing, 10)
             
             Menu {
                 // present the ExportView
