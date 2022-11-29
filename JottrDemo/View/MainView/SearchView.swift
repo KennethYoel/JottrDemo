@@ -74,8 +74,8 @@ struct SearchView: View {
     @Environment(\.dismiss) private var dismiss
     @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "dateCreated", ascending: false)]) var stories: FetchedResults<Story>
     @State private var searchQuery: String = ""
-    @State private var defaultCategory: String = "All"
-    var category: [String] = ["All", "Recent", "Trash"]
+    @State private var defaultCategory: String = "Entirety"
+    var category: [String] = ["Entirety", "Recent", "Trash"]
    
     var body: some View {
         NavigationView {
@@ -113,7 +113,7 @@ struct SearchView: View {
             
             let contentList: String = defaultCategory
             switch contentList {
-            case "All":
+            case "Entirety":
                 // filter returns all contents that hasn't been discarded
                 let unDiscardedContent = stories.filter {
                     return !$0.wrappedIsDiscarded

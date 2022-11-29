@@ -26,6 +26,7 @@ struct AccountDetailView: View {
                          of thumb is that one token generally corresponds to ~4
                          characters of text for common English text. This translates to
                          roughly ¾ of a word (so 100 tokens ~= 75 words).
+                         https://beta.openai.com/docs/models/gpt-3
                          */
                         Text("Token Length")
                             .font(.subheadline)
@@ -33,7 +34,7 @@ struct AccountDetailView: View {
                             .font(.caption)
                         Slider(
                             value: $parameters.maxTokens,
-                            in: 1...2048,
+                            in: 1...4000,
                             step: 1
                         ) {
                             Text("Token Length")

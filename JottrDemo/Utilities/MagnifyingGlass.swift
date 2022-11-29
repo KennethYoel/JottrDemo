@@ -16,13 +16,13 @@ struct MagnifyingGlass: View {
         ZStack {
             Circle()
                 .fill(.white)
-                .frame(width: 45, height: 45)
-                .padding([.trailing], 25)
+                .frame(width: 50, height: 50)
+                .padding([.trailing], 30)
             Button(action: { showSearchScreen.toggle() }, label: {
                 Image(systemName: "magnifyingglass")
                     .renderingMode(.original)
                     .font(.title3)
-                    .padding([.trailing], 25)
+                    .padding([.trailing], 30)
             })
                 .buttonStyle(.plain)
                 .accessibilityLabel("Show Search")
