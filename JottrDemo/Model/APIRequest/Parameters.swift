@@ -20,7 +20,7 @@ struct Parameters: Codable {
 //    let stream: Bool
 //    let logprobs: Int
 //    let stop: String
-//    let user: String // = UUID().uuidString
+    let user: String // = UUID().uuidString
     
     enum CodingKeys: String, CodingKey {
 //        case model
@@ -35,7 +35,7 @@ struct Parameters: Codable {
 //        case stream
 //        case logprobs
 //        case stop
-//        case user
+        case user
     }
 }
 /*

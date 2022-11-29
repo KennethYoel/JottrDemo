@@ -17,6 +17,7 @@ extension AccountView {
     @MainActor class AccountViewVM: ObservableObject {
         // MARK: Properties
         
+        @ObservedObject var parameters: OpenAIConnector = .standard
         @Published var isAuthenticated: Bool = false
         @Published var isDismiss: Bool = false
         @Published var userProfile: UserProfile = UserProfile.empty
@@ -39,6 +40,8 @@ extension AccountView {
                     print("Failed with: \(error)")
                 }
               }
+            // set the OpenAI API user parameter to userProfile's id
+            parameters.user = userProfile.id
         }
         
         func logout() {
@@ -53,6 +56,8 @@ extension AccountView {
               print("Failed with: \(error)")
               }
             }
+            // set the OpenAI API user parameter to empty
+            parameters.user = ""
         }
         
         func sendEmail() {

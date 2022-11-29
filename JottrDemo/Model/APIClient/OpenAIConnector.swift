@@ -10,8 +10,6 @@ import Foundation
 import SwiftUI
 
 class OpenAIConnector: ObservableObject {
-    static let standard = OpenAIConnector()
-    
     // MARK: - OpenAI API URL's:
     
     /*
@@ -68,6 +66,7 @@ class OpenAIConnector: ObservableObject {
     @Published var topP: Double = 1.0 // Defaults to 1, rnumber between 0 and 1
     @Published var presencePenalty: Double = 0.0 // Defaults to 0, number between -2.0 and 2.0
     @Published var frequencyPenalty: Double = 0.5 // Defaults to 0, number between -2.0 and 2.0
+    @Published var user: String = "" // unique identifier representing the end-user, can help OpenAI to monitor and detect abuse.
     
     static var openAIKey: String {
       get {
@@ -87,6 +86,8 @@ class OpenAIConnector: ObservableObject {
         return value
       }
     }
+    
+    static let standard = OpenAIConnector()
     
     // MARK: Methods
     
@@ -133,7 +134,8 @@ class OpenAIConnector: ObservableObject {
                 topP: parameterValues.topP,
                 echo: false,
                 presencePenalty: parameterValues.presencePenalty,
-                frequencyPenalty: parameterValues.frequencyPenalty
+                frequencyPenalty: parameterValues.frequencyPenalty,
+                user: parameterValues.user
             )
             guard let encodedHttpBody = try? JSONEncoder().encode(httpBody) else { // error with casting from one to another
                 debugPrint("Failed to encode request")

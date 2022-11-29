@@ -109,8 +109,7 @@ struct AccountView: View {
                         }
                     } else {
                         HStack {
-                            Image(systemName: "person.crop.circle")
-                                .font(.title)
+                            Image(systemName: "person.crop.circle").font(.title)
                             Button("Login...", action: { viewModel.login() })
                         }
                     }

@@ -58,7 +58,7 @@ extension UserProfile {
     /*
      Given an ID token string, the from() function creates a Profile instance. If from() can extract claims — values about
      the user’s identity, which include their name, email address, and the URL for their picture — from the ID token, it
-     returns a Profile instance with that information in its properties. Otherwise, it returns a Profile instance with empty
-     properties.
+     returns a Profile instance with that information in its properties. Otherwise, it returns a Profile instance with
+     empty properties.
      */
 }
