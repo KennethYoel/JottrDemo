@@ -85,7 +85,7 @@ struct PromptEditorView: View {
                 
                 Section {
                     // a link to other OpenAI API advanced parameters that a user can adjust
-                    NavigationLink("Advance Settings", destination: AccountDetailView(isHidingNavigation: .constant(true)))
+                    NavigationLink("Advance Settings", destination:AISettingsDetailView(isHidingNavigation: .constant(true)))
                 }
                 
                 Section {

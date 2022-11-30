@@ -95,7 +95,7 @@ struct AccountView: View {
     // MARK: Properties
 
     @StateObject private var viewModel = AccountViewVM()
-    @ObservedObject var parameter: OpenAIConnector = .standard
+    @ObservedObject var parameters: OpenAIConnector = .standard
     @Environment(\.dismiss) var dismissAccountView
     private var storeReview = StoreReviewHelper()
     
@@ -109,7 +109,7 @@ struct AccountView: View {
                             UserView(userProfile: viewModel.userProfile)
                                 .onAppear {
                                     // set the OpenAI API user parameter to userProfile's id
-                                    self.parameter.user = viewModel.userProfile.id
+                                    self.parameters.user = viewModel.userProfile.id
                                 }
                         }
                     } else {
@@ -139,7 +139,7 @@ struct AccountView: View {
                     Button("Logout...", action: {
                         viewModel.logout()
                         // set the OpenAI API user parameter to empty string
-                        self.parameter.user = ""
+                        self.parameters.user = ""
                     })
                 }
                 .disabled(!viewModel.isAuthenticated)
@@ -148,7 +148,7 @@ struct AccountView: View {
                 MailView(isShowing: $viewModel.isShowingMailView, result: $viewModel.emailResult, showEmailResult: $viewModel.isShowingSendEmailAlert)
             }
             .sheet(isPresented: $viewModel.isShowingAdvanceSettings) {
-                AccountDetailView(isHidingNavigation: .constant(false))
+                AISettingsDetailView(isHidingNavigation: .constant(false))
             }
             .alert(isPresented: $viewModel.isShowingSendEmailAlert, content: { viewModel.sendEmailAlert()
             })

@@ -103,6 +103,8 @@ struct ContentView: View {
     @State private var showNetworkAlert: Bool = false
     @State private var isStoryListActive: Bool = false
     
+    let defaults = UserDefaults.standard.double(forKey: "maxTokens")
+    
     var body: some View {
         NavigationView {
             List {

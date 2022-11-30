@@ -1,5 +1,5 @@
 //
-//  AccountDetailView.swift
+//  AISettingsDetailView.swift
 //  JottrDemo
 //
 //  Created by Kenneth Gutierrez on 11/25/22.
@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct AccountDetailView: View {
+struct AISettingsDetailView: View {
+    @AppStorage("maxTokens") var maxTokens: Double = 100.0
     @Environment(\.dismiss) var dismissSettings
     @ObservedObject var parameters: OpenAIConnector = .standard
     @State private var isDismiss: Bool = false
@@ -31,10 +32,10 @@ struct AccountDetailView: View {
                         Text("Token Length")
                             .font(.subheadline)
                         Text("Affects the max amount of characters the AI will return.")
-                            .font(.caption)
+                            .font(.caption) //$parameters.maxTokens
                         Slider(
-                            value: $parameters.maxTokens,
-                            in: 1...4000,
+                            value: $maxTokens,
+                            in: 1...2048,
                             step: 1
                         ) {
                             Text("Token Length")
@@ -45,7 +46,7 @@ struct AccountDetailView: View {
                         }
                         HStack {
                             Spacer()
-                            Text("\(Int(parameters.maxTokens))")
+                            Text("\(Int(maxTokens))") //parameters.maxTokens
                             Spacer()
                         }
                     }
@@ -183,8 +184,8 @@ struct AccountDetailView: View {
     }
 }
 
-struct AccountDetailView_Previews: PreviewProvider {
+struct AISettingsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountDetailView(isHidingNavigation: .constant(false))
+        AISettingsDetailView(isHidingNavigation: .constant(false))
     }
 }

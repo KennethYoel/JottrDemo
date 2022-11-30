@@ -59,15 +59,16 @@ class OpenAIConnector: ObservableObject {
         }
     }
     
-    // MARK: Authentication Properties
-    
-    @Published var maxTokens: Double = 100 // Defaults to 16, most models have a context length of 2048 tokens
+    // MARK: Properties
+
+//    @Published var maxTokens: Double = 100 // Defaults to 16, most models have a context length of 2048 tokens
     @Published var temperature: Double = 0.6 // Defaults to 1, number between 0 and 1
     @Published var topP: Double = 1.0 // Defaults to 1, number between 0 and 1
     @Published var presencePenalty: Double = 0.0 // Defaults to 0, number between -2.0 and 2.0
     @Published var frequencyPenalty: Double = 0.5 // Defaults to 0, number between -2.0 and 2.0
     @Published var user: String = "" // unique identifier representing end-user, can help OpenAI to monitor and detect abuse.
     
+    // OpenAI authentication api_key
     static var openAIKey: String {
       get {
         // obtain the path to our Plist file
@@ -104,6 +105,9 @@ class OpenAIConnector: ObservableObject {
     class func executeRequest(from url: URL, sessionPrompt: String = "", textToClassify: String = "", moderated: Bool, withSessionConfig sessionConfig: URLSessionConfiguration?) async -> Data? {
         
         let parameterValues: OpenAIConnector = .standard
+//        let defaults = UserDefaults.standard
+//        defaults.set(100.0, forKey: "maxTokens")
+        let theMaxTokens = UserDefaults.standard.float(forKey: "maxTokens")
         
         let session: URLSession
         
@@ -129,7 +133,7 @@ class OpenAIConnector: ObservableObject {
         } else {
             let httpBody = Parameters(
                 prompt: sessionPrompt,
-                maxTokens: Int(parameterValues.maxTokens),
+                maxTokens: Int(theMaxTokens),//Int(parameterValues.maxTokens),
                 temperature: parameterValues.temperature,
                 topP: parameterValues.topP,
                 echo: false,
@@ -137,6 +141,7 @@ class OpenAIConnector: ObservableObject {
                 frequencyPenalty: parameterValues.frequencyPenalty,
                 user: parameterValues.user
             )
+            debugPrint("maxTokens: \(theMaxTokens)")
             guard let encodedHttpBody = try? JSONEncoder().encode(httpBody) else { // error with casting from one to another
                 debugPrint("Failed to encode request")
                 return nil
