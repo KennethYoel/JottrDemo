@@ -80,17 +80,12 @@ struct UserDetails: View {
 
 // sub-view displays the UserView in AccountView
 struct UserView: View {
-    @ObservedObject var parameter: OpenAIConnector = .standard
     var userProfile: UserProfile
     
     var body: some View {
         HStack {
             UserImage(urlString: userProfile.picture)
             UserDetails(userProfile: userProfile)
-                .onAppear {
-                    // set the OpenAI API user parameter to userProfile's id
-                    self.parameter.user = self.userProfile.id
-                }
         }
     }
 }
@@ -100,6 +95,7 @@ struct AccountView: View {
     // MARK: Properties
 
     @StateObject private var viewModel = AccountViewVM()
+    @ObservedObject var parameter: OpenAIConnector = .standard
     @Environment(\.dismiss) var dismissAccountView
     private var storeReview = StoreReviewHelper()
     
@@ -111,6 +107,10 @@ struct AccountView: View {
                     if viewModel.isAuthenticated {
                         HStack {
                             UserView(userProfile: viewModel.userProfile)
+                                .onAppear {
+                                    // set the OpenAI API user parameter to userProfile's id
+                                    self.parameter.user = viewModel.userProfile.id
+                                }
                         }
                     } else {
                         HStack {
@@ -136,8 +136,11 @@ struct AccountView: View {
                 }
                 
                 Section {
-                    // TODO: logout of the account and erase user id in parameter
-                    Button("Logout...", action: { viewModel.logout() })
+                    Button("Logout...", action: {
+                        viewModel.logout()
+                        // set the OpenAI API user parameter to empty string
+                        self.parameter.user = ""
+                    })
                 }
                 .disabled(!viewModel.isAuthenticated)
             }
