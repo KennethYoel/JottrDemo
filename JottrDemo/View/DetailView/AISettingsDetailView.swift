@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AISettingsDetailView: View {
+    // default values for OpenAI API parameters
     @AppStorage("maxTokens") var maxTokens: Double = 100.0
     @Environment(\.dismiss) var dismissSettings
     @ObservedObject var parameters: OpenAIConnector = .standard
