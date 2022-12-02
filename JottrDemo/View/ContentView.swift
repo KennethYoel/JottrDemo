@@ -10,7 +10,7 @@ import SwiftUI
 
 // defining loading state of the app
 enum LoadingState: String {
-    case notebook, storyList, recentStoryList, storyListDetail, trashList, trashListDetail
+    case storyList, recentStoryList, trashList, infoDetailView
 }
 
 // sub-view of story section
@@ -47,11 +47,27 @@ struct PageListSectionView: View {
 struct InfoSectionView: View {
     // MARK: Properties
     @Binding var viewHidden: Bool
+    var tagValue: String
+    @Binding var currentView: String?
     
     var body: some View {
         if !viewHidden {
-            Text("Intro")
-                .subSecondaryStyle()
+            ZStack(alignment: .leading) {
+                // a link to the list view
+                NavigationLink(
+                    "",
+                    destination: InformationalDetailView(),
+                    tag: tagValue,
+                    selection: $currentView
+                )
+                Button {
+                    self.currentView = tagValue
+                } label: {
+                    Label("Intro", systemImage: "newspaper")
+                        .subHeaderStyle()
+                }
+                .buttonStyle(.plain)
+            }
         }
     }
 }
@@ -140,7 +156,11 @@ struct ContentView: View {
                 
                 Section {
                     // link to introduction information
-                    InfoSectionView(viewHidden: $viewModel.isHidden)
+                    InfoSectionView(
+                        viewHidden: $viewModel.isHidden,
+                        tagValue: LoadingState.infoDetailView.rawValue,
+                        currentView: $currentView
+                    )
                 } header: {
                     HStack {
                         Text("INTRODUCTION")

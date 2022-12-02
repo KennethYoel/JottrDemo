@@ -61,12 +61,8 @@ class OpenAIConnector: ObservableObject {
     
     // MARK: Properties
 
-//    @Published var maxTokens: Double = 100 // Defaults to 16, most models have a context length of 2048 tokens
-    @Published var temperature: Double = 0.6 // Defaults to 1, number between 0 and 1
-    @Published var topP: Double = 1.0 // Defaults to 1, number between 0 and 1
-    @Published var presencePenalty: Double = 0.0 // Defaults to 0, number between -2.0 and 2.0
-    @Published var frequencyPenalty: Double = 0.5 // Defaults to 0, number between -2.0 and 2.0
-    @Published var user: String = "" // unique identifier representing end-user, can help OpenAI to monitor and detect abuse.
+    // unique identifier representing end-user, can help OpenAI to monitor and detect abuse.
+    @Published var user: String = ""
     
     // OpenAI authentication api_key
     static var openAIKey: String {
@@ -104,10 +100,13 @@ class OpenAIConnector: ObservableObject {
     
     class func executeRequest(from url: URL, sessionPrompt: String = "", textToClassify: String = "", moderated: Bool, withSessionConfig sessionConfig: URLSessionConfiguration?) async -> Data? {
         
-        let parameterValues: OpenAIConnector = .standard
-//        let defaults = UserDefaults.standard
-//        defaults.set(100.0, forKey: "maxTokens")
-        let theMaxTokens = UserDefaults.standard.float(forKey: "maxTokens")
+        // values for the httpBody parameters
+        let httpBodyValue: OpenAIConnector = .standard
+        let maxTokens = UserDefaults.standard.double(forKey: "maxTokens")
+        let temperature = UserDefaults.standard.double(forKey: "temperature")
+        let topP = UserDefaults.standard.double(forKey: "topP")
+        let presencePenalty = UserDefaults.standard.double(forKey: "presencePenalty")
+        let frequencyPenalty = UserDefaults.standard.double(forKey: "frequencyPenalty")
         
         let session: URLSession
         
@@ -133,15 +132,14 @@ class OpenAIConnector: ObservableObject {
         } else {
             let httpBody = Parameters(
                 prompt: sessionPrompt,
-                maxTokens: Int(theMaxTokens),//Int(parameterValues.maxTokens),
-                temperature: parameterValues.temperature,
-                topP: parameterValues.topP,
+                maxTokens: Int(maxTokens),
+                temperature: temperature,
+                topP: topP,
                 echo: false,
-                presencePenalty: parameterValues.presencePenalty,
-                frequencyPenalty: parameterValues.frequencyPenalty,
-                user: parameterValues.user
+                presencePenalty: presencePenalty,
+                frequencyPenalty: frequencyPenalty,
+                user: httpBodyValue.user
             )
-            debugPrint("maxTokens: \(theMaxTokens)")
             guard let encodedHttpBody = try? JSONEncoder().encode(httpBody) else { // error with casting from one to another
                 debugPrint("Failed to encode request")
                 return nil

@@ -84,14 +84,14 @@ struct PromptEditorView: View {
                 }
                 
                 Section {
-                    // a link to other OpenAI API advanced parameters that a user can adjust
+                    // a link to other OpenAI API advanced parameters that a user can adjust.
                     NavigationLink("Advance Settings", destination:AISettingsDetailView(isHidingNavigation: .constant(true)))
                 }
                 
                 Section {
                     HStack {
                         Spacer()
-                        // adds prompt parameter and request for text completion to OpenAI API
+                        // adds prompt parameter and request for text completion to OpenAI API.
                         Button(action: addPrompt, label: { Label("Add Prompt", systemImage: "plus.square") })
                             .buttonStyle(AnimatedButton())
                             .padding()
@@ -102,12 +102,12 @@ struct PromptEditorView: View {
             .navigationTitle("Prompt Editor")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // top trailing dismiss button
+                // top trailing dismiss button.
                 DoneButton(isDismiss: $viewModel.isDismiss.onChange { _ in
                     dismissPromptEdit()
                 })
                 
-                // keyboard bar dismiss button
+                // keyboard bar dismiss button.
                 keyboardToolbar
             }
         }
@@ -116,7 +116,7 @@ struct PromptEditorView: View {
     var keyboardToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             Spacer()
-            // dismisses keyboard
+            // dismisses keyboard.
             Button(action: { isInputActive.toggle() }, label: {
                 Image(systemName: "keyboard.chevron.compact.down")
             })

@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum Explainer {
-    case themeExplainer, premiseExplainer
+    case themeExplainer, premiseExplainer, aiParameterExplainer
 }
 
 struct PopoverTextView: View {
@@ -49,6 +49,20 @@ struct PopoverTextView: View {
     >The situation or obstacle: What crisis or extraordinary situation does your protagonist find themselves in?
     """
     
+    let aiParameterExplainer = """
+    Response Length - Affects the max amount of characters the AI will return.
+    The GPT family of models process text using tokens, which are common sequences of characters found in text. A rule of thumb is that one token generally corresponds to ~4 characters of text for common English text. This translates to roughly ¾ of a word (so 100 tokens ~= 75 words).
+    See https://beta.openai.com/docs/models/gpt-3
+    
+    Temperature - Affects the randomness of the AI. Higher values mean more randomness.
+    
+    Top P - An alternative to sampling with temperature. Affects the randomness of the AI. Higher values mean more randomness. We generally recommend altering this or temperature but not both.
+    
+    Appearance Penalty - Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
+    
+    Repetition Penalty - Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+    """
+    
     var body: some View {
         NavigationView {
             Text(popoverText)
@@ -69,8 +83,10 @@ struct PopoverTextView: View {
             
             if mainPopover == .themeExplainer {
                 explainerValue = themeExplainer
-            } else {
+            } else if mainPopover == .premiseExplainer {
                 explainerValue = premiseExplainer
+            } else {
+                explainerValue = aiParameterExplainer
             }
             
             return explainerValue
