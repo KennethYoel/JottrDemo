@@ -4,7 +4,7 @@
 //
 //  Created by Kenneth Gutierrez on 10/7/22.
 //
-// source code for fileExporter from
+// credit for fileExporter:
 // https://stackoverflow.com/questions/65993146/swiftui-2-0-export-images-with-fileexporter-modifier &
 // https://www.hackingwithswift.com/quick-start/swiftui/how-to-export-files-using-fileexporter
 
@@ -22,8 +22,10 @@ struct ItemList: View {
             TextInputView(isLoading: $isLoading, pen: $storyContent)
         } else {
             VStack {
-                Text(storyContent)
-                    .multilineTextAlignment(.leading)
+                ScrollView {
+                    Text(storyContent)
+                        .multilineTextAlignment(.leading)
+                }
             }
         }
     }
@@ -74,15 +76,13 @@ struct PageListDetailView: View {
                     EditorView()
                 }
             })
-            .sheet(isPresented: $viewModel.isShareViewPresented, onDismiss: {
-                debugPrint("Dismiss")
-            }, content: {
+            .sheet(isPresented: $viewModel.isShareViewPresented, content: {
                 ActivityViewController(itemsToShare: [storyToShare()])
             })
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 EditorToolbar(
-                    showNewPage: $viewModel.isShowingNewPageScreen, // .onChange(launchNewPage)
+                    showNewPage: $viewModel.isShowingNewPageScreen,
                     presentExportView: $viewModel.showingFileOptions,
                     presentShareView: $viewModel.isShareViewPresented,
                     showPromptEditor: $viewModel.isShowingPromptEditorScreen,

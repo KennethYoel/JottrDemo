@@ -10,7 +10,7 @@ import SwiftUI
 struct AISettingsDetailView: View {
     /// default values for OpenAI API parameters
     // defaults to 16, most models have a context length of 2048 tokens.
-    @AppStorage("maxTokens") var maxTokens: Double = 100.0
+    @AppStorage("maxTokens") var maxTokens: Double = 16.0
     // defaults to 1, no. between 0 and 1.
     @AppStorage("temperature") var temperature: Double = 0.6
     // defaults to 1, number between 0 and 1.

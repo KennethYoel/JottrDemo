@@ -10,7 +10,7 @@ import SwiftUI
 
 // defining loading state of the app
 enum LoadingState: String {
-    case storyList, recentStoryList, trashList, infoDetailView
+    case pageList, recentPageList, trashList, infoDetailView
 }
 
 // sub-view of story section
@@ -39,35 +39,6 @@ struct PageListSectionView: View {
                     .subHeaderStyle()
             }
             .buttonStyle(.plain)
-        }
-    }
-}
-
-// sub-view of introduction section
-struct InfoSectionView: View {
-    // MARK: Properties
-    @Binding var viewHidden: Bool
-    var tagValue: String
-    @Binding var currentView: String?
-    
-    var body: some View {
-        if !viewHidden {
-            ZStack(alignment: .leading) {
-                // a link to the list view
-                NavigationLink(
-                    "",
-                    destination: InformationalDetailView(),
-                    tag: tagValue,
-                    selection: $currentView
-                )
-                Button {
-                    self.currentView = tagValue
-                } label: {
-                    Label("Intro", systemImage: "newspaper")
-                        .subHeaderStyle()
-                }
-                .buttonStyle(.plain)
-            }
         }
     }
 }
@@ -127,7 +98,7 @@ struct ContentView: View {
                     PageListSectionView(
                         showRecentList: false,
                         showTrashList: false,
-                        tagValue: LoadingState.storyList.rawValue,
+                        tagValue: LoadingState.pageList.rawValue,
                         currentView: $currentView,
                         labelTitle: "Entirety",
                         labelImage: "archivebox"
@@ -137,7 +108,7 @@ struct ContentView: View {
                     PageListSectionView(
                         showRecentList: true,
                         showTrashList: false,
-                        tagValue: LoadingState.recentStoryList.rawValue,
+                        tagValue: LoadingState.recentPageList.rawValue,
                         currentView: $currentView,
                         labelTitle: "Recent",
                         labelImage: "deskclock"
@@ -155,12 +126,15 @@ struct ContentView: View {
                 }
                 
                 Section {
-                    // link to introduction information
-                    InfoSectionView(
-                        viewHidden: $viewModel.isHidden,
-                        tagValue: LoadingState.infoDetailView.rawValue,
-                        currentView: $currentView
-                    )
+                    if !viewModel.isHidden {
+                        ZStack(alignment: .leading) {
+                            // a link to the list view
+                            NavigationLink(destination: InformationalDetailView()) {
+                                Label("Intro", systemImage: "newspaper")
+                                    .subHeaderStyle()
+                            }
+                        }
+                    }
                 } header: {
                     HStack {
                         Text("INTRODUCTION")
@@ -184,7 +158,7 @@ struct ContentView: View {
                 )
             }
             .fullScreenCover(isPresented: $viewModel.isShowingNewPageScreen, onDismiss: {
-                self.currentView = LoadingState.storyList.rawValue
+                self.currentView = LoadingState.pageList.rawValue
             }, content: {
                 NavigationView {
                     EditorView()
